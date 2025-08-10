@@ -14,12 +14,21 @@ importers:
       '@heroicons/react':
         specifier: ^2.2.0
         version: 2.2.0(react@19.1.1)
+      '@tanstack/query-core':
+        specifier: ^5.83.1
+        version: 5.83.1
+      '@tanstack/query-db-collection':
+        specifier: ^0.2.0
+        version: 0.2.0(@tanstack/query-core@5.83.1)(typescript@5.8.3)
       '@tanstack/react-db':
         specifier: ^0.1.1
         version: 0.1.1(react@19.1.1)(typescript@5.8.3)
       cva:
         specifier: 1.0.0-beta.4
         version: 1.0.0-beta.4(typescript@5.8.3)
+      idb-keyval:
+        specifier: ^6.2.2
+        version: 6.2.2
       motion:
         specifier: ^12.23.12
         version: 12.23.12(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -987,6 +996,15 @@ packages:
     peerDependencies:
       typescript: '>=4.7'
 
+  '@tanstack/query-core@5.83.1':
+    resolution: {integrity: sha512-OG69LQgT7jSp+5pPuCfzltq/+7l2xoweggjme9vlbCPa/d7D7zaqv5vN/S82SzSYZ4EDLTxNO1PWrv49RAS64Q==}
+
+  '@tanstack/query-db-collection@0.2.0':
+    resolution: {integrity: sha512-45x9vX1nr3hC1SWfWEh00hIQEK9rydu8Fb7kGDobzshCHwJaWj0Cc9fBy9bpL7R/xaGu3pdTkzCsjolUcKxo3g==}
+    peerDependencies:
+      '@tanstack/query-core': ^5.0.0
+      typescript: '>=4.7'
+
   '@tanstack/react-db@0.1.1':
     resolution: {integrity: sha512-W1aw3q9oyIBkW/FzlaNtyP1+Xq4xVsjWJgN3rQfAA6XjGw6VhnF9jERrXbq7dC79egY+ZnOPvWlJSxuEzTI9Lw==}
     peerDependencies:
@@ -1182,6 +1200,9 @@ packages:
 
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
+
+  idb-keyval@6.2.2:
+    resolution: {integrity: sha512-yjD9nARJ/jb1g+CvD0tlhUHOrJ9Sy0P8T9MF3YaLlHnSRpwPfpTX0XIvpmw3gAJUmEu3FiICLBDPXVwyEvrleg==}
 
   is-arrayish@0.3.2:
     resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
@@ -2232,6 +2253,14 @@ snapshots:
       '@tanstack/db-ivm': 0.1.0(typescript@5.8.3)
       typescript: 5.8.3
 
+  '@tanstack/query-core@5.83.1': {}
+
+  '@tanstack/query-db-collection@0.2.0(@tanstack/query-core@5.83.1)(typescript@5.8.3)':
+    dependencies:
+      '@tanstack/db': 0.1.1(typescript@5.8.3)
+      '@tanstack/query-core': 5.83.1
+      typescript: 5.8.3
+
   '@tanstack/react-db@0.1.1(react@19.1.1)(typescript@5.8.3)':
     dependencies:
       '@tanstack/db': 0.1.1(typescript@5.8.3)
@@ -2443,6 +2472,8 @@ snapshots:
   globals@16.3.0: {}
 
   graceful-fs@4.2.11: {}
+
+  idb-keyval@6.2.2: {}
 
   is-arrayish@0.3.2: {}
 
