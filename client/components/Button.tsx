@@ -8,7 +8,7 @@ const button = cva({
 		variant: {
 			primary: "bg-primary text-primary-foreground",
 			secondary: "bg-secondary text-secondary-foreground",
-			outline: "bg-transparent border-2 backdrop-blur-sm",
+			outline: "bg-transparent border backdrop-blur-sm",
 		},
 	},
 	defaultVariants: {
