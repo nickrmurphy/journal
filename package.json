@@ -7,10 +7,11 @@
 		"dev": "vite",
 		"build": "tsc -b && vite build",
 		"check": "biome check --write .",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"deploy": "pnpm check && wrangler deploy"
 	},
 	"dependencies": {
-		"@headlessui/react": "^2.2.7",
+		"@base-ui-components/react": "1.0.0-beta.2",
 		"@heroicons/react": "^2.2.0",
 		"@tanstack/react-db": "^0.1.1",
 		"cva": "1.0.0-beta.4",
