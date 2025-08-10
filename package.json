@@ -11,8 +11,10 @@
 	},
 	"dependencies": {
 		"@headlessui/react": "^2.2.7",
+		"@heroicons/react": "^2.2.0",
 		"@tanstack/react-db": "^0.1.1",
 		"cva": "1.0.0-beta.4",
+		"motion": "^12.23.12",
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1",
 		"zod": "^4.0.17"

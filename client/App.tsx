@@ -1,33 +1,26 @@
-import { useState } from "react";
-import viteLogo from "/vite.svg";
-import reactLogo from "./assets/react.svg";
+import {
+	AdjustmentsHorizontalIcon,
+	BookmarkIcon,
+	PlusIcon,
+} from "@heroicons/react/16/solid";
+import { Button } from "./components/Button";
 
 function App() {
-	const [count, setCount] = useState(0);
-
 	return (
-		<>
-			<div>
-				<a href="https://vite.dev" target="_blank" rel="noopener">
-					<img src={viteLogo} className="logo" alt="Vite logo" />
-				</a>
-				<a href="https://react.dev" target="_blank" rel="noopener">
-					<img src={reactLogo} className="logo react" alt="React logo" />
-				</a>
-			</div>
-			<h1>Vite + React</h1>
-			<div className="card">
-				<button onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className="read-the-docs">
-				Click on the Vite and React logos to learn more
-			</p>
-		</>
+		<main className="bg-background fixed inset-1 sm:inset-2 rounded-xl p-2">
+			<h1>Journal</h1>
+			<nav className="bg-popover/90 border fixed bottom-3 flex justify-between gap-4 inset-x-1/4 items-center rounded-lg p-2">
+				<Button type="button" variant="outline">
+					<BookmarkIcon />
+				</Button>
+				<Button>
+					<PlusIcon />
+				</Button>
+				<Button type="button" variant="outline">
+					<AdjustmentsHorizontalIcon />
+				</Button>
+			</nav>
+		</main>
 	);
 }
 

@@ -2,10 +2,18 @@
 
 @layer base {
 	* {
-		@apply border-border outline-ring/50;
+		@apply border-border outline-ring/50 select-none;
 	}
 	body {
-		@apply bg-background text-foreground antialiased;
+		@apply bg-black text-foreground antialiased;
+	}
+	/* Variable font: Work Sans (weights 100-900) */
+	@font-face {
+		font-family: "Work Sans";
+		font-style: normal;
+		font-weight: 100 900;
+		font-display: swap;
+		src: url("/WorkSans.ttf") format("truetype-variations");
 	}
 }
 
