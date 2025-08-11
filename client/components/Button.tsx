@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import type { ComponentProps } from "react";
 
 const button = cva({
-	base: "rounded-md font-medium text-sm disabled:brightness-50 transition-all p-2.5 *:data-[slot=icon]:size-5",
+	base: "rounded-md font-medium text-sm disabled:brightness-50 transition-all *:data-[slot=icon]:size-5",
 	variants: {
 		variant: {
 			primary: "bg-primary text-primary-foreground",
@@ -11,18 +11,23 @@ const button = cva({
 			outline: "bg-transparent border backdrop-blur-sm",
 			ghost: "bg-transparent text-muted-foreground",
 		},
+		size: {
+			md: "p-2.5",
+			lg: "p-4.5",
+		},
 	},
 	defaultVariants: {
 		variant: "primary",
+		size: "md",
 	},
 });
 
 export type ButtonProps = ComponentProps<typeof motion.button> &
 	VariantProps<typeof button>;
 
-export const Button = ({ variant, className, ...props }: ButtonProps) => (
+export const Button = ({ variant, size, className, ...props }: ButtonProps) => (
 	<motion.button
-		className={button({ variant, className })}
+		className={button({ variant, size, className })}
 		whileTap={{
 			scale: 1.5,
 			opacity: 0.9,

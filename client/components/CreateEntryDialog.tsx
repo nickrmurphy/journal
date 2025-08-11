@@ -1,9 +1,7 @@
 import { Dialog } from "@base-ui-components/react/dialog";
 import {
 	CheckIcon,
-	PencilIcon,
 	PencilSquareIcon,
-	PlusIcon,
 	XMarkIcon,
 } from "@heroicons/react/16/solid";
 import { useState } from "react";
@@ -36,14 +34,14 @@ export const CreateEntryDialog = () => {
 		>
 			<Dialog.Trigger
 				render={
-					<Button variant="outline">
+					<Button size="lg">
 						<PencilSquareIcon />
 					</Button>
 				}
 			/>
 			<Dialog.Portal>
-				<Dialog.Backdrop className="fixed inset-0 bg-black opacity-20 transition-opacity duration-200 sm:flex sm:justify-center data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 dark:opacity-70" />
-				<Dialog.Popup className="fixed flex flex-col gap-3 left-0 top-4 mx-auto self-center w-screen translate-y-0 bg-background/90 backdrop-blur-xs text-foreground p-3 h-1/3 border-b rounded-xl transition-transform duration-300 ease-out data-[starting-style]:-translate-y-full data-[ending-style]:-translate-y-full dark:outline-gray-300">
+				<Dialog.Backdrop className="fixed inset-0 bg-black opacity-30 transition-opacity duration-200 sm:flex sm:justify-center data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 dark:opacity-70" />
+				<Dialog.Popup className="fixed flex flex-col gap-3 top-3 inset-x-3 translate-y-0 bg-background/90 backdrop-blur-xs text-foreground p-3 h-1/3 border-b rounded-xl transition-transform duration-300 ease-out data-[starting-style]:-translate-y-full data-[ending-style]:-translate-y-full dark:outline-gray-300">
 					<Dialog.Title className="sr-only">Create a new entry</Dialog.Title>
 					<textarea
 						minLength={1}
