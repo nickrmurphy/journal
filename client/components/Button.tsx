@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import type { ComponentProps } from "react";
 
 const button = cva({
-	base: "rounded-md font-medium text-sm transition-all p-2.5 *:data-[slot=icon]:size-5",
+	base: "rounded-md font-medium text-sm disabled:brightness-50 transition-all p-2.5 *:data-[slot=icon]:size-5",
 	variants: {
 		variant: {
 			primary: "bg-primary text-primary-foreground",
