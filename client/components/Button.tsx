@@ -13,7 +13,7 @@ const button = cva({
 		},
 		size: {
 			md: "p-2.5",
-			lg: "p-4.5",
+			lg: "p-3.5",
 		},
 	},
 	defaultVariants: {

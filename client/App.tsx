@@ -45,7 +45,7 @@ function App() {
 				</AnimatePresence>
 			</motion.section>
 			<div className="flex justify-between fixed bottom-[calc(var(--safe-bottom)+(var(--spacing)*4))] inset-x-4">
-				<div className="bg-popover/90 border flex gap-4 items-center rounded-lg p-2 backdrop-blur-xs shadow-xs">
+				<div className="bg-popover/90 border flex gap-4 items-center rounded-lg p-1 backdrop-blur-xs shadow-xs">
 					<Button type="button" variant="outline">
 						<BookmarkIcon />
 					</Button>
