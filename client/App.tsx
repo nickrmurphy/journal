@@ -17,7 +17,7 @@ function App() {
 
 	return (
 		<main className="bg-background w-[calc(100%-theme(spacing.4))] flex flex-col rounded-2xl flex-1 m-auto min-h-[calc(100vh-theme(spacing.4))] my-2 p-2 overflow-auto">
-			<h1 className="text-xl font-bold p-2 mb-4">Welcome back</h1>
+			<h1 className="text-xl font-bold p-2 mb-4 font-serif">Welcome back</h1>
 			<section className="divide-y">
 				{data.map((e) => (
 					<article

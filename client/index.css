@@ -13,13 +13,21 @@
 	body {
 		@apply bg-black text-foreground antialiased font-sans;
 	}
-	/* Variable font: Work Sans (weights 100-900) */
+
 	@font-face {
 		font-family: "Work Sans";
 		font-style: normal;
 		font-weight: 100 900;
 		font-display: swap;
 		src: url("/WorkSans.ttf") format("truetype-variations");
+	}
+
+	@font-face {
+		font-family: "Lora";
+		font-style: normal;
+		font-weight: 400 700;
+		font-display: swap;
+		src: url("/Lora.ttf") format("truetype-variations");
 	}
 }
 
@@ -62,7 +70,7 @@
 	--sidebar-border: oklch(0.87 0 0);
 	--sidebar-ring: oklch(0.45 0.085 224.283);
 	--font-sans: "Work Sans", ui-sans-serif, sans-serif, system-ui;
-	--font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+	--font-serif: "Lora", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 	--font-mono: DM Mono, ui-monospace, monospace;
 	--radius: 1rem;
 	--shadow-2xs: 2px 2px 4px 0px hsl(196 83% 10% / 0.05);
