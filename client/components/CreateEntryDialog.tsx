@@ -1,5 +1,11 @@
 import { Dialog } from "@base-ui-components/react/dialog";
-import { CheckIcon, PlusIcon, XMarkIcon } from "@heroicons/react/16/solid";
+import {
+	CheckIcon,
+	PencilIcon,
+	PencilSquareIcon,
+	PlusIcon,
+	XMarkIcon,
+} from "@heroicons/react/16/solid";
 import { useState } from "react";
 import { entryCollection } from "../collections/entries";
 import { Button } from "./Button";
@@ -19,11 +25,19 @@ export const CreateEntryDialog = () => {
 	};
 
 	return (
-		<Dialog.Root open={open} onOpenChange={setOpen}>
+		<Dialog.Root
+			open={open}
+			onOpenChange={(open) => {
+				if (!open) {
+					setInputValue("");
+				}
+				setOpen(open);
+			}}
+		>
 			<Dialog.Trigger
 				render={
-					<Button>
-						<PlusIcon />
+					<Button variant="outline">
+						<PencilSquareIcon />
 					</Button>
 				}
 			/>
@@ -42,14 +56,18 @@ export const CreateEntryDialog = () => {
 					<div className="flex justify-between gap-4 mt-auto">
 						<Dialog.Close
 							render={
-								<Button variant="outline">
+								<Button className="shadow-xs" variant="outline">
 									<XMarkIcon />
 								</Button>
 							}
 						/>
 						<Dialog.Close
 							render={
-								<Button disabled={!inputValue} onClick={handleSave}>
+								<Button
+									className="shadow-xs"
+									disabled={!inputValue}
+									onClick={handleSave}
+								>
 									<CheckIcon />
 								</Button>
 							}

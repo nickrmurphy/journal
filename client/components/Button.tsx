@@ -9,6 +9,7 @@ const button = cva({
 			primary: "bg-primary text-primary-foreground",
 			secondary: "bg-secondary text-secondary-foreground",
 			outline: "bg-transparent border backdrop-blur-sm",
+			ghost: "bg-transparent text-muted-foreground",
 		},
 	},
 	defaultVariants: {
@@ -19,13 +20,15 @@ const button = cva({
 export type ButtonProps = ComponentProps<typeof motion.button> &
 	VariantProps<typeof button>;
 
-export const Button = ({ variant, ...props }: ButtonProps) => (
+export const Button = ({ variant, className, ...props }: ButtonProps) => (
 	<motion.button
-		className={button({ variant })}
+		className={button({ variant, className })}
 		whileTap={{
 			scale: 1.5,
 			opacity: 0.9,
-			backdropFilter: "blur(2px)",
+			backdropFilter: "blur(4px)",
+			filter: "brightness(1.1)",
+			// border: "1px solid var(--border)",
 			transition: { duration: 0.1, ease: "easeInOut" },
 		}}
 		{...props}

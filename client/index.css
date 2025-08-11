@@ -5,10 +5,10 @@
 		@apply border-border outline-ring/50 select-none;
 		-ms-overflow-style: none; /* IE & Edge */
 		scrollbar-width: none; /* Firefox */
-	*::-webkit-scrollbar {
-		width: 0;
-		height: 0;
-	}
+		*::-webkit-scrollbar {
+			width: 0;
+			height: 0;
+		}
 	}
 	body {
 		@apply bg-black text-foreground antialiased font-sans;
@@ -70,7 +70,8 @@
 	--sidebar-border: oklch(0.87 0 0);
 	--sidebar-ring: oklch(0.45 0.085 224.283);
 	--font-sans: "Work Sans", ui-sans-serif, sans-serif, system-ui;
-	--font-serif: "Lora", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+	--font-serif:
+		"Lora", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 	--font-mono: DM Mono, ui-monospace, monospace;
 	--radius: 1rem;
 	--shadow-2xs: 2px 2px 4px 0px hsl(196 83% 10% / 0.05);
