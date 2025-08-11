@@ -1,0 +1,61 @@
+import { Dialog } from "@base-ui-components/react/dialog";
+import { CheckIcon, PlusIcon, XMarkIcon } from "@heroicons/react/16/solid";
+import { useState } from "react";
+import { entryCollection } from "../collections/entries";
+import { Button } from "./Button";
+
+export const CreateEntryDialog = () => {
+	const [inputValue, setInputValue] = useState("");
+	const [open, setOpen] = useState(false);
+
+	const handleSave = () => {
+		entryCollection.insert({
+			id: crypto.randomUUID(),
+			content: inputValue,
+			createdAt: new Date().toISOString(),
+		});
+		setInputValue("");
+		setOpen(false);
+	};
+
+	return (
+		<Dialog.Root open={open} onOpenChange={setOpen}>
+			<Dialog.Trigger
+				render={
+					<Button>
+						<PlusIcon />
+					</Button>
+				}
+			/>
+			<Dialog.Portal>
+				<Dialog.Backdrop className="fixed inset-0 bg-black opacity-20 transition-opacity duration-200 sm:flex sm:justify-center data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 dark:opacity-70" />
+				<Dialog.Popup className="fixed flex flex-col gap-3 left-0 top-4 mx-auto self-center w-screen translate-y-0 bg-background text-foreground p-3 h-1/3 border-b rounded-xl transition-transform duration-300 ease-out data-[starting-style]:-translate-y-full data-[ending-style]:-translate-y-full dark:outline-gray-300">
+					<Dialog.Title className="sr-only">Create a new entry</Dialog.Title>
+					<textarea
+						minLength={1}
+						className="h-full border rounded-lg p-3 outline-none focus:ring focus:ring-accent/50"
+						placeholder="What's on your mind?"
+						value={inputValue}
+						onChange={(e) => setInputValue(e.target.value)}
+					/>
+					<div className="flex justify-between gap-4 mt-auto">
+						<Dialog.Close
+							render={
+								<Button variant="outline">
+									<XMarkIcon />
+								</Button>
+							}
+						/>
+						<Dialog.Close
+							render={
+								<Button onClick={handleSave}>
+									<CheckIcon />
+								</Button>
+							}
+						/>
+					</div>
+				</Dialog.Popup>
+			</Dialog.Portal>
+		</Dialog.Root>
+	);
+};

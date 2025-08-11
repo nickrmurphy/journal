@@ -3,9 +3,15 @@
 @layer base {
 	* {
 		@apply border-border outline-ring/50 select-none;
+		-ms-overflow-style: none; /* IE & Edge */
+		scrollbar-width: none; /* Firefox */
+	*::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+	}
 	}
 	body {
-		@apply bg-black text-foreground antialiased;
+		@apply bg-black text-foreground antialiased font-sans;
 	}
 	/* Variable font: Work Sans (weights 100-900) */
 	@font-face {
@@ -55,7 +61,7 @@
 	--sidebar-accent-foreground: oklch(0.279 0.077 45.635);
 	--sidebar-border: oklch(0.87 0 0);
 	--sidebar-ring: oklch(0.45 0.085 224.283);
-	--font-sans: Work Sans, ui-sans-serif, sans-serif, system-ui;
+	--font-sans: "Work Sans", ui-sans-serif, sans-serif, system-ui;
 	--font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 	--font-mono: DM Mono, ui-monospace, monospace;
 	--radius: 1rem;
