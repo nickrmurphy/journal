@@ -1,15 +1,14 @@
-import {
-	AdjustmentsHorizontalIcon,
-	BookmarkIcon,
-} from "@heroicons/react/16/solid";
+import { Dialog } from "@base-ui-components/react";
 import { useLiveQuery } from "@tanstack/react-db";
 import { AnimatePresence, motion } from "motion/react";
+import { useState } from "react";
 import { entryCollection } from "./collections/entries";
-import { Button } from "./components/Button";
 import { CreateEntryDialog } from "./components/CreateEntryDialog";
+import { EntryDialog } from "./components/EntryDialog";
 import { formatEntryDate } from "./utils/formatDate";
 
 function App() {
+	const [detailId, setDetailId] = useState<string | null>(null);
 	const { data } = useLiveQuery((q) =>
 		q
 			.from({ entries: entryCollection })
@@ -34,6 +33,7 @@ function App() {
 								damping: 28,
 								mass: 0.6,
 							}}
+							onClick={() => setDetailId(e.id)}
 							className="text-card-foreground border-border/50 border rounded-lg bg-card px-2 py-3 space-y-1"
 						>
 							<h2 className="text-xs text-muted-foreground">
@@ -45,10 +45,16 @@ function App() {
 				</AnimatePresence>
 			</motion.section>
 			<div className="flex justify-end fixed bottom-[calc(var(--safe-bottom)+(var(--spacing)*4))] inset-x-4">
-				<div className="">
-					<CreateEntryDialog />
-				</div>
+				<CreateEntryDialog />
 			</div>
+			<Dialog.Root
+				open={detailId !== null}
+				onOpenChange={() => {
+					setDetailId(null);
+				}}
+			>
+				<EntryDialog entryId={detailId} />
+			</Dialog.Root>
 		</main>
 	);
 }

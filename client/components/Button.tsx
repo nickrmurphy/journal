@@ -29,11 +29,10 @@ export const Button = ({ variant, size, className, ...props }: ButtonProps) => (
 	<motion.button
 		className={button({ variant, size, className })}
 		whileTap={{
-			scale: 1.5,
+			scale: 1.25,
 			opacity: 0.9,
 			backdropFilter: "blur(4px)",
 			filter: "brightness(1.1)",
-			// border: "1px solid var(--border)",
 			transition: { duration: 0.1, ease: "easeInOut" },
 		}}
 		{...props}

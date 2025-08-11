@@ -3,7 +3,7 @@ import {
 	CheckIcon,
 	PencilSquareIcon,
 	XMarkIcon,
-} from "@heroicons/react/16/solid";
+} from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { entryCollection } from "../collections/entries";
 import { Button } from "./Button";
