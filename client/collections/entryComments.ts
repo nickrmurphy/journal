@@ -3,37 +3,38 @@ import { createCollection } from "@tanstack/react-db";
 import z from "zod";
 import { createIdbPersister, queryClient } from "./shared";
 
-const entrySchema = z.object({
+const entryCommentSchema = z.object({
 	id: z
 		.uuid()
 		.optional()
 		.default(() => crypto.randomUUID()),
 	content: z.string().min(1),
+	entryId: z.uuid(),
 	createdAt: z.iso
 		.datetime()
 		.optional()
 		.default(() => new Date().toISOString()),
 });
 
-export type Entry = z.infer<typeof entrySchema>;
+export type EntryComment = z.infer<typeof entryCommentSchema>;
 
-const entryPersister = createIdbPersister<Entry>("entries");
+const entryCommentPersister = createIdbPersister<EntryComment>("entryComments");
 
-export const entryCollection = createCollection(
+export const entryCommentCollection = createCollection(
 	queryCollectionOptions({
-		queryKey: ["entries"],
-		schema: entrySchema,
+		queryKey: ["entryComments"],
+		schema: entryCommentSchema,
 		queryFn: async () => {
-			const entries = await entryPersister.getAll();
-			return entries;
+			const comments = await entryCommentPersister.getAll();
+			return comments;
 		},
 		queryClient,
 		getKey: (item) => item.id,
 		onInsert: async ({ transaction }) => {
 			const promises = transaction.mutations.map((mutation) => {
 				if (mutation.type === "insert") {
-					const val = entrySchema.parse(mutation.changes);
-					return entryPersister.insert(val);
+					const val = entryCommentSchema.parse(mutation.changes);
+					return entryCommentPersister.insert(val);
 				}
 			});
 			await Promise.all(promises);
@@ -41,7 +42,7 @@ export const entryCollection = createCollection(
 		onUpdate: async ({ transaction }) => {
 			const promises = transaction.mutations.map((mutation) => {
 				if (mutation.type === "update") {
-					return entryPersister.update({
+					return entryCommentPersister.update({
 						id: mutation.key,
 						...mutation.changes,
 					});
