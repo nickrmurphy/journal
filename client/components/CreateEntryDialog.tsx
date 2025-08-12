@@ -42,15 +42,16 @@ export const CreateEntryDialog = () => {
 			/>
 			<DialogContent>
 				<Dialog.Title className="sr-only">Create a new entry</Dialog.Title>
+				{/* Flex parent provided by DialogContent (Popup) already uses flex-col; make textarea grow */}
 				<textarea
 					minLength={1}
 					required
-					className="h-full resize-none border rounded-lg p-3 outline-none focus:ring focus:ring-accent/50"
+					className="flex-1 min-h-0 w-full resize-none border rounded-lg p-3 outline-none focus:ring focus:ring-accent/50 overflow-y-auto"
 					placeholder="What's on your mind?"
 					value={inputValue}
 					onChange={(e) => setInputValue(e.target.value)}
 				/>
-				<div className="flex justify-between gap-4 mt-auto">
+				<div className="flex justify-between gap-4 shrink-0">
 					<Dialog.Close
 						render={
 							<Button className="shadow-xs" variant="outline">

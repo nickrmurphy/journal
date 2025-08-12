@@ -55,35 +55,63 @@ export const EntryDialog = ({ entryId }: { entryId: string | null }) => {
 			<Dialog.Title className="sr-only">
 				Dialog entry for {entry.createdAt}
 			</Dialog.Title>
-			{/* Layout: flex column full height so footer stays at bottom */}
-			<div className="flex flex-col min-h-[min(66vh,600px)] max-h-[66vh]">
-				<div className="flex-1 min-h-0 overflow-y-auto pr-1 space-y-4 pb-4">
-					<div className="bg-card rounded-lg p-3 space-y-2 shadow-sm border border-border/50">
-						<time className="text-sm text-muted-foreground">
-							{formatEntryDate(entry.createdAt)}
-						</time>
-						<p>{entry.content}</p>
-					</div>
-					<motion.div layout className="space-y-2">
-						{comments.map((comment) => (
-							<div
-								key={comment.id}
-								className="p-3 rounded-lg bg-muted text-muted-foreground space-y-1"
-							>
-								<time className="text-xs text-muted-foreground">
-									{formatEntryDate(comment.createdAt)}
-								</time>
-								<p className="text-sm">{comment.content}</p>
-							</div>
-						))}
-					</motion.div>
-					<AnimatePresence initial={false} mode="popLayout">
+			{/* Scrollable content area with bottom padding to avoid overlap with sticky footer */}
+			<div className="space-y-4 overflow-y-scroll pb-12">
+				<div className="sticky top-0 z-10 bg-card/95 backdrop-blur-xs rounded-lg p-3 space-y-2  border border-border/50">
+					<time className="text-sm text-muted-foreground">
+						{formatEntryDate(entry.createdAt)}
+					</time>
+					<p>{entry.content}</p>
+				</div>
+				<motion.div className="space-y-2">
+					{comments.map((comment) => (
+						<div
+							key={comment.id}
+							className="p-3 rounded-lg bg-muted text-muted-foreground space-y-1"
+						>
+							<time className="text-xs text-muted-foreground">
+								{formatEntryDate(comment.createdAt)}
+							</time>
+							<p className="text-sm">{comment.content}</p>
+						</div>
+					))}
+				</motion.div>
+				<AnimatePresence initial={false} mode="popLayout">
+					{commenting && (
+						<motion.textarea
+							key="comment-textarea"
+							value={comment}
+							onChange={(e) => setComment(e.target.value)}
+							className="bg-muted/95 min-h-8 w-full rounded-lg resize-none border outline-none focus:ring focus:ring-accent p-3"
+							initial={{ opacity: 0, scale: 0.9, y: -4 }}
+							animate={{ opacity: 1, scale: 1, y: 0 }}
+							exit={{ opacity: 0, scale: 0.9, y: -4 }}
+							transition={{
+								type: "spring",
+								stiffness: 300,
+								damping: 24,
+								mass: 0.4,
+							}}
+							autoFocus
+						/>
+					)}
+				</AnimatePresence>
+			</div>
+			{/* Sticky footer */}
+			<div className="absolute bottom-0 left-0 right-0 p-2 flex items-center justify-between w-full">
+				<Dialog.Close
+					render={
+						<Button variant="outline" className="shadow-xs">
+							<span className="sr-only">Close</span>
+							<XMarkIcon />
+						</Button>
+					}
+				/>
+				<div className="flex items-center gap-2">
+					<AnimatePresence initial={false}>
 						{commenting && (
-							<motion.textarea
-								key="comment-textarea"
-								value={comment}
-								onChange={(e) => setComment(e.target.value)}
-								className="bg-muted/90 min-h-8 w-full rounded-lg resize-none border outline-none focus:ring focus:ring-accent p-3"
+							<motion.div
+								key="cancel-btn"
 								initial={{ opacity: 0, scale: 0.9, y: -4 }}
 								animate={{ opacity: 1, scale: 1, y: 0 }}
 								exit={{ opacity: 0, scale: 0.9, y: -4 }}
@@ -93,64 +121,34 @@ export const EntryDialog = ({ entryId }: { entryId: string | null }) => {
 									damping: 24,
 									mass: 0.4,
 								}}
-								autoFocus
-							/>
+								layout
+							>
+								<Button
+									variant="outline"
+									className="shadow-xs"
+									onClick={() => setCommenting(false)}
+								>
+									Cancel
+								</Button>
+							</motion.div>
 						)}
 					</AnimatePresence>
-				</div>
-				{/* Footer */}
-				<div className="flex items-center justify-between gap-2 pt-2 border-t border-border/50">
-					<Dialog.Close
-						render={
-							<Button variant="outline" className="shadow-xs">
-								<span className="sr-only">Close</span>
-								<XMarkIcon />
-							</Button>
-						}
-					/>
-					<div className="flex items-center gap-2">
-						<AnimatePresence initial={false}>
-							{commenting && (
-								<motion.div
-									key="cancel-btn"
-									initial={{ opacity: 0, scale: 0.9, y: -4 }}
-									animate={{ opacity: 1, scale: 1, y: 0 }}
-									exit={{ opacity: 0, scale: 0.9, y: -4 }}
-									transition={{
-										type: "spring",
-										stiffness: 300,
-										damping: 24,
-										mass: 0.4,
-									}}
-									layout
-								>
-									<Button
-										variant="outline"
-										className="shadow-xs"
-										onClick={() => setCommenting(false)}
-									>
-										Cancel
-									</Button>
-								</motion.div>
-							)}
-						</AnimatePresence>
-						<Button
-							variant="secondary"
-							className="shadow-xs"
-							disabled={commenting && !comment}
-							onClick={() => {
-								if (commenting) {
-									handleCommentSubmit();
-								} else {
-									setCommenting(true);
-								}
-							}}
-						>
-							<span className="sr-only">Add Comment</span>
-							{!commenting && <ChatBubbleLeftEllipsisIcon />}
-							{commenting && <CheckIcon />}
-						</Button>
-					</div>
+					<Button
+						variant="secondary"
+						className="shadow-xs"
+						disabled={commenting && !comment}
+						onClick={() => {
+							if (commenting) {
+								handleCommentSubmit();
+							} else {
+								setCommenting(true);
+							}
+						}}
+					>
+						<span className="sr-only">Add Comment</span>
+						{!commenting && <ChatBubbleLeftEllipsisIcon />}
+						{commenting && <CheckIcon />}
+					</Button>
 				</div>
 			</div>
 		</DialogContent>
