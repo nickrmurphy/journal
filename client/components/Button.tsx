@@ -32,7 +32,7 @@ export const Button = ({ variant, size, className, ...props }: ButtonProps) => (
 			scale: 1.25,
 			opacity: 0.9,
 			backdropFilter: "blur(4px)",
-			filter: "brightness(1.1)",
+			filter: "brightness(1.25)",
 			transition: { duration: 0.1, ease: "easeInOut" },
 		}}
 		{...props}

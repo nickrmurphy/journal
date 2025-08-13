@@ -1,52 +1,34 @@
 import { Dialog } from "@base-ui-components/react";
-import { useLiveQuery } from "@tanstack/react-db";
-import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
-import { entryCollection } from "./collections/entries";
+import { type FC, type PropsWithChildren, useState } from "react";
 import { CreateEntryDialog } from "./components/CreateEntryDialog";
 import { EntryDialog } from "./components/EntryDialog";
-import { formatEntryDate } from "./utils/formatDate";
+import { PastEntries } from "./components/PastEntries";
+import { Subheader } from "./components/Subheader";
+import { TodayEntries } from "./components/TodayEntries";
+import { TodayHeader } from "./components/TodayHeader";
+
+const Nav = () => (
+	<div className="flex justify-end fixed bottom-[calc(var(--safe-bottom)+var(--spacing)*4)] inset-x-4">
+		<CreateEntryDialog />
+	</div>
+);
+
+const Page: FC<PropsWithChildren> = ({ children }) => (
+	<main className="bg-background w-[calc(100%-theme(spacing.4))] flex flex-col rounded-xl shadow flex-1 m-auto min-h-[calc(100vh-theme(spacing.4))] my-2 p-2 overflow-auto pb-20">
+		{children}
+	</main>
+);
 
 function App() {
 	const [detailId, setDetailId] = useState<string | null>(null);
-	const { data } = useLiveQuery((q) =>
-		q
-			.from({ entries: entryCollection })
-			.orderBy((e) => e.entries.createdAt, "desc"),
-	);
 
 	return (
-		<main className="bg-background w-[calc(100%-theme(spacing.4))] flex flex-col rounded-xl shadow flex-1 m-auto min-h-[calc(100vh-theme(spacing.4))] my-2 p-2 overflow-auto pb-20">
-			<h1 className="text-2xl font-bold p-2 mb-4 font-serif">Welcome back</h1>
-			<motion.section layout className="space-y-2">
-				<AnimatePresence initial={false} mode="popLayout">
-					{data.map((e) => (
-						<motion.article
-							key={e.id}
-							layout
-							initial={{ opacity: 0, y: -16 }}
-							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: -16 }}
-							transition={{
-								type: "spring",
-								stiffness: 320,
-								damping: 28,
-								mass: 0.6,
-							}}
-							onClick={() => setDetailId(e.id)}
-							className="text-card-foreground border-border/50 border rounded-lg bg-card px-2 py-3 space-y-1"
-						>
-							<h2 className="text-xs text-muted-foreground">
-								{formatEntryDate(e.createdAt)}
-							</h2>
-							<p>{e.content}</p>
-						</motion.article>
-					))}
-				</AnimatePresence>
-			</motion.section>
-			<div className="flex justify-end fixed bottom-[calc(var(--safe-bottom)+(var(--spacing)*4))] inset-x-4">
-				<CreateEntryDialog />
-			</div>
+		<Page>
+			<TodayHeader />
+			<TodayEntries onSelectEntry={setDetailId} />
+			<Subheader />
+			<PastEntries onSelect={setDetailId} />
+			<Nav />
 			<Dialog.Root
 				open={detailId !== null}
 				onOpenChange={() => {
@@ -55,7 +37,7 @@ function App() {
 			>
 				<EntryDialog entryId={detailId} />
 			</Dialog.Root>
-		</main>
+		</Page>
 	);
 }
 

@@ -9,6 +9,7 @@ const entrySchema = z.object({
 		.optional()
 		.default(() => crypto.randomUUID()),
 	content: z.string().min(1),
+	date: z.iso.date(),
 	createdAt: z.iso
 		.datetime()
 		.optional()

@@ -18,6 +18,7 @@ export const CreateEntryDialog = () => {
 			id: crypto.randomUUID(),
 			content: inputValue,
 			createdAt: new Date().toISOString(),
+			date: new Date().toISOString().split("T")[0],
 		});
 		setInputValue("");
 		setOpen(false);
@@ -51,7 +52,7 @@ export const CreateEntryDialog = () => {
 					value={inputValue}
 					onChange={(e) => setInputValue(e.target.value)}
 				/>
-				<div className="flex justify-between gap-4 shrink-0">
+				<div className="p-2 flex justify-between gap-4 shrink-0">
 					<Dialog.Close
 						render={
 							<Button className="shadow-xs" variant="outline">
