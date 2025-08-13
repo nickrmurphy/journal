@@ -14,7 +14,8 @@ const DayEntries = (props: {
 	const { data } = useLiveQuery((q) =>
 		q
 			.from({ entries: entryCollection })
-			.where(({ entries }) => eq(entries.date, props.date)),
+			.where(({ entries }) => eq(entries.date, props.date))
+			.orderBy(({ entries }) => entries.createdAt, "desc"),
 	);
 
 	return (
@@ -45,6 +46,7 @@ export function PastEntries({ onSelect }: PastEntriesProps) {
 		q
 			.from({ entries: entryCollection })
 			.where(({ entries }) => lt(entries.date, todayISO()))
+			.orderBy(({ entries }) => entries.date, "desc")
 			.select(({ entries }) => ({ date: entries.date }))
 			.distinct(),
 	);

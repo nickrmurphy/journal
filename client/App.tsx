@@ -19,7 +19,7 @@ const Nav = () => (
 );
 
 const Page: FC<PropsWithChildren> = ({ children }) => (
-	<main className="bg-background w-[calc(100%-theme(spacing.4))] gap-5 flex flex-col rounded-xl shadow flex-1 m-auto min-h-[calc(100vh-theme(spacing.4))] my-2 p-2 overflow-auto pb-20">
+	<main className="bg-background w-[calc(100%-theme(spacing.4))] gap-5 flex flex-col rounded-xl shadow flex-1 m-auto h-[calc(100dvh-theme(spacing.4))] my-2 p-2 overflow-y-auto [overscroll-behavior-y:contain] pb-20">
 		{children}
 	</main>
 );
@@ -41,7 +41,7 @@ function App() {
 			{/* Horizontal pager: three equal pages with scroll snap; center page is Today */}
 			<div
 				ref={scrollerRef}
-				className="flex overflow-x-auto snap-x snap-mandatory w-full h-[100dvh] [scroll-behavior:auto]"
+				className="flex overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full h-[100dvh] [scroll-behavior:auto]"
 				/* Prevent rubber-band overscroll showing background behind cards */
 			>
 				{/* Left page (empty content placeholder, same sizing) */}
