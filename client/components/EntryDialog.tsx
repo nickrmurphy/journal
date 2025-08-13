@@ -79,10 +79,11 @@ export const EntryDialog = ({ entryId }: { entryId: string | null }) => {
 				<AnimatePresence initial={false} mode="popLayout">
 					{commenting && (
 						<motion.textarea
+							autoFocus
 							key="comment-textarea"
 							value={comment}
 							onChange={(e) => setComment(e.target.value)}
-							className="bg-muted/95 min-h-8 w-full rounded-lg resize-none border outline-none focus:ring focus:ring-accent p-3"
+							className="bg-muted/95 mx-0.5 min-h-8 w-full rounded-lg resize-none border outline-none focus:ring focus:ring-accent p-3"
 							initial={{ opacity: 0, scale: 0.9, y: -4 }}
 							animate={{ opacity: 1, scale: 1, y: 0 }}
 							exit={{ opacity: 0, scale: 0.9, y: -4 }}
@@ -92,7 +93,6 @@ export const EntryDialog = ({ entryId }: { entryId: string | null }) => {
 								damping: 24,
 								mass: 0.4,
 							}}
-							autoFocus
 						/>
 					)}
 				</AnimatePresence>

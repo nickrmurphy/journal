@@ -52,7 +52,7 @@ export const CreateEntryDialog = () => {
 					value={inputValue}
 					onChange={(e) => setInputValue(e.target.value)}
 				/>
-				<div className="p-2 flex justify-between gap-4 shrink-0">
+				<div className="flex justify-between gap-4 shrink-0">
 					<Dialog.Close
 						render={
 							<Button className="shadow-xs" variant="outline">
