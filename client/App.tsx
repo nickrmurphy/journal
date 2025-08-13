@@ -6,11 +6,9 @@ import {
 	useRef,
 	useState,
 } from "react";
-// no button needed on the left page when "Previously" is always visible
 import { CreateEntryDialog } from "./components/CreateEntryDialog";
 import { EntryDialog } from "./components/EntryDialog";
 import { PastEntries } from "./components/PastEntries";
-import { Subheader } from "./components/Subheader";
 import { TodayEntries } from "./components/TodayEntries";
 import { TodayHeader } from "./components/TodayHeader";
 
@@ -50,12 +48,7 @@ function App() {
 				<section className="snap-center shrink-0 w-screen px-0">
 					<Page>
 						<section className="space-y-2">
-							<div className="flex items-center justify-between">
-								<Subheader>Previously</Subheader>
-							</div>
-							<section className="space-y-2">
-								<PastEntries onSelect={setDetailId} />
-							</section>
+							<PastEntries onSelect={setDetailId} />
 						</section>
 					</Page>
 				</section>
