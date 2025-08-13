@@ -1,8 +1,12 @@
-import { Collapsible, Dialog } from "@base-ui-components/react";
-import { ChevronUpIcon } from "@heroicons/react/24/outline";
-import { AnimatePresence, motion } from "motion/react";
-import { type FC, type PropsWithChildren, useState } from "react";
-import { Button } from "./components/Button";
+import { Dialog } from "@base-ui-components/react";
+import {
+	type FC,
+	type PropsWithChildren,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
+// no button needed on the left page when "Previously" is always visible
 import { CreateEntryDialog } from "./components/CreateEntryDialog";
 import { EntryDialog } from "./components/EntryDialog";
 import { PastEntries } from "./components/PastEntries";
@@ -24,47 +28,54 @@ const Page: FC<PropsWithChildren> = ({ children }) => (
 
 function App() {
 	const [detailId, setDetailId] = useState<string | null>(null);
+	const scrollerRef = useRef<HTMLDivElement | null>(null);
+
+	// Start on the center page without visible scroll (no smooth)
+	useLayoutEffect(() => {
+		const scroller = scrollerRef.current;
+		if (!scroller) return;
+		// Each page is one viewport width (w-screen); center page is index 1
+		scroller.scrollTo({ left: scroller.clientWidth, behavior: "auto" });
+	}, []);
 
 	return (
-		<Page>
-			<section>
-				<TodayHeader />
-				<TodayEntries onSelectEntry={setDetailId} />
-			</section>
-			<section className="space-y-2">
-				<Collapsible.Root defaultOpen>
-					<div className="flex items-center justify-between">
-						<Subheader>Previously</Subheader>
-						<Collapsible.Trigger
-							render={
-								<Button variant="ghost" className="aria-expanded:rotate-180" />
-							}
-						>
-							<ChevronUpIcon />
-						</Collapsible.Trigger>
-					</div>
-					<Collapsible.Panel>
-						<AnimatePresence mode="wait">
-							<motion.section
-								key="past-entries"
-								layout
-								className="space-y-2"
-								exit={{ opacity: 0, height: 0 }}
-								initial={{ opacity: 0, height: 0 }}
-								animate={{ opacity: 1, height: "auto" }}
-								transition={{
-									type: "spring",
-									stiffness: 300,
-									damping: 24,
-									mass: 0.4,
-								}}
-							>
+		<div className="relative">
+			{/* Horizontal pager: three equal pages with scroll snap; center page is Today */}
+			<div
+				ref={scrollerRef}
+				className="flex overflow-x-auto snap-x snap-mandatory w-full h-[100dvh] [scroll-behavior:auto]"
+				/* Prevent rubber-band overscroll showing background behind cards */
+			>
+				{/* Left page (empty content placeholder, same sizing) */}
+				<section className="snap-center shrink-0 w-screen px-0">
+					<Page>
+						<section className="space-y-2">
+							<div className="flex items-center justify-between">
+								<Subheader>Previously</Subheader>
+							</div>
+							<section className="space-y-2">
 								<PastEntries onSelect={setDetailId} />
-							</motion.section>
-						</AnimatePresence>
-					</Collapsible.Panel>
-				</Collapsible.Root>
-			</section>
+							</section>
+						</section>
+					</Page>
+				</section>
+
+				{/* Center page: Today content */}
+				<section className="snap-center shrink-0 w-screen px-0">
+					<Page>
+						<section>
+							<TodayHeader />
+							<TodayEntries onSelectEntry={setDetailId} />
+						</section>
+					</Page>
+				</section>
+
+				{/* Right page (empty content placeholder, same sizing) */}
+				<section className="snap-center shrink-0 w-screen px-0">
+					<Page>{/* Intentionally blank page */}</Page>
+				</section>
+			</div>
+
 			<Nav />
 			<Dialog.Root
 				open={detailId !== null}
@@ -74,7 +85,7 @@ function App() {
 			>
 				<EntryDialog entryId={detailId} />
 			</Dialog.Root>
-		</Page>
+		</div>
 	);
 }
 

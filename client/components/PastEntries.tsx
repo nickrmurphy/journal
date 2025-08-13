@@ -1,4 +1,5 @@
 import { eq, lt, useLiveQuery } from "@tanstack/react-db";
+import { motion } from "motion/react";
 import { entryCollection } from "../collections/entries";
 import { formatMonthDateYear, formatTime, todayISO } from "../utils/formatDate";
 
@@ -17,12 +18,11 @@ const DayEntries = (props: {
 	);
 
 	return (
-		<div className="bg-card text-card-foreground rounded-lg p-3">
+		<div className="bg-card text-card-foreground rounded-lg p-3 border">
 			<h3 className="font-medium">{formatMonthDateYear(props.date)}</h3>
 			<div className="divide-y">
 				{data.map((entry) => (
-					<button
-						type="button"
+					<motion.div
 						key={entry.id}
 						className="py-3 space-y-1 active:brightness-125 transition-all"
 						onClick={() => props.onSelect(entry.id)}
@@ -33,7 +33,7 @@ const DayEntries = (props: {
 							</time>
 						</p>
 						<p className="text-sm text-muted-foreground">{entry.content}</p>
-					</button>
+					</motion.div>
 				))}
 			</div>
 		</div>
