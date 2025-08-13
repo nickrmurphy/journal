@@ -26,6 +26,11 @@ export const entryCollection = createCollection(
 		schema: entrySchema,
 		queryFn: async () => {
 			const entries = await entryPersister.getAll();
+			entries.forEach((entry) => {
+				if (!entry.date) {
+					entry.date = new Date(entry.createdAt).toISOString().split("T")[0];
+				}
+			});
 			return entries;
 		},
 		queryClient,
