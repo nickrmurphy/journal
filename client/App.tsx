@@ -14,7 +14,7 @@ const Nav = () => (
 );
 
 const Page: FC<PropsWithChildren> = ({ children }) => (
-	<main className="bg-background w-[calc(100%-theme(spacing.4))] flex flex-col rounded-xl shadow flex-1 m-auto min-h-[calc(100vh-theme(spacing.4))] my-2 p-2 overflow-auto pb-20">
+	<main className="bg-background w-[calc(100%-theme(spacing.4))] gap-5 flex flex-col rounded-xl shadow flex-1 m-auto min-h-[calc(100vh-theme(spacing.4))] my-2 p-2 overflow-auto pb-20">
 		{children}
 	</main>
 );
@@ -24,10 +24,14 @@ function App() {
 
 	return (
 		<Page>
-			<TodayHeader />
-			<TodayEntries onSelectEntry={setDetailId} />
-			<Subheader />
-			<PastEntries onSelect={setDetailId} />
+			<section>
+				<TodayHeader />
+				<TodayEntries onSelectEntry={setDetailId} />
+			</section>
+			<section className="space-y-2">
+				<Subheader>Previously</Subheader>
+				<PastEntries onSelect={setDetailId} />
+			</section>
 			<Nav />
 			<Dialog.Root
 				open={detailId !== null}

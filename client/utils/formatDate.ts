@@ -11,8 +11,23 @@ export function todayISO() {
 	return new Date().toISOString().split("T")[0];
 }
 
+export function formatMonthDateYear(iso: string): string {
+	const d = new Date(iso);
+	return format(d, "MMMM d, yyyy");
+}
+
+export function formatMonthDate(iso: string): string {
+	const d = new Date(iso);
+	return format(d, "MMMM d");
+}
+
+export function formatTime(iso: string): string {
+	const d = new Date(iso);
+	return format(d, "h:mma");
+}
+
 export function todayMonthDate() {
-	return format(new Date(), "MMMM d");
+	return formatMonthDate(new Date().toISOString());
 }
 
 export function todayDay() {

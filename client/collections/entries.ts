@@ -1,6 +1,7 @@
 import { queryCollectionOptions } from "@tanstack/query-db-collection";
 import { createCollection } from "@tanstack/react-db";
 import z from "zod";
+import { generateSampleEntries } from "../utils/seedData";
 import { createIdbPersister, queryClient } from "./shared";
 
 const entrySchema = z.object({
@@ -26,7 +27,9 @@ export const entryCollection = createCollection(
 		schema: entrySchema,
 		queryFn: async () => {
 			const entries = await entryPersister.getAll();
-			return entries;
+			const seed = generateSampleEntries();
+			console.log("Seeding entries:", seed);
+			return [...entries, ...seed];
 		},
 		queryClient,
 		getKey: (item) => item.id,

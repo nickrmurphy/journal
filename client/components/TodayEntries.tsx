@@ -6,14 +6,6 @@ import { formatEntryDate, todayISO } from "../utils/formatDate";
 export const TodayEntries = (props: {
 	onSelectEntry: (id: string) => void;
 }) => {
-	const startOfToday = new Date(
-		new Date().getFullYear(),
-		new Date().getMonth(),
-		new Date().getDate(),
-	);
-	const startOfTomorrow = new Date(startOfToday);
-	startOfTomorrow.setDate(startOfTomorrow.getDate() + 1);
-
 	const { data } = useLiveQuery((q) =>
 		q
 			.from({ entries: entryCollection })

@@ -8,7 +8,7 @@ export const Subheader = ({
 	children,
 	...rest
 }: SubheaderProps) => (
-	<h3 className={cx("p-2 font-serif", className)} {...rest}>
+	<h3 className={cx("p-2 font-serif font-semibold", className)} {...rest}>
 		{children}
 	</h3>
 );

@@ -1,46 +1,59 @@
-import { lt, useLiveQuery } from "@tanstack/react-db";
+import { eq, lt, useLiveQuery } from "@tanstack/react-db";
 import { AnimatePresence, motion } from "motion/react";
 import { entryCollection } from "../collections/entries";
-import { formatEntryDate, todayISO } from "../utils/formatDate";
+import { formatMonthDateYear, formatTime, todayISO } from "../utils/formatDate";
 
 type PastEntriesProps = {
 	onSelect: (id: string) => void;
+};
+
+const DayEntries = (props: {
+	date: string;
+	onSelect: (id: string) => void;
+}) => {
+	const { data } = useLiveQuery((q) =>
+		q
+			.from({ entries: entryCollection })
+			.where(({ entries }) => eq(entries.date, props.date)),
+	);
+
+	return (
+		<motion.div className="bg-card text-card-foreground rounded-lg p-3">
+			<motion.h3 layout className="font-medium">
+				{formatMonthDateYear(props.date)}
+			</motion.h3>
+			<div className="divide-y ">
+				{data.map((entry) => (
+					<div key={entry.id} className="py-3 space-y-1">
+						<p>
+							<time className="text-xs text-muted-foreground">
+								{formatTime(entry.createdAt)}
+							</time>
+						</p>
+						<p className="text-sm text-muted-foreground">{entry.content}</p>
+					</div>
+				))}
+			</div>
+		</motion.div>
+	);
 };
 
 export function PastEntries({ onSelect }: PastEntriesProps) {
 	const { data } = useLiveQuery((q) =>
 		q
 			.from({ entries: entryCollection })
-			.orderBy((e) => e.entries.createdAt, "desc")
 			.where(({ entries }) => lt(entries.date, todayISO()))
-			.groupBy(({ entries }) => entries.date),
+			.select(({ entries }) => ({ date: entries.date }))
+			.distinct(),
 	);
+
+	console.log(data);
 
 	return (
 		<motion.section layout className="space-y-2">
 			<AnimatePresence initial={false} mode="popLayout">
 				{data.map((e) => (
-					<motion.article
-						key={e.id}
-						layout
-						initial={{ opacity: 0, y: -16 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -16 }}
-						transition={{
-							type: "spring",
-							stiffness: 320,
-							damping: 28,
-							mass: 0.6,
-						}}
-						onClick={() => onSelect(e.id)}
-						whileTap={{ filter: "brightness(1.25)" }}
-						className="text-card-foreground border-border/50 border rounded-lg bg-card px-2 py-3 space-y-1"
-					>
-						<h2 className="text-xs text-muted-foreground">
-							{formatEntryDate(e.createdAt)}
-						</h2>
-						<p>{e.content}</p>
-					</motion.article>
+					<DayEntries key={e.date} date={e.date} onSelect={onSelect} />
 				))}
 			</AnimatePresence>
 		</motion.section>
