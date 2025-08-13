@@ -62,7 +62,7 @@ export const EntryDialog = ({ entryId }: { entryId: string | null }) => {
 					</time>
 					<p>{entry.content}</p>
 				</div>
-				<motion.div className="space-y-2">
+				<div className="space-y-2">
 					{comments.map((comment) => (
 						<div
 							key={comment.id}
@@ -74,7 +74,7 @@ export const EntryDialog = ({ entryId }: { entryId: string | null }) => {
 							<p className="text-sm">{comment.content}</p>
 						</div>
 					))}
-				</motion.div>
+				</div>
 				<AnimatePresence initial={false} mode="popLayout">
 					{commenting && (
 						<motion.textarea

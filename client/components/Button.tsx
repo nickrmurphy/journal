@@ -1,9 +1,8 @@
 import { cva, type VariantProps } from "cva";
-import { motion } from "motion/react";
 import type { ComponentProps } from "react";
 
 const button = cva({
-	base: "rounded-md font-medium text-sm transition-all *:data-[slot=icon]:size-5 disabled:brightness-50",
+	base: "active:scale-125 active:opacity-95 active:brightness-125 rounded-md font-medium text-sm transition-all *:data-[slot=icon]:size-5 disabled:brightness-50",
 	variants: {
 		variant: {
 			primary: "bg-primary text-primary-foreground",
@@ -22,21 +21,11 @@ const button = cva({
 	},
 });
 
-export type ButtonProps = ComponentProps<typeof motion.button> &
+export type ButtonProps = ComponentProps<"button"> &
 	VariantProps<typeof button>;
 
 export const Button = ({ variant, size, className, ...props }: ButtonProps) => (
-	<motion.button
-		className={button({ variant, size, className })}
-		whileTap={{
-			scale: 1.25,
-			opacity: 0.9,
-			backdropFilter: "blur(4px)",
-			filter: "brightness(1.25)",
-			transition: { duration: 0.1, ease: "easeInOut" },
-		}}
-		{...props}
-	>
+	<button className={button({ variant, size, className })} {...props}>
 		{props.children}
-	</motion.button>
+	</button>
 );

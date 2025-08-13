@@ -27,7 +27,6 @@ export const TodayEntries = (props: {
 							type: "spring",
 							stiffness: 320,
 							damping: 28,
-							mass: 0.6,
 						}}
 						onClick={() => props.onSelectEntry(e.id)}
 						whileTap={{ filter: "brightness(1.25)" }}
