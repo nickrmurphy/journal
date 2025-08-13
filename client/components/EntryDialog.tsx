@@ -30,7 +30,6 @@ export const EntryDialog = ({ entryId }: { entryId: string | null }) => {
 
 	const handleCommentSubmit = () => {
 		if (!entryId) return;
-		console.log("submitting");
 
 		const tx = entryCommentCollection.insert({
 			id: crypto.randomUUID(),

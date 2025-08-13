@@ -1,5 +1,8 @@
-import { Dialog } from "@base-ui-components/react";
+import { Collapsible, Dialog } from "@base-ui-components/react";
+import { ChevronUpIcon } from "@heroicons/react/24/outline";
+import { AnimatePresence, motion } from "motion/react";
 import { type FC, type PropsWithChildren, useState } from "react";
+import { Button } from "./components/Button";
 import { CreateEntryDialog } from "./components/CreateEntryDialog";
 import { EntryDialog } from "./components/EntryDialog";
 import { PastEntries } from "./components/PastEntries";
@@ -29,8 +32,38 @@ function App() {
 				<TodayEntries onSelectEntry={setDetailId} />
 			</section>
 			<section className="space-y-2">
-				<Subheader>Previously</Subheader>
-				<PastEntries onSelect={setDetailId} />
+				<Collapsible.Root defaultOpen>
+					<div className="flex items-center justify-between">
+						<Subheader>Previously</Subheader>
+						<Collapsible.Trigger
+							render={
+								<Button variant="ghost" className="aria-expanded:rotate-180" />
+							}
+						>
+							<ChevronUpIcon />
+						</Collapsible.Trigger>
+					</div>
+					<Collapsible.Panel>
+						<AnimatePresence mode="wait">
+							<motion.section
+								key="past-entries"
+								layout
+								className="space-y-2"
+								exit={{ opacity: 0, height: 0 }}
+								initial={{ opacity: 0, height: 0 }}
+								animate={{ opacity: 1, height: "auto" }}
+								transition={{
+									type: "spring",
+									stiffness: 300,
+									damping: 24,
+									mass: 0.4,
+								}}
+							>
+								<PastEntries onSelect={setDetailId} />
+							</motion.section>
+						</AnimatePresence>
+					</Collapsible.Panel>
+				</Collapsible.Root>
 			</section>
 			<Nav />
 			<Dialog.Root

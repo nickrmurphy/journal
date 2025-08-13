@@ -1,5 +1,5 @@
 import { eq, lt, useLiveQuery } from "@tanstack/react-db";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { entryCollection } from "../collections/entries";
 import { formatMonthDateYear, formatTime, todayISO } from "../utils/formatDate";
 
@@ -26,7 +26,7 @@ const DayEntries = (props: {
 				{data.map((entry) => (
 					<motion.div
 						key={entry.id}
-						className="py-3 space-y-1 rounded-md"
+						className="py-3 space-y-1"
 						onClick={() => props.onSelect(entry.id)}
 						whileTap={{
 							filter: "brightness(1.25)",
@@ -54,15 +54,11 @@ export function PastEntries({ onSelect }: PastEntriesProps) {
 			.distinct(),
 	);
 
-	console.log(data);
-
 	return (
-		<motion.section layout className="space-y-2">
-			<AnimatePresence initial={false} mode="popLayout">
-				{data.map((e) => (
-					<DayEntries key={e.date} date={e.date} onSelect={onSelect} />
-				))}
-			</AnimatePresence>
-		</motion.section>
+		<>
+			{data.map((e) => (
+				<DayEntries key={e.date} date={e.date} onSelect={onSelect} />
+			))}
+		</>
 	);
 }
