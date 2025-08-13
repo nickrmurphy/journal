@@ -22,16 +22,23 @@ const DayEntries = (props: {
 			<motion.h3 layout className="font-medium">
 				{formatMonthDateYear(props.date)}
 			</motion.h3>
-			<div className="divide-y ">
+			<div className="divide-y">
 				{data.map((entry) => (
-					<div key={entry.id} className="py-3 space-y-1">
+					<motion.div
+						key={entry.id}
+						className="py-3 space-y-1 rounded-md"
+						onClick={() => props.onSelect(entry.id)}
+						whileTap={{
+							filter: "brightness(1.25)",
+						}}
+					>
 						<p>
 							<time className="text-xs text-muted-foreground">
 								{formatTime(entry.createdAt)}
 							</time>
 						</p>
 						<p className="text-sm text-muted-foreground">{entry.content}</p>
-					</div>
+					</motion.div>
 				))}
 			</div>
 		</motion.div>
