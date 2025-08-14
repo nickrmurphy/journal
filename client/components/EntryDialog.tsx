@@ -1,12 +1,12 @@
 import { Dialog } from "@base-ui-components/react";
+import { Transition } from "@headlessui/react";
 import {
 	ChatBubbleLeftEllipsisIcon,
 	CheckIcon,
 	XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { eq, useLiveQuery } from "@tanstack/react-db";
-import { AnimatePresence, motion } from "motion/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { entryCollection } from "../collections/entries";
 import { entryCommentCollection } from "../collections/entryComments";
 import { formatEntryDate } from "../utils/formatDate";
@@ -16,6 +16,7 @@ import { DialogContent } from "./DialogContent";
 export const EntryDialog = ({ entryId }: { entryId: string | null }) => {
 	const [commenting, setCommenting] = useState(false);
 	const [comment, setComment] = useState("");
+	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 	const entry = useMemo(
 		() => (entryId ? entryCollection.get(entryId) : null),
 		[entryId],
@@ -43,6 +44,12 @@ export const EntryDialog = ({ entryId }: { entryId: string | null }) => {
 			setCommenting(false);
 		});
 	};
+
+	useEffect(() => {
+		if (commenting) {
+			textareaRef.current?.focus();
+		}
+	}, [commenting]);
 
 	if (!entry) {
 		// Return empty content to avoid sudden disappearance from dom when closing
@@ -75,26 +82,23 @@ export const EntryDialog = ({ entryId }: { entryId: string | null }) => {
 						</div>
 					))}
 				</div>
-				<AnimatePresence initial={false} mode="popLayout">
-					{commenting && (
-						<motion.textarea
-							autoFocus
-							key="comment-textarea"
-							value={comment}
-							onChange={(e) => setComment(e.target.value)}
-							className="bg-muted/95 mx-0.5 min-h-8 w-full rounded-lg resize-none border outline-none focus:ring focus:ring-accent p-3"
-							initial={{ opacity: 0, scale: 0.9, y: -4 }}
-							animate={{ opacity: 1, scale: 1, y: 0 }}
-							exit={{ opacity: 0, scale: 0.9, y: -4 }}
-							transition={{
-								type: "spring",
-								stiffness: 300,
-								damping: 24,
-								mass: 0.4,
-							}}
-						/>
-					)}
-				</AnimatePresence>
+				<Transition
+					show={commenting}
+					enter="transition ease-out duration-200"
+					enterFrom="opacity-0 scale-95 -translate-y-1"
+					enterTo="opacity-100 scale-100 translate-y-0"
+					leave="transition ease-in duration-150"
+					leaveFrom="opacity-100 scale-100 translate-y-0"
+					leaveTo="opacity-0 scale-95 -translate-y-1"
+				>
+					<textarea
+						key="comment-textarea"
+						ref={textareaRef}
+						value={comment}
+						onChange={(e) => setComment(e.target.value)}
+						className="bg-muted/95 mx-0.5 min-h-8 w-full rounded-lg resize-none border outline-none focus:ring focus:ring-accent p-3"
+					/>
+				</Transition>
 			</div>
 			{/* Sticky footer */}
 			<div className="absolute bottom-0 left-0 right-0 p-2 flex items-center justify-between w-full">
@@ -107,31 +111,25 @@ export const EntryDialog = ({ entryId }: { entryId: string | null }) => {
 					}
 				/>
 				<div className="flex items-center gap-2">
-					<AnimatePresence initial={false}>
-						{commenting && (
-							<motion.div
-								key="cancel-btn"
-								initial={{ opacity: 0, scale: 0.9, y: -4 }}
-								animate={{ opacity: 1, scale: 1, y: 0 }}
-								exit={{ opacity: 0, scale: 0.9, y: -4 }}
-								transition={{
-									type: "spring",
-									stiffness: 300,
-									damping: 24,
-									mass: 0.4,
-								}}
-								layout
+					<Transition
+						show={commenting}
+						enter="transition ease-out duration-200"
+						enterFrom="opacity-0 scale-95 -translate-y-1"
+						enterTo="opacity-100 scale-100 translate-y-0"
+						leave="transition ease-in duration-150"
+						leaveFrom="opacity-100 scale-100 translate-y-0"
+						leaveTo="opacity-0 scale-95 -translate-y-1"
+					>
+						<div key="cancel-btn">
+							<Button
+								variant="outline"
+								className="shadow-xs"
+								onClick={() => setCommenting(false)}
 							>
-								<Button
-									variant="outline"
-									className="shadow-xs"
-									onClick={() => setCommenting(false)}
-								>
-									Cancel
-								</Button>
-							</motion.div>
-						)}
-					</AnimatePresence>
+								Cancel
+							</Button>
+						</div>
+					</Transition>
 					<Button
 						variant="secondary"
 						className="shadow-xs"

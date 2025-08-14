@@ -1,5 +1,4 @@
 import { eq, useLiveQuery } from "@tanstack/react-db";
-import { AnimatePresence, motion } from "motion/react";
 import { entryCollection } from "../collections/entries";
 import { formatTime, todayISO } from "../utils/formatDate";
 
@@ -14,31 +13,24 @@ export const TodayEntries = (props: {
 	);
 
 	return (
-		<motion.section layout className="space-y-2">
-			<AnimatePresence initial={false} mode="popLayout">
-				{data.map((e) => (
-					<motion.article
-						key={e.id}
-						layout
-						initial={{ opacity: 0, y: -16 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -16 }}
-						transition={{
-							type: "spring",
-							stiffness: 320,
-							damping: 28,
-						}}
-						onClick={() => props.onSelectEntry(e.id)}
-						whileTap={{ filter: "brightness(1.25)" }}
-						className="text-card-foreground border-border/50 border rounded-lg bg-card px-2 py-3 space-y-1"
-					>
-						<h2 className="text-xs text-muted-foreground">
-							{formatTime(e.createdAt)}
-						</h2>
-						<p>{e.content}</p>
-					</motion.article>
-				))}
-			</AnimatePresence>
-		</motion.section>
+		<section className="space-y-2">
+			{data.map((e) => (
+				<article
+					key={e.id}
+					onClick={() => props.onSelectEntry(e.id)}
+					className="text-card-foreground active:brightness-125 border-border/50 border rounded-lg bg-card px-2 py-3 space-y-1"
+					onKeyDown={(event) => {
+						if (event.key === "Enter") {
+							props.onSelectEntry(e.id);
+						}
+					}}
+				>
+					<h2 className="text-xs text-muted-foreground">
+						{formatTime(e.createdAt)}
+					</h2>
+					<p>{e.content}</p>
+				</article>
+			))}
+		</section>
 	);
 };
