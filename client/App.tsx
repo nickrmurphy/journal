@@ -1,4 +1,3 @@
-import { Dialog } from "@base-ui-components/react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import {
 	type FC,
@@ -75,20 +74,11 @@ function App() {
 			</div>
 
 			<Nav onCreateEntry={() => setCreateEntryOpen(true)} />
-			<Dialog.Root
-				open={detailId !== null}
-				onOpenChange={() => {
-					setDetailId(null);
-				}}
-			>
-				<EntryDialog entryId={detailId} />
-			</Dialog.Root>
-			<Dialog.Root
+			<EntryDialog entryId={detailId} onClose={() => setDetailId(null)} />
+			<CreateEntryDialog
 				open={createEntryOpen}
 				onOpenChange={setCreateEntryOpen}
-			>
-				<CreateEntryDialog open={createEntryOpen} onOpenChange={setCreateEntryOpen} />
-			</Dialog.Root>
+			/>
 		</div>
 	);
 }
