@@ -1,4 +1,5 @@
 import { Dialog } from "@base-ui-components/react";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import {
 	type FC,
 	type PropsWithChildren,
@@ -6,15 +7,18 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { Button } from "./components/Button";
 import { CreateEntryDialog } from "./components/CreateEntryDialog";
 import { EntryDialog } from "./components/EntryDialog";
 import { PastEntries } from "./components/PastEntries";
 import { TodayEntries } from "./components/TodayEntries";
 import { TodayHeader } from "./components/TodayHeader";
 
-const Nav = () => (
+const Nav = ({ onCreateEntry }: { onCreateEntry: () => void }) => (
 	<div className="flex justify-end fixed bottom-[calc(var(--safe-bottom)+var(--spacing)*4)] inset-x-4">
-		<CreateEntryDialog />
+		<Button size="lg" onClick={onCreateEntry}>
+			<PencilSquareIcon />
+		</Button>
 	</div>
 );
 
@@ -26,6 +30,7 @@ const Page: FC<PropsWithChildren> = ({ children }) => (
 
 function App() {
 	const [detailId, setDetailId] = useState<string | null>(null);
+	const [createEntryOpen, setCreateEntryOpen] = useState(false);
 	const scrollerRef = useRef<HTMLDivElement | null>(null);
 
 	// Start on the center page without visible scroll (no smooth)
@@ -69,7 +74,7 @@ function App() {
 				</section>
 			</div>
 
-			<Nav />
+			<Nav onCreateEntry={() => setCreateEntryOpen(true)} />
 			<Dialog.Root
 				open={detailId !== null}
 				onOpenChange={() => {
@@ -77,6 +82,12 @@ function App() {
 				}}
 			>
 				<EntryDialog entryId={detailId} />
+			</Dialog.Root>
+			<Dialog.Root
+				open={createEntryOpen}
+				onOpenChange={setCreateEntryOpen}
+			>
+				<CreateEntryDialog open={createEntryOpen} onOpenChange={setCreateEntryOpen} />
 			</Dialog.Root>
 		</div>
 	);
