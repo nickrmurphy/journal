@@ -1,7 +1,7 @@
 import { eq, useLiveQuery } from "@tanstack/react-db";
 import { AnimatePresence, motion } from "motion/react";
 import { entryCollection } from "../collections/entries";
-import { formatEntryDate, todayISO } from "../utils/formatDate";
+import { formatTime, todayISO } from "../utils/formatDate";
 
 export const TodayEntries = (props: {
 	onSelectEntry: (id: string) => void;
@@ -33,7 +33,7 @@ export const TodayEntries = (props: {
 						className="text-card-foreground border-border/50 border rounded-lg bg-card px-2 py-3 space-y-1"
 					>
 						<h2 className="text-xs text-muted-foreground">
-							{formatEntryDate(e.createdAt)}
+							{formatTime(e.createdAt)}
 						</h2>
 						<p>{e.content}</p>
 					</motion.article>
