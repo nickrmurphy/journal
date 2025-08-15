@@ -24,7 +24,7 @@ const DayEntries = (props: {
 				{data.map((entry) => (
 					<article
 						key={entry.id}
-						className="py-3 space-y-1 active:brightness-125 transition-all"
+						className="py-3 space-y-1 active:brightness-110 transition-all"
 						onClick={() => props.onSelect(entry.id)}
 						onKeyDown={(event) => {
 							if (event.key === "Enter") {
