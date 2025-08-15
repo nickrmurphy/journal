@@ -1,10 +1,4 @@
-import {
-	ArrowDownRightIcon,
-	ArrowTurnDownRightIcon,
-	ArrowTurnLeftUpIcon,
-	ArrowTurnRightDownIcon,
-	ChatBubbleLeftIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowTurnDownRightIcon } from "@heroicons/react/24/outline";
 import { eq, useLiveQuery } from "@tanstack/react-db";
 import { entryCollection } from "../collections/entries";
 import { entryCommentCollection } from "../collections/entryComments";

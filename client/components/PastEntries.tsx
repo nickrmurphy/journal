@@ -1,5 +1,7 @@
-import { eq, lt, useLiveQuery } from "@tanstack/react-db";
+import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
+import { count, eq, lt, useLiveQuery } from "@tanstack/react-db";
 import { entryCollection } from "../collections/entries";
+import { entryCommentCollection } from "../collections/entryComments";
 import { formatMonthDateYear, formatTime, todayISO } from "../utils/formatDate";
 
 type PastEntriesProps = {
@@ -10,17 +12,32 @@ const DayEntries = (props: {
 	date: string;
 	onSelect: (id: string) => void;
 }) => {
-	const { data } = useLiveQuery((q) =>
-		q
+	const { data } = useLiveQuery((q) => {
+		const comments = q
+			.from({ comments: entryCommentCollection })
+			.groupBy(({ comments }) => comments.entryId)
+			.select(({ comments }) => ({
+				entryId: comments.entryId,
+				count: count(comments.id),
+			}));
+
+		return q
 			.from({ entries: entryCollection })
 			.where(({ entries }) => eq(entries.date, props.date))
-			.orderBy(({ entries }) => entries.createdAt, "desc"),
-	);
+			.leftJoin({ comments }, ({ entries, comments }) =>
+				eq(entries.id, comments.entryId),
+			)
+			.orderBy(({ entries }) => entries.createdAt, "desc")
+			.select(({ entries, comments }) => ({
+				...entries,
+				commentCount: comments.count,
+			}));
+	});
 
 	return (
 		<div className="bg-card text-card-foreground rounded-lg p-3 border">
 			<h3 className="font-medium">{formatMonthDateYear(props.date)}</h3>
-			<div className="divide-y">
+			<div className="divide-y divide-border/50">
 				{data.map((entry) => (
 					<article
 						key={entry.id}
@@ -32,10 +49,14 @@ const DayEntries = (props: {
 							}
 						}}
 					>
-						<p>
-							<time className="text-xs text-muted-foreground">
-								{formatTime(entry.createdAt)}
-							</time>
+						<p className="text-xs flex items-center text-muted-foreground justify-between">
+							<time>{formatTime(entry.createdAt)}</time>
+							{entry.commentCount && (
+								<span className="flex items-center gap-1.5 p-0.5 px-1">
+									{entry.commentCount}
+									<ChatBubbleLeftIcon className="size-3" />
+								</span>
+							)}
 						</p>
 						<p className="text-sm text-muted-foreground">{entry.content}</p>
 					</article>

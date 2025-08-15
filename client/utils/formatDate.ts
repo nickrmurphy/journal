@@ -3,7 +3,7 @@ import { format } from "date-fns";
 // Format: Sun Aug 10 8:33PM
 export function formatEntryDate(iso: string): string {
 	const d = new Date(iso);
-	return format(d, "EEE MMM d h:mma");
+	return format(d, "EEE MMM d 'at' h:mma");
 }
 
 // Get today's date in ISO format (YYYY-MM-DD)
