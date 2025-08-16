@@ -25,6 +25,7 @@ export const CreateEntryDialog = ({
 			content: inputValue,
 			createdAt: new Date().toISOString(),
 			date: new Date().toISOString().split("T")[0],
+			isBookmarked: false,
 		});
 		setInputValue("");
 		onOpenChange(false);

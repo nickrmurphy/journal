@@ -28,6 +28,7 @@ export function generateSampleEntries(count: number = 10): Entry[] {
 			content: sampleContents[i % sampleContents.length],
 			date: entryDate.toISOString().split("T")[0], // ISO date format (YYYY-MM-DD)
 			createdAt: entryDate.toISOString(), // ISO datetime format
+			isBookmarked: Math.random() < 0.5, // Randomly bookmark some entries
 		});
 	}
 
