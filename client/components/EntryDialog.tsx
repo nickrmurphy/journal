@@ -11,16 +11,23 @@ import {
 	XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { eq, useLiveQuery } from "@tanstack/react-db";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { entryCollection } from "../collections/entries";
 import { entryCommentCollection } from "../collections/entryComments";
 import { formatEntryDate } from "../utils/formatDate";
 import { Button } from "./Button";
+import { Textarea } from "./Textarea";
 
-export const EntryDialog = ({ entryId, onClose }: { entryId: string | null; onClose: () => void }) => {
+export const EntryDialog = ({
+	entryId,
+	onClose,
+}: {
+	entryId: string | null;
+	onClose: () => void;
+}) => {
 	const [commenting, setCommenting] = useState(false);
 	const [comment, setComment] = useState("");
-	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
 	const entry = useMemo(
 		() => (entryId ? entryCollection.get(entryId) : null),
 		[entryId],
@@ -48,12 +55,6 @@ export const EntryDialog = ({ entryId, onClose }: { entryId: string | null; onCl
 			setCommenting(false);
 		});
 	};
-
-	useEffect(() => {
-		if (commenting) {
-			textareaRef.current?.focus();
-		}
-	}, [commenting]);
 
 	return (
 		<Dialog open={!!entry} onClose={onClose} className="relative z-10">
@@ -99,22 +100,17 @@ export const EntryDialog = ({ entryId, onClose }: { entryId: string | null; onCl
 							leaveFrom="opacity-100 scale-100 translate-y-0"
 							leaveTo="opacity-0 scale-95 -translate-y-1"
 						>
-							<textarea
-								key="comment-textarea"
-								ref={textareaRef}
+							<Textarea
+								autoFocus
 								value={comment}
 								onChange={(e) => setComment(e.target.value)}
-								className="bg-muted/95 mx-0.5 min-h-8 w-full rounded-lg resize-none border outline-none focus:ring focus:ring-accent p-3"
+								className="bg-muted/95"
 							/>
 						</Transition>
 					</div>
 					{/* Sticky footer */}
 					<div className="absolute bottom-0 left-0 right-0 p-2 flex items-center justify-between w-full">
-						<Button
-							variant="outline"
-							className="shadow-xs"
-							onClick={onClose}
-						>
+						<Button variant="outline" className="shadow-xs" onClick={onClose}>
 							<span className="sr-only">Close</span>
 							<XMarkIcon />
 						</Button>

@@ -8,6 +8,7 @@ import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { entryCollection } from "../collections/entries";
 import { Button } from "./Button";
+import { Textarea } from "./Textarea";
 
 export const CreateEntryDialog = ({
 	open,
@@ -41,21 +42,26 @@ export const CreateEntryDialog = ({
 			/>
 			<div className="fixed inset-0 z-10 w-screen">
 				<DialogPanel
+					as="form"
 					transition
 					className="fixed flex flex-col gap-3 top-0 inset-x-0 translate-y-0 shadow-xl bg-background/90 backdrop-blur-xs text-foreground p-3 min-h-1/3 max-h-2/3 overflow-y-scroll border-b rounded-b-xl transition-transform duration-300 ease-out data-[closed]:-translate-y-full data-[enter]:ease-out data-[leave]:ease-in"
+					onSubmit={(e) => {
+						e.preventDefault();
+						handleSave();
+					}}
 				>
 					<DialogTitle className="sr-only">Create a new entry</DialogTitle>
-					{/* Flex parent provided by DialogContent (Panel) already uses flex-col; make textarea grow */}
-					<textarea
-						minLength={1}
+					<Textarea
+						autoFocus
 						required
-						className="flex-1 min-h-0 w-full resize-none border rounded-lg p-3 outline-none focus:ring focus:ring-accent/50 overflow-y-auto"
+						minLength={1}
 						placeholder="What's on your mind?"
 						value={inputValue}
 						onChange={(e) => setInputValue(e.target.value)}
 					/>
 					<div className="flex justify-between gap-4 shrink-0">
 						<Button
+							type="button"
 							className="shadow-xs"
 							variant="outline"
 							onClick={() => {
@@ -65,11 +71,7 @@ export const CreateEntryDialog = ({
 						>
 							<XMarkIcon />
 						</Button>
-						<Button
-							className="shadow-xs"
-							disabled={!inputValue}
-							onClick={handleSave}
-						>
+						<Button type="submit" className="shadow-xs" disabled={!inputValue}>
 							<CheckIcon />
 						</Button>
 					</div>

@@ -1,5 +1,8 @@
+import {
+	Button as HeadlessButton,
+	type ButtonProps as HeadlessButtonProps,
+} from "@headlessui/react";
 import { cva, type VariantProps } from "cva";
-import type { ComponentProps } from "react";
 
 const button = cva({
 	base: "active:scale-125 active:opacity-95 active:brightness-110 rounded-md font-medium text-sm transition-all *:data-[slot=icon]:size-5 disabled:brightness-50",
@@ -21,11 +24,10 @@ const button = cva({
 	},
 });
 
-export type ButtonProps = ComponentProps<"button"> &
-	VariantProps<typeof button>;
+export type ButtonProps = HeadlessButtonProps & VariantProps<typeof button>;
 
 export const Button = ({ variant, size, className, ...props }: ButtonProps) => (
-	<button className={button({ variant, size, className })} {...props}>
+	<HeadlessButton className={button({ variant, size, className })} {...props}>
 		{props.children}
-	</button>
+	</HeadlessButton>
 );
