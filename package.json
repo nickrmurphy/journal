@@ -11,6 +11,7 @@
 		"deploy": "pnpm check && wrangler deploy"
 	},
 	"dependencies": {
+		"@formkit/auto-animate": "^0.8.2",
 		"@headlessui/react": "^2.2.7",
 		"@heroicons/react": "^2.2.0",
 		"@tanstack/query-core": "^5.83.1",

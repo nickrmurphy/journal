@@ -1,10 +1,18 @@
+import autoAnimate from "@formkit/auto-animate";
 import { ArrowTurnDownRightIcon } from "@heroicons/react/24/outline";
 import { eq, useLiveQuery } from "@tanstack/react-db";
+import { useEffect, useRef } from "react";
 import { entryCollection } from "../collections/entries";
 import { entryCommentCollection } from "../collections/entryComments";
 import { formatTime, todayISO } from "../utils/formatDate";
 
 const EntryComments = (props: { entryId: string }) => {
+	const parent = useRef(null);
+
+	useEffect(() => {
+		parent.current && autoAnimate(parent.current);
+	}, []);
+
 	const { data } = useLiveQuery((q) =>
 		q
 			.from({ comments: entryCommentCollection })
@@ -12,7 +20,7 @@ const EntryComments = (props: { entryId: string }) => {
 	);
 
 	return data.length > 0 ? (
-		<div className="px-1 flex flex-col gap-3">
+		<div className="px-1 flex flex-col gap-3" ref={parent}>
 			{data.map((c) => (
 				<div key={c.id} className="flex gap-1.5 items-start pl-10">
 					<ArrowTurnDownRightIcon className="size-3 text-muted-foreground/40 mt-2 mb-auto min-w-3" />
@@ -29,6 +37,12 @@ const EntryComments = (props: { entryId: string }) => {
 export const TodayEntries = (props: {
 	onSelectEntry: (id: string) => void;
 }) => {
+	const parent = useRef(null);
+
+	useEffect(() => {
+		parent.current && autoAnimate(parent.current);
+	}, []);
+
 	const { data } = useLiveQuery((q) =>
 		q
 			.from({ entries: entryCollection })
@@ -37,7 +51,7 @@ export const TodayEntries = (props: {
 	);
 
 	return (
-		<section className="space-y-4">
+		<section className="space-y-4" ref={parent}>
 			{data.map((e) => (
 				<article
 					key={e.id}
