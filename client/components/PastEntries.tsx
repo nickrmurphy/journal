@@ -35,7 +35,7 @@ const DayEntries = (props: {
 	});
 
 	return (
-		<div className="bg-card text-card-foreground rounded-lg p-3 border">
+		<div className="bg-card text-card-foreground rounded-md p-3 border">
 			<h3 className="font-medium">{formatMonthDateYear(props.date)}</h3>
 			<div className="divide-y divide-border/50">
 				{data.map((entry) => (

@@ -5,7 +5,7 @@ import {
 import { cva, type VariantProps } from "cva";
 
 const button = cva({
-	base: "active:scale-125 active:opacity-95 active:brightness-110 rounded-md font-medium text-sm transition-all *:data-[slot=icon]:size-5 disabled:brightness-50",
+	base: "active:scale-125 active:opacity-95 active:brightness-110 rounded-sm font-medium text-sm transition-all *:data-[slot=icon]:size-5 disabled:brightness-50",
 	variants: {
 		variant: {
 			primary: "bg-primary text-primary-foreground",

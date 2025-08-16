@@ -69,9 +69,9 @@
 	--sidebar-accent-foreground: oklch(0.279 0.077 45.635);
 	--sidebar-border: oklch(0.87 0 0);
 	--sidebar-ring: oklch(0.45 0.085 224.283);
-	--font-sans: "Work Sans", ui-sans-serif, sans-serif, system-ui;
+	--font-sans: "Inter", ui-sans-serif, sans-serif, system-ui;
 	--font-serif:
-		"Lora", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+		"Crimson Pro", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 	--font-mono: DM Mono, ui-monospace, monospace;
 	--radius: 1rem;
 	--shadow-2xs: 2px 2px 4px 0px hsl(196 83% 10% / 0.05);
@@ -130,8 +130,8 @@
 		--sidebar-accent-foreground: oklch(0.279 0.077 45.635);
 		--sidebar-border: oklch(0.371 0 0);
 		--sidebar-ring: oklch(0.52 0.105 223.128);
-		--font-sans: Work Sans, ui-sans-serif, sans-serif, system-ui;
-		--font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+		--font-sans: 'Inter', ui-sans-serif, sans-serif, system-ui;
+		--font-serif: 'Crimson Pro', ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 		--font-mono: DM Mono, ui-monospace, monospace;
 		--radius: 1rem;
 		--shadow-2xs: 2px 2px 4px 0px hsl(196 83% 10% / 0.05);

@@ -3,9 +3,9 @@ import { Header } from "./Header";
 
 export function TodayHeader() {
 	return (
-		<header className="p-2 mb-2 space-y-0.5">
-			<p className="text-muted-foreground text-sm font-serif ">{todayDay()}</p>
+		<header className="">
 			<Header>{todayMonthDate()}</Header>
+			<p className="text-muted-foreground text-sm font-medium">{todayDay()}</p>
 		</header>
 	);
 }

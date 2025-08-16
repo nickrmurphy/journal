@@ -23,7 +23,7 @@ export function formatMonthDate(iso: string): string {
 
 export function formatTime(iso: string): string {
 	const d = new Date(iso);
-	return format(d, "h:mma");
+	return format(d, "h:mm a");
 }
 
 export function todayMonthDate() {

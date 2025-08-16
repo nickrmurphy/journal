@@ -22,7 +22,7 @@ const Nav = ({ onCreateEntry }: { onCreateEntry: () => void }) => (
 );
 
 const Page: FC<PropsWithChildren> = ({ children }) => (
-	<main className="bg-background w-[calc(100%-theme(spacing.4))] gap-5 flex flex-col rounded-xl shadow flex-1 m-auto h-[calc(100dvh-theme(spacing.4))] my-2 p-2 overflow-y-auto [overscroll-behavior-y:contain] pb-20">
+	<main className="bg-background w-[calc(100%-theme(spacing.4))] gap-5 flex flex-col rounded-lg shadow flex-1 m-auto h-[calc(100dvh-theme(spacing.4))] my-2 p-2 overflow-y-auto [overscroll-behavior-y:contain] pb-20">
 		{children}
 	</main>
 );
@@ -60,8 +60,10 @@ function App() {
 				{/* Center page: Today content */}
 				<section className="snap-center shrink-0 w-screen px-0">
 					<Page>
-						<section>
-							<TodayHeader />
+						<section className="space-y-4">
+							<div className="px-2 pt-2">
+								<TodayHeader />
+							</div>
 							<TodayEntries onSelectEntry={setDetailId} />
 						</section>
 					</Page>

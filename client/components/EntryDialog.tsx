@@ -72,7 +72,7 @@ export const EntryDialog = ({
 					</DialogTitle>
 					{/* Scrollable content area with bottom padding to avoid overlap with sticky footer */}
 					<div className="space-y-4 overflow-y-scroll pb-12">
-						<div className="sticky top-0 z-10 bg-card/95 backdrop-blur-xs rounded-lg p-3 space-y-2  border border-border/50">
+						<div className="sticky top-0 z-10 bg-card/95 backdrop-blur-xs rounded-md p-3 space-y-2  border border-border/50">
 							<time className="text-sm text-muted-foreground">
 								{entry?.createdAt ? formatEntryDate(entry.createdAt) : ""}
 							</time>
@@ -82,7 +82,7 @@ export const EntryDialog = ({
 							{comments?.map((comment) => (
 								<div
 									key={comment.id}
-									className="p-3 rounded-lg bg-muted text-muted-foreground space-y-1"
+									className="p-3 rounded-md bg-muted text-muted-foreground space-y-1"
 								>
 									<time className="text-xs text-muted-foreground">
 										{formatEntryDate(comment.createdAt)}
