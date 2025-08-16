@@ -17,17 +17,31 @@ const button = cva({
 			md: "p-2.5",
 			lg: "p-3.5",
 		},
+		elevated: {
+			true: "shadow",
+			false: "",
+		},
 	},
 	defaultVariants: {
 		variant: "primary",
 		size: "md",
+		elevated: false,
 	},
 });
 
 export type ButtonProps = HeadlessButtonProps & VariantProps<typeof button>;
 
-export const Button = ({ variant, size, className, ...props }: ButtonProps) => (
-	<HeadlessButton className={button({ variant, size, className })} {...props}>
+export const Button = ({
+	variant,
+	size,
+	className,
+	elevated,
+	...props
+}: ButtonProps) => (
+	<HeadlessButton
+		className={button({ variant, size, className, elevated })}
+		{...props}
+	>
 		{props.children}
 	</HeadlessButton>
 );

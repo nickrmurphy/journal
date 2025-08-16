@@ -6,12 +6,10 @@ import {
 	Transition,
 } from "@headlessui/react";
 import {
-	BookmarkIcon,
 	ChatBubbleLeftEllipsisIcon,
 	CheckIcon,
 	XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { BookmarkIcon as BookmarkSolidIcon } from "@heroicons/react/24/solid";
 import { eq, useLiveQuery } from "@tanstack/react-db";
 import { useState } from "react";
 import { entryCollection } from "../collections/entries";
@@ -61,14 +59,6 @@ export const EntryDialog = ({
 		tx.isPersisted.promise.then(() => {
 			setComment("");
 			setCommenting(false);
-		});
-	};
-
-	const handleBookmarkToggle = () => {
-		if (!entryId || !entry) return;
-
-		entryCollection.update(entryId, (entry) => {
-			entry.isBookmarked = !entry.isBookmarked;
 		});
 	};
 
@@ -125,7 +115,7 @@ export const EntryDialog = ({
 				</div>
 				{/* Sticky footer */}
 				<div className="absolute bottom-0 left-0 right-0 p-2 flex items-center justify-between w-full">
-					<Button variant="outline" className="shadow-xs" onClick={onClose}>
+					<Button elevated variant="outline" onClick={onClose}>
 						<span className="sr-only">Close</span>
 						<XMarkIcon />
 					</Button>
@@ -141,8 +131,8 @@ export const EntryDialog = ({
 						>
 							<div key="cancel-btn">
 								<Button
+									elevated
 									variant="outline"
-									className="shadow-xs"
 									onClick={() => setCommenting(false)}
 								>
 									Cancel
@@ -150,8 +140,8 @@ export const EntryDialog = ({
 							</div>
 						</Transition>
 						<Button
+							elevated
 							variant="secondary"
-							className="shadow-xs"
 							disabled={commenting && !comment}
 							onClick={() => {
 								if (commenting) {
@@ -168,26 +158,6 @@ export const EntryDialog = ({
 					</div>
 				</div>
 			</DialogPanel>
-			<Transition
-				show={!!entry}
-				enter="transition ease-out duration-300"
-				enterFrom="translate-y-full"
-				enterTo="translate-y-0"
-				leave="transition ease-in duration-300"
-				leaveFrom="translate-y-0"
-				leaveTo="translate-y-full"
-			>
-				<div className="fixed flex flex-col gap-3 bottom-4 inset-x-4 shadow-xl bg-background/50 backdrop-blur-xs text-foreground p-2 rounded-xl">
-					<Button
-						variant="primary"
-						className="shadow-xs"
-						onClick={handleBookmarkToggle}
-					>
-						Bookmark{entry?.isBookmarked && "ed"}
-						{entry?.isBookmarked ? <BookmarkSolidIcon /> : <BookmarkIcon />}
-					</Button>
-				</div>
-			</Transition>
 		</Dialog>
 	);
 };
