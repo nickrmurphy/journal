@@ -10,6 +10,7 @@ const entrySchema = z.object({
 		.default(() => crypto.randomUUID()),
 	content: z.string().min(1),
 	date: z.iso.date(),
+	isBookmarked: z.boolean().optional().default(false),
 	createdAt: z.iso
 		.datetime()
 		.optional()
