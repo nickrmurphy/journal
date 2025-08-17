@@ -63,7 +63,7 @@ export const EntryDialog = ({
 	};
 
 	return (
-		<Dialog open={!!entry} onClose={onClose} className="relative z-10">
+		<Dialog open={!!entry} onClose={onClose}>
 			<DialogBackdrop
 				transition
 				className="fixed inset-0 bg-black opacity-30 transition-opacity duration-200 sm:flex sm:justify-center data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in dark:opacity-70"
