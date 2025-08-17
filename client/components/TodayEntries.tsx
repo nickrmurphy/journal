@@ -24,10 +24,9 @@ const EntryComments = (props: { entryId: string }) => {
 			{data.map((c) => (
 				<div key={c.id} className="flex gap-1.5 items-start pl-10">
 					<ArrowTurnDownRightIcon className="size-3 text-muted-foreground/40 mt-2 mb-auto min-w-3" />
-					<p className="text-sm text-muted-foreground flex flex-col border border-muted px-2.5 py-2 rounded-md mr-auto min-w-2/3">
+					<p className="text-sm text-muted-foreground flex flex-col border border-muted px-2.5 py-2 rounded-md w-full">
 						{c.content}
 					</p>
-					{/* <ChatBubbleLeftIcon className="size-3 text-muted-foreground/40 mt-auto mb-1 min-w-3" /> */}
 				</div>
 			))}
 		</div>
@@ -51,7 +50,7 @@ export const TodayEntries = (props: {
 	);
 
 	return (
-		<section className="space-y-4" ref={parent}>
+		<section className="space-y-3" ref={parent}>
 			{data.map((e) => (
 				<article
 					key={e.id}
@@ -67,7 +66,7 @@ export const TodayEntries = (props: {
 						<h2 className="text-xs text-muted-foreground px-1">
 							{formatTime(e.createdAt)}
 						</h2>
-						<p className="rounded-md bg-card text-card-foreground border px-2.5 py-2 mr-10 h-full flex items-center">
+						<p className="rounded-md bg-card text-card-foreground border px-2.5 py-2 h-full flex items-center">
 							{e.content}
 						</p>
 					</div>
