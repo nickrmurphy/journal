@@ -81,7 +81,7 @@ export const EntryDialog = ({
 						<time className="text-sm text-muted-foreground">
 							{entry?.createdAt ? formatEntryDate(entry.createdAt) : ""}
 						</time>
-						<p>{entry?.content}</p>
+						<p className="whitespace-pre-wrap">{entry?.content}</p>
 					</div>
 					<div className="space-y-2">
 						{comments?.map((comment) => (
@@ -92,7 +92,7 @@ export const EntryDialog = ({
 								<time className="text-xs text-muted-foreground">
 									{formatEntryDate(comment.createdAt)}
 								</time>
-								<p className="text-sm">{comment.content}</p>
+								<p className="text-sm whitespace-pre-wrap">{comment.content}</p>
 							</div>
 						))}
 					</div>

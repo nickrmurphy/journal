@@ -66,7 +66,9 @@ export const TodayEntries = (props: {
 						<h2 className="text-xs text-muted-foreground">
 							{formatTime(e.createdAt)}
 						</h2>
-						<p className="h-full flex items-center">{e.content}</p>
+						<p className="h-full flex items-center whitespace-pre-wrap">
+							{e.content}
+						</p>
 					</div>
 					<EntryComments entryId={e.id} />
 				</article>
