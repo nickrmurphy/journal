@@ -35,13 +35,13 @@ const DayEntries = (props: {
 	});
 
 	return (
-		<div className="bg-card text-card-foreground rounded-md p-3 border">
+		<div className="rounded-md border bg-card p-3 text-card-foreground">
 			<h3 className="font-semibold">{formatMonthDateYear(props.date)}</h3>
 			<div className="divide-y divide-border/50">
 				{data.map((entry) => (
 					<article
 						key={entry.id}
-						className="py-3 space-y-1 active:brightness-110 transition-all"
+						className="space-y-1 py-3 transition-all active:brightness-110"
 						onClick={() => props.onSelect(entry.id)}
 						onKeyDown={(event) => {
 							if (event.key === "Enter") {
@@ -49,7 +49,7 @@ const DayEntries = (props: {
 							}
 						}}
 					>
-						<p className="text-xs flex items-center text-muted-foreground justify-between">
+						<p className="flex items-center justify-between text-muted-foreground text-xs">
 							<time>{formatTime(entry.createdAt)}</time>
 							{entry.commentCount && (
 								<span className="flex items-center gap-1.5 p-0.5 px-1">
@@ -58,7 +58,7 @@ const DayEntries = (props: {
 								</span>
 							)}
 						</p>
-						<p className="text-sm text-muted-foreground">{entry.content}</p>
+						<p className="text-muted-foreground text-sm">{entry.content}</p>
 					</article>
 				))}
 			</div>

@@ -5,7 +5,7 @@ export function TodayHeader() {
 	return (
 		<header className="">
 			<Header>{todayMonthDate()}</Header>
-			<p className="text-muted-foreground text-sm font-medium">{todayDay()}</p>
+			<p className="font-medium text-muted-foreground text-sm">{todayDay()}</p>
 		</header>
 	);
 }

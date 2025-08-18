@@ -35,12 +35,12 @@ export const CreateEntryDialog = ({
 		<Dialog open={open} onClose={() => onOpenChange(false)}>
 			<DialogBackdrop
 				transition
-				className="fixed inset-0 bg-black opacity-30 transition-opacity duration-200 sm:flex sm:justify-center data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in dark:opacity-70"
+				className="fixed inset-0 bg-black opacity-30 transition-opacity duration-200 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in sm:flex sm:justify-center dark:opacity-70"
 			/>
 			<DialogPanel
 				as="form"
 				transition
-				className="fixed flex flex-col gap-3 top-0 inset-x-0 translate-y-0 shadow-xl bg-background/90 backdrop-blur-xs text-foreground p-3 min-h-1/3 max-h-2/3 overflow-y-scroll border-b rounded-b-xl transition-transform duration-300 ease-out data-[closed]:-translate-y-full data-[enter]:ease-out data-[leave]:ease-in"
+				className="data-[closed]:-translate-y-full fixed inset-x-0 top-0 flex max-h-2/3 min-h-1/3 translate-y-0 flex-col gap-3 overflow-y-scroll rounded-b-xl border-b bg-background/90 p-3 text-foreground shadow-xl backdrop-blur-xs transition-transform duration-300 ease-out data-[enter]:ease-out data-[leave]:ease-in"
 				onSubmit={(e) => {
 					e.preventDefault();
 					handleSave();
@@ -55,7 +55,7 @@ export const CreateEntryDialog = ({
 					value={inputValue}
 					onChange={(e) => setInputValue(e.target.value)}
 				/>
-				<div className="flex justify-between gap-4 shrink-0">
+				<div className="flex shrink-0 justify-between gap-4">
 					<Button
 						type="button"
 						elevated

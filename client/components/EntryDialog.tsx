@@ -66,19 +66,19 @@ export const EntryDialog = ({
 		<Dialog open={!!entry} onClose={onClose}>
 			<DialogBackdrop
 				transition
-				className="fixed inset-0 bg-black opacity-30 transition-opacity duration-200 sm:flex sm:justify-center data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in dark:opacity-70"
+				className="fixed inset-0 bg-black opacity-30 transition-opacity duration-200 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in sm:flex sm:justify-center dark:opacity-70"
 			/>
 			<DialogPanel
 				transition
-				className="fixed flex flex-col gap-3 top-0 inset-x-0 translate-y-0 shadow-xl bg-background/90 backdrop-blur-xs text-foreground p-3 min-h-1/3 max-h-2/3 overflow-y-scroll border-b rounded-b-xl transition-transform duration-300 ease-out data-[closed]:-translate-y-full data-[enter]:ease-out data-[leave]:ease-in"
+				className="data-[closed]:-translate-y-full fixed inset-x-0 top-0 flex max-h-2/3 min-h-1/3 translate-y-0 flex-col gap-3 overflow-y-scroll rounded-b-xl border-b bg-background/90 p-3 text-foreground shadow-xl backdrop-blur-xs transition-transform duration-300 ease-out data-[enter]:ease-out data-[leave]:ease-in"
 			>
 				<DialogTitle className="sr-only">
 					Dialog entry for {entry?.createdAt}
 				</DialogTitle>
 				{/* Scrollable content area with bottom padding to avoid overlap with sticky footer */}
 				<div className="space-y-4 overflow-y-scroll pb-12">
-					<div className="sticky top-0 z-10 bg-card/95 backdrop-blur-xs rounded-md p-3 space-y-2  border border-border/50">
-						<time className="text-sm text-muted-foreground">
+					<div className="sticky top-0 z-10 space-y-2 rounded-md border border-border/50 bg-card/95 p-3 backdrop-blur-xs">
+						<time className="text-muted-foreground text-sm">
 							{entry?.createdAt ? formatEntryDate(entry.createdAt) : ""}
 						</time>
 						<p className="whitespace-pre-wrap">{entry?.content}</p>
@@ -87,12 +87,12 @@ export const EntryDialog = ({
 						{comments?.map((comment) => (
 							<div
 								key={comment.id}
-								className="p-3 rounded-md bg-muted text-muted-foreground space-y-1"
+								className="space-y-1 rounded-md bg-muted p-3 text-muted-foreground"
 							>
-								<time className="text-xs text-muted-foreground">
+								<time className="text-muted-foreground text-xs">
 									{formatEntryDate(comment.createdAt)}
 								</time>
-								<p className="text-sm whitespace-pre-wrap">{comment.content}</p>
+								<p className="whitespace-pre-wrap text-sm">{comment.content}</p>
 							</div>
 						))}
 					</div>
@@ -114,7 +114,7 @@ export const EntryDialog = ({
 					</Transition>
 				</div>
 				{/* Sticky footer */}
-				<div className="absolute bottom-0 left-0 right-0 p-2 flex items-center justify-between w-full">
+				<div className="absolute right-0 bottom-0 left-0 flex w-full items-center justify-between p-2">
 					<Button elevated variant="outline" onClick={onClose}>
 						<span className="sr-only">Close</span>
 						<XMarkIcon />

@@ -22,9 +22,9 @@ const EntryComments = (props: { entryId: string }) => {
 	return data.length > 0 ? (
 		<div className="space-y-2" ref={parent}>
 			{data.map((c) => (
-				<div key={c.id} className="flex gap-1.5 items-center">
+				<div key={c.id} className="flex items-center gap-1.5">
 					<ArrowTurnDownRightIcon className="size-4 text-muted-foreground/40" />
-					<p className="text-sm text-muted-foreground flex flex-col p-1 w-full">
+					<p className="flex w-full flex-col p-1 text-muted-foreground text-sm">
 						{c.content}
 					</p>
 				</div>
@@ -55,7 +55,7 @@ export const TodayEntries = (props: {
 				<article
 					key={e.id}
 					onClick={() => props.onSelectEntry(e.id)}
-					className="rounded-md px-2.5 py-2 bg-card border active:brightness-110 space-y-3 text-card-foreground"
+					className="space-y-3 rounded-md border bg-card px-2.5 py-2 text-card-foreground active:brightness-110"
 					onKeyDown={(event) => {
 						if (event.key === "Enter") {
 							props.onSelectEntry(e.id);
@@ -63,10 +63,10 @@ export const TodayEntries = (props: {
 					}}
 				>
 					<div className="space-y-1.5">
-						<h2 className="text-xs text-muted-foreground">
+						<h2 className="text-muted-foreground text-xs">
 							{formatTime(e.createdAt)}
 						</h2>
-						<p className="h-full flex items-center whitespace-pre-wrap">
+						<p className="flex h-full items-center whitespace-pre-wrap">
 							{e.content}
 						</p>
 					</div>

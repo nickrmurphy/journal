@@ -14,7 +14,7 @@ import { TodayEntries } from "./components/TodayEntries";
 import { TodayHeader } from "./components/TodayHeader";
 
 const Nav = ({ onCreateEntry }: { onCreateEntry: () => void }) => (
-	<div className="flex justify-end fixed bottom-[calc(var(--safe-bottom)+var(--spacing)*4)] inset-x-4">
+	<div className="fixed inset-x-4 bottom-[calc(var(--safe-bottom)+var(--spacing)*4)] flex justify-end">
 		<Button size="lg" onClick={onCreateEntry}>
 			<PencilSquareIcon />
 		</Button>
@@ -22,7 +22,7 @@ const Nav = ({ onCreateEntry }: { onCreateEntry: () => void }) => (
 );
 
 const Page: FC<PropsWithChildren> = ({ children }) => (
-	<main className="bg-background w-[calc(100%-theme(spacing.4))] gap-5 flex flex-col rounded-lg shadow flex-1 m-auto h-[calc(100dvh-theme(spacing.4))] my-2 p-2 overflow-y-auto [overscroll-behavior-y:contain] pb-20">
+	<main className="m-auto my-2 flex h-[calc(100dvh-theme(spacing.4))] w-[calc(100%-theme(spacing.4))] flex-1 flex-col gap-5 overflow-y-auto rounded-lg bg-background p-2 pb-20 shadow [overscroll-behavior-y:contain]">
 		{children}
 	</main>
 );
@@ -45,11 +45,11 @@ function App() {
 			{/* Horizontal pager: three equal pages with scroll snap; center page is Today */}
 			<div
 				ref={scrollerRef}
-				className="flex overflow-x-auto overflow-y-hidden snap-x snap-mandatory w-full h-[100dvh] [scroll-behavior:auto]"
+				className="flex h-[100dvh] w-full snap-x snap-mandatory overflow-x-auto overflow-y-hidden [scroll-behavior:auto]"
 				/* Prevent rubber-band overscroll showing background behind cards */
 			>
 				{/* Left page (empty content placeholder, same sizing) */}
-				<section className="snap-center shrink-0 w-screen px-0">
+				<section className="w-screen shrink-0 snap-center px-0">
 					<Page>
 						<section className="space-y-2">
 							<PastEntries onSelect={setDetailId} />
@@ -58,7 +58,7 @@ function App() {
 				</section>
 
 				{/* Center page: Today content */}
-				<section className="snap-center shrink-0 w-screen px-0">
+				<section className="w-screen shrink-0 snap-center px-0">
 					<Page>
 						<section className="space-y-4">
 							<div className="px-2 pt-2">
