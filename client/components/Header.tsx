@@ -4,7 +4,7 @@ import type React from "react";
 export type HeaderProps = React.ComponentPropsWithoutRef<"h1">;
 
 export const Header = ({ className, children, ...rest }: HeaderProps) => (
-	<h1 className={cx("text-2xl font-semibold font-serif", className)} {...rest}>
+	<h1 className={cx("text-2xl font-bold font-sans", className)} {...rest}>
 		{children}
 	</h1>
 );
