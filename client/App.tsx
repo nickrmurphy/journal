@@ -70,9 +70,9 @@ function App() {
 				</section>
 
 				{/* Right page (empty content placeholder, same sizing) */}
-				<section className="snap-center shrink-0 w-screen px-0">
-					<Page>{/* Intentionally blank page */}</Page>
-				</section>
+				{/* <section className="snap-center shrink-0 w-screen px-0"> */}
+				{/* <Page>Intentionally blank page</Page> */}
+				{/* </section> */}
 			</div>
 
 			<Nav onCreateEntry={() => setCreateEntryOpen(true)} />
