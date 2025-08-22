@@ -19,6 +19,7 @@
 		"@tanstack/react-db": "^0.1.1",
 		"cva": "1.0.0-beta.4",
 		"date-fns": "^4.1.0",
+		"flat": "^6.0.1",
 		"idb-keyval": "^6.2.2",
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1",

@@ -10,6 +10,7 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@": resolve(__dirname, "./client"),
+			"@crdt": resolve(__dirname, "./crdt"),
 		},
 	},
 });

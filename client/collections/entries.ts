@@ -1,10 +1,11 @@
+import { createIdbPersister } from "@crdt/persister";
 import { queryCollectionOptions } from "@tanstack/query-db-collection";
 import { createCollection } from "@tanstack/react-db";
 import z from "zod";
-import { createIdbPersister, queryClient } from "./shared";
+import { queryClient } from "./shared";
 
 const entrySchema = z.object({
-	id: z
+	$id: z
 		.uuid()
 		.optional()
 		.default(() => crypto.randomUUID()),
@@ -26,16 +27,16 @@ export const entryCollection = createCollection(
 		queryKey: ["entries"],
 		schema: entrySchema,
 		queryFn: async () => {
-			const entries = await entryPersister.getAll();
-			return entries;
+			const entries = await entryPersister.materialize();
+			return Object.values(entries);
 		},
 		queryClient,
-		getKey: (item) => item.id,
+		getKey: (item) => item.$id,
 		onInsert: async ({ transaction }) => {
 			const promises = transaction.mutations.map((mutation) => {
 				if (mutation.type === "insert") {
 					const val = entrySchema.parse(mutation.changes);
-					return entryPersister.insert(val);
+					return entryPersister.mutate(val);
 				}
 			});
 			await Promise.all(promises);
@@ -43,8 +44,8 @@ export const entryCollection = createCollection(
 		onUpdate: async ({ transaction }) => {
 			const promises = transaction.mutations.map((mutation) => {
 				if (mutation.type === "update") {
-					return entryPersister.update({
-						id: mutation.key,
+					return entryPersister.mutate({
+						$id: mutation.key,
 						...mutation.changes,
 					});
 				}

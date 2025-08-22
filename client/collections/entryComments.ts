@@ -1,10 +1,11 @@
+import { createIdbPersister } from "@crdt/persister";
 import { queryCollectionOptions } from "@tanstack/query-db-collection";
 import { createCollection } from "@tanstack/react-db";
 import z from "zod";
-import { createIdbPersister, queryClient } from "./shared";
+import { queryClient } from "./shared";
 
 const entryCommentSchema = z.object({
-	id: z
+	$id: z
 		.uuid()
 		.optional()
 		.default(() => crypto.randomUUID()),
@@ -25,16 +26,16 @@ export const entryCommentCollection = createCollection(
 		queryKey: ["entryComments"],
 		schema: entryCommentSchema,
 		queryFn: async () => {
-			const comments = await entryCommentPersister.getAll();
-			return comments;
+			const data = await entryCommentPersister.materialize();
+			return Object.values(data);
 		},
 		queryClient,
-		getKey: (item) => item.id,
+		getKey: (item) => item.$id,
 		onInsert: async ({ transaction }) => {
 			const promises = transaction.mutations.map((mutation) => {
 				if (mutation.type === "insert") {
 					const val = entryCommentSchema.parse(mutation.changes);
-					return entryCommentPersister.insert(val);
+					return entryCommentPersister.mutate(val);
 				}
 			});
 			await Promise.all(promises);
@@ -42,8 +43,8 @@ export const entryCommentCollection = createCollection(
 		onUpdate: async ({ transaction }) => {
 			const promises = transaction.mutations.map((mutation) => {
 				if (mutation.type === "update") {
-					return entryCommentPersister.update({
-						id: mutation.key,
+					return entryCommentPersister.mutate({
+						$id: mutation.key,
 						...mutation.changes,
 					});
 				}

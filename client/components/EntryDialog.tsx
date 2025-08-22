@@ -34,7 +34,7 @@ export const EntryDialog = ({
 		(q) =>
 			q
 				.from({ entries: entryCollection })
-				.where(({ entries }) => eq(entries.id, entryId)),
+				.where(({ entries }) => eq(entries.$id, entryId)),
 		[entryId],
 	);
 
@@ -50,7 +50,7 @@ export const EntryDialog = ({
 		if (!entryId) return;
 
 		const tx = entryCommentCollection.insert({
-			id: crypto.randomUUID(),
+			$id: crypto.randomUUID(),
 			entryId,
 			content: comment,
 			createdAt: new Date().toISOString(),
@@ -86,7 +86,7 @@ export const EntryDialog = ({
 					<div className="space-y-2">
 						{comments?.map((comment) => (
 							<div
-								key={comment.id}
+								key={comment.$id}
 								className="space-y-1 rounded-md bg-muted p-3 text-muted-foreground"
 							>
 								<time className="text-muted-foreground text-xs">

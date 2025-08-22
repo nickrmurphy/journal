@@ -18,14 +18,14 @@ const DayEntries = (props: {
 			.groupBy(({ comments }) => comments.entryId)
 			.select(({ comments }) => ({
 				entryId: comments.entryId,
-				count: count(comments.id),
+				count: count(comments.$id),
 			}));
 
 		return q
 			.from({ entries: entryCollection })
 			.where(({ entries }) => eq(entries.date, props.date))
 			.leftJoin({ comments }, ({ entries, comments }) =>
-				eq(entries.id, comments.entryId),
+				eq(entries.$id, comments.entryId),
 			)
 			.orderBy(({ entries }) => entries.createdAt, "desc")
 			.select(({ entries, comments }) => ({
@@ -40,12 +40,12 @@ const DayEntries = (props: {
 			<div className="divide-y divide-border/50">
 				{data.map((entry) => (
 					<article
-						key={entry.id}
+						key={entry.$id}
 						className="space-y-1 py-3 transition-all active:brightness-110"
-						onClick={() => props.onSelect(entry.id)}
+						onClick={() => props.onSelect(entry.$id)}
 						onKeyDown={(event) => {
 							if (event.key === "Enter") {
-								props.onSelect(entry.id);
+								props.onSelect(entry.$id);
 							}
 						}}
 					>

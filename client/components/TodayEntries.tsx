@@ -22,7 +22,7 @@ const EntryComments = (props: { entryId: string }) => {
 	return data.length > 0 ? (
 		<div className="space-y-2" ref={parent}>
 			{data.map((c) => (
-				<div key={c.id} className="flex items-center gap-1.5">
+				<div key={c.$id} className="flex items-center gap-1.5">
 					<ArrowTurnDownRightIcon className="size-4 text-muted-foreground/40" />
 					<p className="flex w-full flex-col p-1 text-muted-foreground text-sm">
 						{c.content}
@@ -53,12 +53,12 @@ export const TodayEntries = (props: {
 		<section className="space-y-3" ref={parent}>
 			{data.map((e) => (
 				<article
-					key={e.id}
-					onClick={() => props.onSelectEntry(e.id)}
+					key={e.$id}
+					onClick={() => props.onSelectEntry(e.$id)}
 					className="space-y-3 rounded-md border bg-card px-2.5 py-2 text-card-foreground active:brightness-110"
 					onKeyDown={(event) => {
 						if (event.key === "Enter") {
-							props.onSelectEntry(e.id);
+							props.onSelectEntry(e.$id);
 						}
 					}}
 				>
@@ -70,7 +70,7 @@ export const TodayEntries = (props: {
 							{e.content}
 						</p>
 					</div>
-					<EntryComments entryId={e.id} />
+					<EntryComments entryId={e.$id} />
 				</article>
 			))}
 		</section>
