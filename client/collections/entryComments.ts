@@ -27,7 +27,7 @@ export const entryCommentCollection = createCollection(
 		schema: entryCommentSchema,
 		queryFn: async () => {
 			const data = await entryCommentPersister.materialize();
-			return Object.values(data);
+			return data;
 		},
 		queryClient,
 		getKey: (item) => item.$id,

@@ -28,7 +28,7 @@ export const entryCollection = createCollection(
 		schema: entrySchema,
 		queryFn: async () => {
 			const entries = await entryPersister.materialize();
-			return Object.values(entries);
+			return entries;
 		},
 		queryClient,
 		getKey: (item) => item.$id,

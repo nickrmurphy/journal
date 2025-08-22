@@ -1,7 +1,7 @@
 import { get, set } from "idb-keyval";
 import * as mutator from "./mutator";
 import { deserialize, serialize } from "./serializer";
-import type { CRDTState, Entity, EntityId } from "./types";
+import type { CRDTState, Entity } from "./types";
 
 export const createIdbPersister = <T extends Entity>(key: string) => {
 	let init = false;
@@ -19,9 +19,9 @@ export const createIdbPersister = <T extends Entity>(key: string) => {
 		await set(key, state);
 	};
 
-	const materialize = async (): Promise<Record<EntityId, T>> => {
+	const materialize = async (): Promise<T[]> => {
 		if (!init) await loadData();
-		return state ? deserialize(state) : {};
+		return state ? deserialize(state) : [];
 	};
 
 	const mutate = async <T extends Entity>(data: T): Promise<void> => {

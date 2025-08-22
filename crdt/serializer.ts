@@ -20,9 +20,7 @@ export const serialize = <T extends Entity>(
 	return operations;
 };
 
-export const deserialize = <T extends Entity>(
-	data: Operation[],
-): Record<EntityId, T> => {
+export const deserialize = <T extends Entity>(data: Operation[]): T[] => {
 	const map = new Map<EntityId, Partial<T>>();
 	for (const [, entityId, path, value] of data) {
 		if (!map.has(entityId)) {
@@ -32,9 +30,9 @@ export const deserialize = <T extends Entity>(
 		(map.get(entityId)! as Record<string, JSONValue>)[path] = value;
 	}
 
-	const entities: Record<EntityId, T> = {};
-	for (const [entityId, props] of map) {
-		entities[entityId] = { ...unflatten(props) };
+	const entities: T[] = [];
+	for (const [, props] of map) {
+		entities.push({ ...unflatten(props) } as T);
 	}
 	return entities;
 };
