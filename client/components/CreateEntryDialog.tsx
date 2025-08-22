@@ -21,7 +21,7 @@ export const CreateEntryDialog = ({
 
 	const handleSave = () => {
 		entryCollection.insert({
-			id: crypto.randomUUID(),
+			$id: crypto.randomUUID(),
 			content: inputValue,
 			createdAt: new Date().toISOString(),
 			date: new Date().toISOString().split("T")[0],
