@@ -1,6 +1,4 @@
-import * as mutator from "./mutator";
-import { deserialize, serialize } from "./serializer";
-import type { CRDTState, Entity } from "./types";
+import type { CRDTState } from "./types";
 
 // Simple IndexedDB promise-based functions
 const openDB = (): Promise<IDBDatabase> => {
@@ -39,36 +37,20 @@ const set = async (key: string, value: unknown): Promise<void> => {
 	});
 };
 
-export const createIdbPersister = <T extends Entity>(key: string) => {
-	let init = false;
-	let state: CRDTState = [];
+export type Persister = {
+	get: () => Promise<CRDTState | null>;
+	set: (data: CRDTState) => Promise<void>;
+};
 
-	const loadData = async () => {
-		const persisted = await get<CRDTState>(key);
-		state = persisted || [];
-		init = true;
-		return state;
+export const createIdbPersister = (key: string): Persister => {
+	const getState = async (): Promise<CRDTState | null> => {
+		const state = await get<CRDTState>(key);
+		return state || null;
 	};
 
-	const persist = async () => {
-		if (!init) return;
-		await set(key, state);
+	const setState = async (data: CRDTState) => {
+		return set(key, data);
 	};
 
-	const materialize = async (): Promise<T[]> => {
-		if (!init) await loadData();
-		return state ? deserialize(state) : [];
-	};
-
-	const mutate = async <T extends Entity>(data: T): Promise<void> => {
-		if (!init) await loadData();
-		const operations = serialize(new Date().toISOString(), data.$id, data);
-		const [newstate, changed] = mutator.set(state, operations);
-		if (changed) {
-			state = newstate;
-			await persist();
-		}
-	};
-
-	return { materialize, mutate };
+	return { get: getState, set: setState };
 };
