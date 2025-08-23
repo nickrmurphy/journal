@@ -17,6 +17,7 @@
 		"@tanstack/query-core": "^5.83.1",
 		"@tanstack/query-db-collection": "^0.2.0",
 		"@tanstack/react-db": "^0.1.1",
+		"@zag-js/react": "^1.21.8",
 		"cva": "1.0.0-beta.4",
 		"date-fns": "^4.1.0",
 		"flat": "^6.0.1",
