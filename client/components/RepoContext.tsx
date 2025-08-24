@@ -1,5 +1,3 @@
-import { createIdbPersister } from "@crdt/persister";
-import { createRepo } from "@crdt/repo";
 import type { EntityId } from "@crdt/types";
 import {
 	createContext,
@@ -11,9 +9,7 @@ import {
 	useState,
 } from "react";
 import type z from "zod";
-import { type Entry, entrySchema } from "../collections/entries";
-
-const entryRepo = createRepo<Entry>(createIdbPersister("entries"));
+import { type Entry, entryRepo, entrySchema } from "../collections/entries";
 
 const RepoContext = createContext<{
 	data: Entry[];
