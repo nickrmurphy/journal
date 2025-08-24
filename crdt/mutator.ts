@@ -16,7 +16,7 @@ const merge = (state: CRDTState, next: Operation): [CRDTState, boolean] => {
 		(op) => !(op[1] === next[1] && op[2] === next[2]),
 	);
 
-	return [newState, true];
+	return [[...newState, next], true];
 };
 
 export const set = (

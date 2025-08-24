@@ -1,28 +1,22 @@
 import autoAnimate from "@formkit/auto-animate";
 import { ArrowTurnDownRightIcon } from "@heroicons/react/24/outline";
-import { eq, useLiveQuery } from "@tanstack/react-db";
 import { useEffect, useRef } from "react";
-import { entryCommentCollection } from "../collections/entryComments";
 import { formatTime, todayISO } from "../utils/formatDate";
 import { useQuery } from "./RepoContext";
 
-const EntryComments = (props: { entryId: string }) => {
+const EntryComments = (props: {
+	comments: Array<{ id: string; content: string }>;
+}) => {
 	const parent = useRef(null);
 
 	useEffect(() => {
 		parent.current && autoAnimate(parent.current);
 	}, []);
 
-	const { data } = useLiveQuery((q) =>
-		q
-			.from({ comments: entryCommentCollection })
-			.where(({ comments }) => eq(comments.entryId, props.entryId)),
-	);
-
-	return data.length > 0 ? (
+	return props.comments.length > 0 ? (
 		<div className="space-y-2" ref={parent}>
-			{data.map((c) => (
-				<div key={c.$id} className="flex items-center gap-1.5">
+			{props.comments.map((c) => (
+				<div key={c.id} className="flex items-center gap-1.5">
 					<ArrowTurnDownRightIcon className="size-4 text-muted-foreground/40" />
 					<p className="flex w-full flex-col p-1 text-muted-foreground text-sm">
 						{c.content}
@@ -53,7 +47,11 @@ export const TodayEntries = (props: {
 			{data.map((e) => (
 				<article
 					key={e.$id}
-					onClick={() => props.onSelectEntry(e.$id)}
+					onClick={() => {
+						console.log("e", e);
+						console.log(e.$id);
+						props.onSelectEntry(e.$id);
+					}}
 					className="space-y-3 rounded-md border bg-card px-2.5 py-2 text-card-foreground active:brightness-110"
 					onKeyDown={(event) => {
 						if (event.key === "Enter") {
@@ -69,7 +67,7 @@ export const TodayEntries = (props: {
 							{e.content}
 						</p>
 					</div>
-					<EntryComments entryId={e.$id} />
+					<EntryComments comments={e.comments} />
 				</article>
 			))}
 		</section>

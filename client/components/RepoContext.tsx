@@ -68,10 +68,18 @@ export function useMutate() {
 	);
 
 	const update = useCallback(
-		(id: EntityId, data: Partial<Omit<Entry, "$id">>) => {
-			repo.mutate({
+		async (
+			id: EntityId,
+			mutator: (current: Entry) => Partial<Omit<Entry, "$id">>,
+		) => {
+			const currentData = await repo.materialize();
+			const current = currentData.find((entry) => entry.$id === id);
+			if (!current) return;
+
+			const modified = mutator(current);
+			await repo.mutate({
 				$id: id,
-				...data,
+				...modified,
 			});
 		},
 		[repo],

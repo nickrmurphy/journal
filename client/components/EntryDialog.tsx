@@ -10,12 +10,10 @@ import {
 	CheckIcon,
 	XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { eq, useLiveQuery } from "@tanstack/react-db";
 import { useState } from "react";
-import { entryCollection } from "../collections/entries";
-import { entryCommentCollection } from "../collections/entryComments";
 import { formatEntryDate } from "../utils/formatDate";
 import { Button } from "./Button";
+import { useMutate, useQuery } from "./RepoContext";
 import { Textarea } from "./Textarea";
 
 export const EntryDialog = ({
@@ -25,41 +23,24 @@ export const EntryDialog = ({
 	entryId: string | null;
 	onClose: () => void;
 }) => {
+	const { update } = useMutate();
 	const [commenting, setCommenting] = useState(false);
 	const [comment, setComment] = useState("");
 
-	const {
-		data: [entry],
-	} = useLiveQuery(
-		(q) =>
-			q
-				.from({ entries: entryCollection })
-				.where(({ entries }) => eq(entries.$id, entryId)),
-		[entryId],
-	);
-
-	const { data: comments } = useLiveQuery(
-		(q) =>
-			q
-				.from({ comments: entryCommentCollection })
-				.where(({ comments }) => eq(comments.entryId, entryId)),
-		[entryId],
-	);
+	const entry = useQuery((data) => data.find((entry) => entry.$id === entryId));
 
 	const handleCommentSubmit = () => {
 		if (!entryId) return;
-
-		const tx = entryCommentCollection.insert({
-			$id: crypto.randomUUID(),
-			entryId,
-			content: comment,
-			createdAt: new Date().toISOString(),
-		});
-
-		tx.isPersisted.promise.then(() => {
-			setComment("");
-			setCommenting(false);
-		});
+		update(entryId, (current) => ({
+			comments: [
+				...(current.comments || []),
+				{
+					id: crypto.randomUUID(),
+					content: comment,
+					createdAt: new Date().toISOString(),
+				},
+			],
+		}));
 	};
 
 	return (
@@ -84,9 +65,9 @@ export const EntryDialog = ({
 						<p className="whitespace-pre-wrap">{entry?.content}</p>
 					</div>
 					<div className="space-y-2">
-						{comments?.map((comment) => (
+						{entry?.comments?.map((comment) => (
 							<div
-								key={comment.$id}
+								key={comment.id}
 								className="space-y-1 rounded-md bg-muted p-3 text-muted-foreground"
 							>
 								<time className="text-muted-foreground text-xs">

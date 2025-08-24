@@ -31,8 +31,8 @@ export const deserialize = <T extends Entity>(data: Operation[]): T[] => {
 	}
 
 	const entities: T[] = [];
-	for (const [, props] of map) {
-		entities.push({ ...unflatten(props) } as T);
+	for (const [entityId, props] of map) {
+		entities.push({ ...unflatten(props), $id: entityId } as T);
 	}
 	return entities;
 };
