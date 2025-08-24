@@ -5,7 +5,7 @@ import { createCollection } from "@tanstack/react-db";
 import z from "zod";
 import { queryClient } from "./shared";
 
-const entrySchema = z.object({
+export const entrySchema = z.object({
 	$id: z
 		.uuid()
 		.optional()
@@ -13,6 +13,21 @@ const entrySchema = z.object({
 	content: z.string().min(1),
 	date: z.iso.date(),
 	isBookmarked: z.boolean().optional().default(false),
+	comments: z
+		.object({
+			id: z
+				.uuid()
+				.optional()
+				.default(() => crypto.randomUUID()),
+			content: z.string().min(1),
+			createdAt: z.iso
+				.datetime()
+				.optional()
+				.default(() => new Date().toISOString()),
+		})
+		.array()
+		.optional()
+		.default([]),
 	createdAt: z.iso
 		.datetime()
 		.optional()

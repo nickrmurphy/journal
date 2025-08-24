@@ -6,8 +6,8 @@ import {
 } from "@headlessui/react";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { entryCollection } from "../collections/entries";
 import { Button } from "./Button";
+import { useMutate } from "./RepoContext";
 import { Textarea } from "./Textarea";
 
 export const CreateEntryDialog = ({
@@ -18,14 +18,12 @@ export const CreateEntryDialog = ({
 	onOpenChange: (open: boolean) => void;
 }) => {
 	const [inputValue, setInputValue] = useState("");
+	const { insert } = useMutate();
 
 	const handleSave = () => {
-		entryCollection.insert({
-			$id: crypto.randomUUID(),
+		insert({
 			content: inputValue,
-			createdAt: new Date().toISOString(),
 			date: new Date().toISOString().split("T")[0],
-			isBookmarked: false,
 		});
 		setInputValue("");
 		onOpenChange(false);

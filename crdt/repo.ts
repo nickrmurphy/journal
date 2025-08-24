@@ -24,7 +24,9 @@ export const createRepo = <T extends Entity>(persister: Persister) => {
 		return state ? deserialize(state) : [];
 	};
 
-	const mutate = async <T extends Entity>(data: T): Promise<void> => {
+	const mutate = async (
+		data: Partial<T> & { $id: EntityId },
+	): Promise<void> => {
 		if (!init) await initialize();
 		const operations = serialize(new Date().toISOString(), data.$id, data);
 		const [newstate, changed] = mutator.set(state, operations);

@@ -2,9 +2,9 @@ import autoAnimate from "@formkit/auto-animate";
 import { ArrowTurnDownRightIcon } from "@heroicons/react/24/outline";
 import { eq, useLiveQuery } from "@tanstack/react-db";
 import { useEffect, useRef } from "react";
-import { entryCollection } from "../collections/entries";
 import { entryCommentCollection } from "../collections/entryComments";
 import { formatTime, todayISO } from "../utils/formatDate";
+import { useQuery } from "./RepoContext";
 
 const EntryComments = (props: { entryId: string }) => {
 	const parent = useRef(null);
@@ -42,11 +42,10 @@ export const TodayEntries = (props: {
 		parent.current && autoAnimate(parent.current);
 	}, []);
 
-	const { data } = useLiveQuery((q) =>
-		q
-			.from({ entries: entryCollection })
-			.orderBy((e) => e.entries.createdAt, "desc")
-			.where(({ entries }) => eq(entries.date, todayISO())),
+	const data = useQuery((d) =>
+		d
+			.filter((e) => e.date === todayISO())
+			.sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1)),
 	);
 
 	return (
