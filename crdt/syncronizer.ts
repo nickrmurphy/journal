@@ -34,6 +34,16 @@ export const getBucketHashes = async (
 	return bucketHashes;
 };
 
+export const getBucketsAt = async (
+	state: CRDTState,
+	indices: number[],
+	bucketSize = 100,
+): Promise<CRDTState> => {
+	const stateBuckets = getBuckets(state, bucketSize);
+	const relevant = stateBuckets.filter((_, i) => indices.includes(i));
+	return relevant.flat();
+};
+
 export const getBuckets = (state: CRDTState, bucketSize = 100): CRDTState[] => {
 	const buckets: CRDTState[] = [];
 
