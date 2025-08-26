@@ -24,6 +24,8 @@ type PeerId = string;
 
 export const createNetworker = (persister: Persister<string>): Networker => {
 	const connections: Map<PeerId, DataConnection> = new Map();
+	let stateCallback: (data: CRDTState) => void;
+
 	const init = (async () => {
 		let deviceId = await persister.get();
 		if (!deviceId) {
@@ -39,32 +41,21 @@ export const createNetworker = (persister: Persister<string>): Networker => {
 		return { peer, deviceId };
 	})();
 
-	let stateCallback: (data: CRDTState) => void;
-
-	const getCallback = () => {
-		console.log("Getting state callback", stateCallback);
-		return stateCallback;
-	};
-
 	const registerConnection = (conn: DataConnection) => {
 		conn.on("data", (data) => {
 			const message = data as Message;
-			const stateCallback = getCallback();
 			switch (message.type) {
 				case "sync": {
-					console.log("Received sync message:", message.data);
-					if (stateCallback) {
-						stateCallback(message.data);
-					} else {
-						console.log("No state callback set");
-					}
+					stateCallback(message.data);
 					break;
 				}
 				case "ping":
-					console.log("Received ping message on connection:", conn);
+					console.log(
+						`Ping message received on connection Id [${conn.connectionId}]  from peer Id [${conn.peer}]`,
+					);
 					break;
 				default:
-					console.log("Received unexpected message:", message);
+					console.log("Unexpected message received", message);
 			}
 		});
 
@@ -73,7 +64,6 @@ export const createNetworker = (persister: Persister<string>): Networker => {
 		});
 
 		connections.set(conn.peer, conn);
-		console.log("Registered connection:", conn.peer, connections);
 	};
 
 	const connect = async (peerId: string) => {
@@ -84,7 +74,6 @@ export const createNetworker = (persister: Persister<string>): Networker => {
 	};
 
 	const sendState = (state: CRDTState) => {
-		console.log("Send state invoked", connections);
 		for (const connection of connections.values()) {
 			connection.send({
 				type: "sync",
@@ -99,12 +88,10 @@ export const createNetworker = (persister: Persister<string>): Networker => {
 	};
 
 	const onReceiveState = (callback: (data: CRDTState) => void) => {
-		console.log("Setting state callback", callback);
 		stateCallback = callback;
 	};
 
 	const pingConnections = async () => {
-		console.log("Pinging connections:", connections);
 		for (const connection of connections.values()) {
 			connection.send({
 				type: "ping",
