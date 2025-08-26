@@ -1,3 +1,4 @@
+import { createNetworker } from "@crdt/network";
 import { createIdbPersister } from "@crdt/persister";
 import { createRepo } from "@crdt/repo";
 import z from "zod";
@@ -33,4 +34,9 @@ export const entrySchema = z.object({
 
 export type Entry = z.infer<typeof entrySchema>;
 
-export const entryRepo = createRepo<Entry>(createIdbPersister("entries"));
+export const networker = createNetworker(createIdbPersister("nodeId"));
+
+export const entryRepo = createRepo<Entry>({
+	persister: createIdbPersister("entries"),
+	networker,
+});

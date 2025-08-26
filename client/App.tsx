@@ -9,6 +9,7 @@ import {
 import { Button } from "./components/Button";
 import { CreateEntryDialog } from "./components/CreateEntryDialog";
 import { EntryDialog } from "./components/EntryDialog";
+import { NetworkContent } from "./components/NetworkContent";
 import { PastEntries } from "./components/PastEntries";
 import { TodayEntries } from "./components/TodayEntries";
 import { TodayHeader } from "./components/TodayHeader";
@@ -70,9 +71,11 @@ function App() {
 				</section>
 
 				{/* Right page (empty content placeholder, same sizing) */}
-				{/* <section className="snap-center shrink-0 w-screen px-0"> */}
-				{/* <Page>Intentionally blank page</Page> */}
-				{/* </section> */}
+				<section className="snap-center shrink-0 w-screen px-0">
+					<Page>
+						<NetworkContent />
+					</Page>
+				</section>
 			</div>
 
 			<Nav onCreateEntry={() => setCreateEntryOpen(true)} />

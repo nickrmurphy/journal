@@ -20,11 +20,17 @@ export function RepoProvider({ children }: { children: ReactNode }) {
 	const [data, setData] = useState<Entry[]>([]);
 
 	useEffect(() => {
-		const updateData = () => {
-			entryRepo.materialize().then(setData);
+		const initializeRepo = async () => {
+			await entryRepo.initialize();
+			await entryRepo.materialize().then(setData);
 		};
 
-		updateData();
+		const updateData = async () => {
+			await entryRepo.materialize().then(setData);
+		};
+
+		initializeRepo();
+
 		const unsub = entryRepo.listen(updateData);
 
 		return () => {

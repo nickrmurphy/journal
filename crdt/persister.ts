@@ -1,5 +1,3 @@
-import type { CRDTState } from "./types";
-
 // Simple IndexedDB promise-based functions
 const openDB = (): Promise<IDBDatabase> => {
 	return new Promise((resolve, reject) => {
@@ -37,18 +35,18 @@ const set = async (key: string, value: unknown): Promise<void> => {
 	});
 };
 
-export type Persister = {
-	get: () => Promise<CRDTState | null>;
-	set: (data: CRDTState) => Promise<void>;
+export type Persister<T> = {
+	get: () => Promise<T | null>;
+	set: (data: T) => Promise<void>;
 };
 
-export const createIdbPersister = (key: string): Persister => {
-	const getState = async (): Promise<CRDTState | null> => {
-		const state = await get<CRDTState>(key);
+export const createIdbPersister = <T>(key: string): Persister<T> => {
+	const getState = async (): Promise<T | null> => {
+		const state = await get<T>(key);
 		return state || null;
 	};
 
-	const setState = async (data: CRDTState) => {
+	const setState = async (data: T) => {
 		return set(key, data);
 	};
 
