@@ -71,7 +71,7 @@ function App() {
 				</section>
 
 				{/* Right page (empty content placeholder, same sizing) */}
-				<section className="snap-center shrink-0 w-screen px-0">
+				<section className="w-screen shrink-0 snap-center px-0">
 					<Page>
 						<NetworkContent />
 					</Page>
