@@ -4,8 +4,12 @@ import type { CRDTState } from "./types";
 
 export type Message =
 	| {
-			type: "sync";
+			type: "push";
 			data: CRDTState;
+	  }
+	| {
+			type: "pull";
+			data: never;
 	  }
 	| {
 			type: "ping";
@@ -13,10 +17,11 @@ export type Message =
 	  };
 
 export type Networker = {
-	connect: (peerId: string) => Promise<void>;
+	connect: (peerId: string, pullOnOpen?: boolean) => Promise<void>;
 	getDeviceId: () => Promise<string>;
 	sendState: (state: CRDTState) => void;
-	onReceiveState: (callback: (data: CRDTState) => void) => void;
+	onPushMessage: (callback: (data: CRDTState) => void) => void;
+	onPullMessage: (callback: () => CRDTState) => void;
 	pingConnections: () => Promise<void>;
 };
 
@@ -24,7 +29,8 @@ type PeerId = string;
 
 export const createNetworker = (persister: Persister<string>): Networker => {
 	const connections: Map<PeerId, DataConnection> = new Map();
-	let stateCallback: (data: CRDTState) => void;
+	let pushCallback: (data: CRDTState) => void;
+	let pullCallback: () => CRDTState;
 
 	const init = (async () => {
 		let deviceId = await persister.get();
@@ -45,8 +51,16 @@ export const createNetworker = (persister: Persister<string>): Networker => {
 		conn.on("data", (data) => {
 			const message = data as Message;
 			switch (message.type) {
-				case "sync": {
-					stateCallback(message.data);
+				case "push": {
+					pushCallback(message.data);
+					break;
+				}
+				case "pull": {
+					const state = pullCallback();
+					conn.send({
+						type: "push",
+						data: state,
+					});
 					break;
 				}
 				case "ping":
@@ -66,11 +80,19 @@ export const createNetworker = (persister: Persister<string>): Networker => {
 		connections.set(conn.peer, conn);
 	};
 
-	const connect = async (peerId: string) => {
+	const connect = async (peerId: string, pullOnOpen = false) => {
 		const { peer } = await init;
 		const conn = peer.connect(peerId);
 
 		registerConnection(conn);
+
+		if (pullOnOpen) {
+			conn.on("open", () => {
+				conn.send({
+					type: "pull",
+				});
+			});
+		}
 	};
 
 	const sendState = (state: CRDTState) => {
@@ -87,8 +109,12 @@ export const createNetworker = (persister: Persister<string>): Networker => {
 		return deviceId;
 	};
 
-	const onReceiveState = (callback: (data: CRDTState) => void) => {
-		stateCallback = callback;
+	const onPushMessage = (callback: (data: CRDTState) => void) => {
+		pushCallback = callback;
+	};
+
+	const onPullMessage = (callback: () => CRDTState) => {
+		pullCallback = callback;
 	};
 
 	const pingConnections = async () => {
@@ -104,6 +130,7 @@ export const createNetworker = (persister: Persister<string>): Networker => {
 		sendState,
 		getDeviceId,
 		pingConnections,
-		onReceiveState,
+		onPushMessage,
+		onPullMessage,
 	};
 };

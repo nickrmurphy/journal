@@ -8,7 +8,7 @@ export const NetworkContent = () => {
 		const formData = new FormData(event.currentTarget);
 		const peerId = formData.get("peerId");
 		if (typeof peerId === "string") {
-			networker.connect(peerId).then(() => {
+			networker.connect(peerId, true).then(() => {
 				console.log("Connected to peer:", peerId);
 			});
 		}

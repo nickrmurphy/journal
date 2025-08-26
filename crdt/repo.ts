@@ -35,12 +35,13 @@ export const createRepo = <T extends Entity>({
 		const persisted = await persister.get();
 		state = persisted || [];
 		networker.sendState(state);
-		networker.onReceiveState((newState) => {
+		networker.onPushMessage((newState) => {
 			const [mergedState, changed] = mutator.set(state, newState);
 			if (changed) {
 				setState(mergedState, false);
 			}
 		});
+		networker.onPullMessage(() => state);
 	};
 
 	const materialize = async (): Promise<T[]> => {
