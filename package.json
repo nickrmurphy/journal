@@ -18,8 +18,7 @@
 		"flat": "^6.0.1",
 		"peerjs": "^1.5.5",
 		"react": "^19.1.1",
-		"react-dom": "^19.1.1",
-		"zod": "^4.0.17"
+		"react-dom": "^19.1.1"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.1.4",

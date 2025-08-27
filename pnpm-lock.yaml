@@ -32,9 +32,6 @@ importers:
       react-dom:
         specifier: ^19.1.1
         version: 19.1.1(react@19.1.1)
-      zod:
-        specifier: ^4.0.17
-        version: 4.0.17
     devDependencies:
       '@biomejs/biome':
         specifier: 2.1.4
@@ -1547,9 +1544,6 @@ packages:
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
 
-  zod@4.0.17:
-    resolution: {integrity: sha512-1PHjlYRevNxxdy2JZ8JcNAw7rX8V9P1AKkP+x/xZfxB0K5FYfuV+Ug6P/6NVSR2jHQ+FzDDoDHS04nYUsOIyLQ==}
-
 snapshots:
 
   '@ampproject/remapping@2.3.0':
@@ -2788,5 +2782,3 @@ snapshots:
       youch-core: 0.3.3
 
   zod@3.22.3: {}
-
-  zod@4.0.17: {}

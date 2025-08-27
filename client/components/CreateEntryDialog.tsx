@@ -6,6 +6,7 @@ import {
 } from "@headlessui/react";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import { entry } from "../collections/entries";
 import { Button } from "./Button";
 import { useMutate } from "./RepoContext";
 import { Textarea } from "./Textarea";
@@ -21,10 +22,12 @@ export const CreateEntryDialog = ({
 	const { insert } = useMutate();
 
 	const handleSave = () => {
-		insert({
-			content: inputValue,
-			date: new Date().toISOString().split("T")[0],
-		});
+		insert(
+			entry({
+				content: inputValue,
+				date: new Date().toISOString().split("T")[0],
+			}),
+		);
 		setInputValue("");
 		onOpenChange(false);
 	};

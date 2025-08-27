@@ -8,8 +8,12 @@ import {
 	useMemo,
 	useState,
 } from "react";
-import type z from "zod";
-import { type Entry, entryRepo, entrySchema } from "../collections/entries";
+import {
+	type CreateEntryInput,
+	type Entry,
+	entry,
+	entryRepo,
+} from "../collections/entries";
 
 const RepoContext = createContext<{
 	data: Entry[];
@@ -62,8 +66,8 @@ export function useMutate() {
 	const { repo } = useRepo();
 
 	const insert = useCallback(
-		(data: Omit<z.input<typeof entrySchema>, "$id">) => {
-			const parsedData = entrySchema.parse(data);
+		(data: CreateEntryInput) => {
+			const parsedData = entry(data);
 			repo.mutate(parsedData);
 		},
 		[repo],

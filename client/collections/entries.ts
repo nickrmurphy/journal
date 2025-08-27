@@ -1,38 +1,34 @@
 import { createNetworker } from "@crdt/network";
 import { createIdbPersister } from "@crdt/persister";
 import { createRepo } from "@crdt/repo";
-import z from "zod";
 
-export const entrySchema = z.object({
-	$id: z
-		.uuid()
-		.optional()
-		.default(() => crypto.randomUUID()),
-	content: z.string().min(1),
-	date: z.iso.date(),
-	isBookmarked: z.boolean().optional().default(false),
-	comments: z
-		.object({
-			id: z
-				.uuid()
-				.optional()
-				.default(() => crypto.randomUUID()),
-			content: z.string().min(1),
-			createdAt: z.iso
-				.datetime()
-				.optional()
-				.default(() => new Date().toISOString()),
-		})
-		.array()
-		.optional()
-		.default([]),
-	createdAt: z.iso
-		.datetime()
-		.optional()
-		.default(() => new Date().toISOString()),
+export type Comment = {
+	id: string;
+	content: string;
+	createdAt: string;
+};
+
+export type Entry = {
+	$id: string;
+	content: string;
+	date: string;
+	isBookmarked: boolean;
+	comments: Comment[];
+	createdAt: string;
+};
+
+export type CreateEntryInput = {
+	content: string;
+	date: string;
+};
+
+export const entry = (data: CreateEntryInput): Entry => ({
+	...data,
+	$id: crypto.randomUUID(),
+	comments: [],
+	createdAt: new Date().toISOString(),
+	isBookmarked: false,
 });
-
-export type Entry = z.infer<typeof entrySchema>;
 
 export const networker = createNetworker(createIdbPersister("nodeId"));
 
