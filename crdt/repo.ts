@@ -1,8 +1,7 @@
-import * as mutator from "./mutator";
 import type { Networker } from "./networking";
 import type { Persister } from "./persistence";
-import { deserialize, serialize } from "./serializer";
-import type { CRDTState, Entity, EntityId } from "./types";
+import { createStore } from "./state";
+import type { Entity, EntityId } from "./types";
 
 export const createRepo = <T extends Entity>({
 	collectionName,
@@ -13,51 +12,32 @@ export const createRepo = <T extends Entity>({
 	persister: Persister;
 	networker: Networker;
 }) => {
-	let state: CRDTState = [];
-
+	const store = createStore<T>({ collectionName, persister });
 	const listeners = new Set<() => void>();
 
-	const persist = () => {
-		return persister.set(collectionName, state);
-	};
-
-	const setState = (newState: CRDTState, broadcast = true) => {
-		state = newState;
-		if (broadcast) {
-			networker.sendState(state);
+	const notify = async () => {
+		const state = await store.getState();
+		networker.sendState(state);
+		for (const listener of listeners) {
+			listener();
 		}
-		persist().then(() => {
-			for (const listener of listeners) {
-				listener();
-			}
-		});
 	};
 
 	const initialize = async () => {
-		const persisted = await persister.get<CRDTState>(collectionName);
-		state = persisted || [];
+		const state = await store.getState();
 		networker.sendState(state);
-		networker.onPushMessage((newState) => {
-			const [mergedState, changed] = mutator.set(state, newState);
-			if (changed) {
-				setState(mergedState, false);
-			}
+		networker.onPushMessage(async (newState) => {
+			await store.merge(newState);
 		});
 		networker.onPullMessage(() => state);
-	};
-
-	const materialize = async (): Promise<T[]> => {
-		return deserialize(state);
 	};
 
 	const mutate = async (
 		data: Partial<T> & { $id: EntityId },
 	): Promise<void> => {
-		const operations = serialize(new Date().toISOString(), data.$id, data);
-		const [newstate, changed] = mutator.set(state, operations);
-
+		const changed = await store.mutate(data);
 		if (changed) {
-			setState(newstate, true);
+			notify();
 		}
 	};
 
@@ -68,5 +48,5 @@ export const createRepo = <T extends Entity>({
 		};
 	};
 
-	return { materialize, mutate, listen, initialize };
+	return { materialize: store.materialize, mutate, listen, initialize };
 };

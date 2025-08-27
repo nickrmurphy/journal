@@ -1,4 +1,4 @@
-import type { CRDTState, Operation } from "./types";
+import type { CRDTState, Operation } from "../types";
 
 const merge = (state: CRDTState, next: Operation): [CRDTState, boolean] => {
 	// find matching entityId/path

@@ -5,7 +5,7 @@ import type {
 	Eventstamp,
 	JSONValue,
 	Operation,
-} from "./types";
+} from "../types";
 
 export const serialize = <T extends Entity>(
 	eventstamp: Eventstamp,
