@@ -1,5 +1,5 @@
 import * as mutator from "./mutator";
-import type { Networker } from "./network";
+import type { Networker } from "./networking";
 import type { Persister } from "./persistence";
 import { deserialize, serialize } from "./serializer";
 import type { CRDTState, Entity, EntityId } from "./types";

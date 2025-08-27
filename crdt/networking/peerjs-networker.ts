@@ -1,6 +1,7 @@
-import type { Persister } from "@crdt/persistence";
 import { type DataConnection, Peer } from "peerjs";
-import type { CRDTState } from "./types";
+import type { Persister } from "../persistence";
+import type { CRDTState } from "../types";
+import type { Networker, PeerId } from "./types";
 
 export type Message =
 	| {
@@ -15,19 +16,6 @@ export type Message =
 			type: "ping";
 			data: never;
 	  };
-
-export type Networker = {
-	connect: (peerId: string, pullOnOpen?: boolean) => Promise<void>;
-	getDeviceId: () => Promise<string>;
-	sendState: (state: CRDTState) => void;
-	onPushMessage: (callback: (data: CRDTState) => void) => void;
-	onPullMessage: (callback: () => CRDTState) => void;
-	onConnection: (callback: () => void) => void;
-	pingConnections: () => Promise<void>;
-	getConnections: () => DataConnection[]; // For future use, e.g. listing connections
-};
-
-type PeerId = string;
 
 export const createNetworker = (persister: Persister): Networker => {
 	const connections: Map<PeerId, DataConnection> = new Map();

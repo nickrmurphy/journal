@@ -1,4 +1,4 @@
-import { createNetworker } from "@crdt/network";
+import { createNetworker } from "@crdt/networking";
 import { createIdbPersister } from "@crdt/persistence";
 import { createRepo } from "@crdt/repo";
 
