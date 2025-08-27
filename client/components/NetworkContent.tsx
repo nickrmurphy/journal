@@ -1,5 +1,5 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { QRCodeSVG } from "qrcode.react";
+
 import { Button } from "./Button";
 import { useNetworker } from "./NetworkProvider";
 
@@ -21,23 +21,6 @@ export const NetworkContent = () => {
 
 	return (
 		<div className="space-y-4">
-			{deviceId && (
-				<div className="flex flex-col gap-4 rounded-xl bg-card p-4">
-					<h2 className="mx-auto p-2 font-semibold text-lg">
-						Connect to this device
-					</h2>
-					<div className="mx-auto flex rounded-lg bg-muted p-4">
-						<QRCodeSVG value={deviceId} size={175} />
-					</div>
-					<p className="text-center text-muted-foreground text-sm">
-						Scan this QR code with your device to connect, or enter the ID found
-						below.
-					</p>
-					<p className="select-text text-center text-muted-foreground text-xs">
-						{deviceId}
-					</p>
-				</div>
-			)}
 			<div className="flex flex-col gap-4 rounded-xl bg-card p-2">
 				<div className="flex items-center justify-between">
 					<h2 className="p-2 font-semibold">Connections</h2>
@@ -59,6 +42,16 @@ export const NetworkContent = () => {
 					))}
 				</div>
 			</div>
+			{deviceId && (
+				<div className="flex flex-col gap-4 rounded-xl bg-card p-4">
+					<p className="text-center text-muted-foreground text-sm">
+						To connect to this device, enter the ID found below.
+					</p>
+					<p className="select-text text-center text-muted-foreground text-xs">
+						{deviceId}
+					</p>
+				</div>
+			)}
 		</div>
 	);
 };
