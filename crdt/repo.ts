@@ -1,14 +1,16 @@
 import * as mutator from "./mutator";
 import type { Networker } from "./network";
-import type { Persister } from "./persister";
+import type { Persister } from "./persistence";
 import { deserialize, serialize } from "./serializer";
 import type { CRDTState, Entity, EntityId } from "./types";
 
 export const createRepo = <T extends Entity>({
+	collectionName,
 	persister,
 	networker,
 }: {
-	persister: Persister<CRDTState>;
+	collectionName: string;
+	persister: Persister;
 	networker: Networker;
 }) => {
 	let state: CRDTState = [];
@@ -16,7 +18,7 @@ export const createRepo = <T extends Entity>({
 	const listeners = new Set<() => void>();
 
 	const persist = () => {
-		return persister.set(state);
+		return persister.set(collectionName, state);
 	};
 
 	const setState = (newState: CRDTState, broadcast = true) => {
@@ -32,7 +34,7 @@ export const createRepo = <T extends Entity>({
 	};
 
 	const initialize = async () => {
-		const persisted = await persister.get();
+		const persisted = await persister.get<CRDTState>(collectionName);
 		state = persisted || [];
 		networker.sendState(state);
 		networker.onPushMessage((newState) => {

@@ -1,7 +1,8 @@
-// Simple IndexedDB promise-based functions
-const openDB = (): Promise<IDBDatabase> => {
+import type { Persister } from "@crdt/persistence";
+
+const openDB = (dbName: string): Promise<IDBDatabase> => {
 	return new Promise((resolve, reject) => {
-		const request = indexedDB.open("keyval-store", 1);
+		const request = indexedDB.open(dbName, 1);
 		request.onerror = () => reject(request.error);
 		request.onsuccess = () => resolve(request.result);
 		request.onupgradeneeded = () => {
@@ -13,8 +14,7 @@ const openDB = (): Promise<IDBDatabase> => {
 	});
 };
 
-const get = async <T>(key: string): Promise<T | undefined> => {
-	const db = await openDB();
+const get = <T>(db: IDBDatabase, key: string): Promise<T | null> => {
 	return new Promise((resolve, reject) => {
 		const transaction = db.transaction("keyval", "readonly");
 		const store = transaction.objectStore("keyval");
@@ -24,8 +24,7 @@ const get = async <T>(key: string): Promise<T | undefined> => {
 	});
 };
 
-const set = async (key: string, value: unknown): Promise<void> => {
-	const db = await openDB();
+const set = <T>(db: IDBDatabase, key: string, value: T): Promise<void> => {
 	return new Promise((resolve, reject) => {
 		const transaction = db.transaction("keyval", "readwrite");
 		const store = transaction.objectStore("keyval");
@@ -35,20 +34,23 @@ const set = async (key: string, value: unknown): Promise<void> => {
 	});
 };
 
-export type Persister<T> = {
-	get: () => Promise<T | null>;
-	set: (data: T) => Promise<void>;
+type IdbPersisterOptions = {
+	dbName: string;
 };
 
-export const createIdbPersister = <T>(key: string): Persister<T> => {
-	const getState = async (): Promise<T | null> => {
-		const state = await get<T>(key);
-		return state || null;
-	};
+export const createIdbPersister = ({
+	dbName,
+}: IdbPersisterOptions): Persister => {
+	const dbPromise = openDB(dbName);
 
-	const setState = async (data: T) => {
-		return set(key, data);
+	return {
+		get: async <T>(key: string) => {
+			const db = await dbPromise;
+			return get<T>(db, key);
+		},
+		set: async <T>(key: string, data: T) => {
+			const db = await dbPromise;
+			return set<T>(db, key, data);
+		},
 	};
-
-	return { get: getState, set: setState };
 };

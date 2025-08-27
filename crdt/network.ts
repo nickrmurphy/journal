@@ -1,4 +1,4 @@
-import type { Persister } from "@crdt/persister";
+import type { Persister } from "@crdt/persistence";
 import { type DataConnection, Peer } from "peerjs";
 import type { CRDTState } from "./types";
 
@@ -29,17 +29,17 @@ export type Networker = {
 
 type PeerId = string;
 
-export const createNetworker = (persister: Persister<string>): Networker => {
+export const createNetworker = (persister: Persister): Networker => {
 	const connections: Map<PeerId, DataConnection> = new Map();
 	let onConnectionCallback: () => void;
 	let pushCallback: (data: CRDTState) => void;
 	let pullCallback: () => CRDTState;
 
 	const init = (async () => {
-		let deviceId = await persister.get();
+		let deviceId = await persister.get<string>("deviceId");
 		if (!deviceId) {
 			deviceId = crypto.randomUUID();
-			await persister.set(deviceId);
+			await persister.set("deviceId", deviceId);
 		}
 
 		const peer = new Peer(deviceId);

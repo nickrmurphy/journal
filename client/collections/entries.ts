@@ -1,5 +1,5 @@
 import { createNetworker } from "@crdt/network";
-import { createIdbPersister } from "@crdt/persister";
+import { createIdbPersister } from "@crdt/persistence";
 import { createRepo } from "@crdt/repo";
 
 export type Comment = {
@@ -30,9 +30,14 @@ export const entry = (data: CreateEntryInput): Entry => ({
 	isBookmarked: false,
 });
 
-export const networker = createNetworker(createIdbPersister("nodeId"));
+const persister = createIdbPersister({
+	dbName: "journal",
+});
+
+export const networker = createNetworker(persister);
 
 export const entryRepo = createRepo<Entry>({
-	persister: createIdbPersister("entries"),
+	collectionName: "entries",
+	persister,
 	networker,
 });
