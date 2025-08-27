@@ -1,7 +1,7 @@
-import type { Networker } from "./networking";
-import type { Persister } from "./persistence";
-import { createStore } from "./state";
-import type { Entity, EntityId } from "./types";
+import type { Networker } from "../networking";
+import type { Persister } from "../persistence";
+import type { Entity, EntityId } from "../state";
+import { createStore } from "../state";
 
 export const createRepo = <T extends Entity>({
 	collectionName,

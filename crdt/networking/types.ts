@@ -1,5 +1,5 @@
 import type { DataConnection } from "peerjs";
-import type { CRDTState } from "../types";
+import type { CRDTState } from "../state";
 
 export type Networker = {
 	connect: (peerId: string, pullOnOpen?: boolean) => Promise<void>;

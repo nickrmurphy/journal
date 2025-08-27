@@ -1,6 +1,6 @@
 import { type DataConnection, Peer } from "peerjs";
 import type { Persister } from "../persistence";
-import type { CRDTState } from "../types";
+import type { CRDTState } from "../state";
 import type { Networker, PeerId } from "./types";
 
 export type Message =
