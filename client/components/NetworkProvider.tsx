@@ -1,4 +1,5 @@
 import type { Networker } from "@crdt/network";
+import type { DataConnection } from "peerjs";
 import {
 	createContext,
 	type ReactNode,
@@ -12,11 +13,13 @@ import { networker } from "../collections/entries";
 const NetworkContext = createContext<{
 	networker: Networker;
 	isLoading: boolean;
+	connections: DataConnection[];
 	deviceId: string | null;
 } | null>(null);
 
 export function NetworkProvider({ children }: { children: ReactNode }) {
 	const [isLoading, setIsLoading] = useState(true);
+	const [connections, setConnections] = useState<DataConnection[]>([]);
 	const [deviceId, setDeviceId] = useState<string | null>(null);
 
 	useEffect(() => {
@@ -24,6 +27,9 @@ export function NetworkProvider({ children }: { children: ReactNode }) {
 			networker.getDeviceId().then((id) => {
 				setDeviceId(id);
 				setIsLoading(false);
+				networker.onConnection(() => {
+					setConnections(networker.getConnections());
+				});
 			});
 		};
 
@@ -31,8 +37,8 @@ export function NetworkProvider({ children }: { children: ReactNode }) {
 	}, []);
 
 	const contextValue = useMemo(
-		() => ({ networker, isLoading, deviceId }),
-		[isLoading, deviceId],
+		() => ({ networker, isLoading, deviceId, connections }),
+		[isLoading, deviceId, connections],
 	);
 
 	return (

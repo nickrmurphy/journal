@@ -22,13 +22,16 @@ export type Networker = {
 	sendState: (state: CRDTState) => void;
 	onPushMessage: (callback: (data: CRDTState) => void) => void;
 	onPullMessage: (callback: () => CRDTState) => void;
+	onConnection: (callback: () => void) => void;
 	pingConnections: () => Promise<void>;
+	getConnections: () => DataConnection[]; // For future use, e.g. listing connections
 };
 
 type PeerId = string;
 
 export const createNetworker = (persister: Persister<string>): Networker => {
 	const connections: Map<PeerId, DataConnection> = new Map();
+	let onConnectionCallback: () => void;
 	let pushCallback: (data: CRDTState) => void;
 	let pullCallback: () => CRDTState;
 
@@ -42,6 +45,9 @@ export const createNetworker = (persister: Persister<string>): Networker => {
 		const peer = new Peer(deviceId);
 		peer.on("connection", (conn) => {
 			registerConnection(conn);
+			conn.on("open", () => {
+				onConnectionCallback();
+			});
 		});
 
 		return { peer, deviceId };
@@ -88,6 +94,7 @@ export const createNetworker = (persister: Persister<string>): Networker => {
 
 		if (pullOnOpen) {
 			conn.on("open", () => {
+				onConnectionCallback();
 				conn.send({
 					type: "pull",
 				});
@@ -117,6 +124,10 @@ export const createNetworker = (persister: Persister<string>): Networker => {
 		pullCallback = callback;
 	};
 
+	const onConnection = (callback: () => void) => {
+		onConnectionCallback = callback;
+	};
+
 	const pingConnections = async () => {
 		for (const connection of connections.values()) {
 			connection.send({
@@ -125,12 +136,18 @@ export const createNetworker = (persister: Persister<string>): Networker => {
 		}
 	};
 
+	const getConnections = () => {
+		return Array.from(connections.values());
+	};
+
 	return {
 		connect,
 		sendState,
 		getDeviceId,
+		getConnections,
 		pingConnections,
 		onPushMessage,
 		onPullMessage,
+		onConnection,
 	};
 };
