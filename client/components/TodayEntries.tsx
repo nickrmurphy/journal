@@ -48,8 +48,6 @@ export const TodayEntries = (props: {
 				<article
 					key={e.$id}
 					onClick={() => {
-						console.log("e", e);
-						console.log(e.$id);
 						props.onSelectEntry(e.$id);
 					}}
 					className="space-y-3 rounded-md border bg-card px-2.5 py-2 text-card-foreground active:brightness-110"
