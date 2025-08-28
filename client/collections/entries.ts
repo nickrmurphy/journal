@@ -1,6 +1,6 @@
-import { createNetworker } from "@crdt/networking";
+import { createPeerJsNetworker } from "@crdt/networking";
 import { createIdbPersister } from "@crdt/persistence";
-import { createRepo } from "@crdt/repo";
+import { createRepository } from "@crdt/repo";
 
 export type Comment = {
 	id: string;
@@ -30,13 +30,23 @@ export const entry = (data: CreateEntryInput): Entry => ({
 	isBookmarked: false,
 });
 
+export const getDeviceId = () => {
+	const current = localStorage.getItem("deviceId");
+	if (current) {
+		return current;
+	}
+	const newId = crypto.randomUUID();
+	localStorage.setItem("deviceId", newId);
+	return newId;
+};
+
 const persister = createIdbPersister({
 	dbName: "journal",
 });
 
-export const networker = createNetworker(persister);
+const networker = createPeerJsNetworker(getDeviceId());
 
-export const entryRepo = createRepo<Entry>({
+export const entryRepo = createRepository<Entry>({
 	collectionName: "entries",
 	persister,
 	networker,

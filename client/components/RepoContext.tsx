@@ -1,4 +1,4 @@
-import type { EntityId } from "@crdt/types";
+import type { EntityId } from "@crdt/state";
 import {
 	createContext,
 	type ReactNode,
@@ -24,18 +24,12 @@ export function RepoProvider({ children }: { children: ReactNode }) {
 	const [data, setData] = useState<Entry[]>([]);
 
 	useEffect(() => {
-		const initializeRepo = async () => {
-			await entryRepo.initialize();
+		const refreshData = async () => {
 			await entryRepo.materialize().then(setData);
 		};
 
-		const updateData = async () => {
-			await entryRepo.materialize().then(setData);
-		};
-
-		initializeRepo();
-
-		const unsub = entryRepo.listen(updateData);
+		refreshData();
+		const unsub = entryRepo.subscribe(refreshData);
 
 		return () => {
 			unsub();

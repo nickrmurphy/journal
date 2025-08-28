@@ -22,6 +22,7 @@ export type StoreOptions = {
 	persister: Persister;
 	collectionName: string;
 };
+
 export type Store<T> = {
 	materialize: () => Promise<T[]>;
 	mutate: (data: Partial<T> & { $id: EntityId }) => Promise<boolean>;

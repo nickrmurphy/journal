@@ -1,15 +1,18 @@
-import type { DataConnection } from "peerjs";
-import type { CRDTState } from "../state";
+import type { Message } from "../repo";
 
 export type Networker = {
-	connect: (peerId: string, pullOnOpen?: boolean) => Promise<void>;
-	getDeviceId: () => Promise<string>;
-	sendState: (state: CRDTState) => void;
-	onPushMessage: (callback: (data: CRDTState) => void) => void;
-	onPullMessage: (callback: () => CRDTState) => void;
-	onConnection: (callback: () => void) => void;
-	pingConnections: () => Promise<void>;
-	getConnections: () => DataConnection[]; // For future use, e.g. listing connections
+	connect: (peerId: PeerId) => Promise<void>;
+	send: (message: Message) => void;
+	sendTo: (peerId: PeerId, message: Message) => void;
+	onConnect: (callback: (peerId: PeerId) => void) => void;
+	onDisconnect: (callback: (peerId: PeerId) => void) => void;
+	listen: <K extends Message["type"]>(
+		type: K,
+		callback: (
+			peerId: PeerId,
+			data: Extract<Message, { type: K }>["data"],
+		) => void,
+	) => void;
 };
 
 export type PeerId = string;

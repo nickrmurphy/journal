@@ -1,23 +1,18 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
-
+import { getDeviceId } from "../collections/entries";
 import { Button } from "./Button";
-import { useNetworker } from "./NetworkProvider";
+import { useRepo } from "./RepoContext";
 
 export const NetworkContent = () => {
-	const { isLoading, deviceId, networker, connections } = useNetworker();
+	const { repo } = useRepo();
 
 	const handleLink = () => {
 		const peerId = prompt("Enter the ID of the device you want to connect to");
 		if (typeof peerId === "string") {
-			networker.connect(peerId, true).then(() => {
-				console.log("Connected to peer:", peerId);
-			});
+			repo.connect(peerId);
+			console.log("Connected to peer:", peerId);
 		}
 	};
-
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
 
 	return (
 		<div className="space-y-4">
@@ -29,7 +24,7 @@ export const NetworkContent = () => {
 					</Button>
 				</div>
 				<div className="space-y-1">
-					{connections.length === 0 && (
+					{/* {connections.length === 0 && (
 						<div className="p-2 text-muted-foreground">No connections yet.</div>
 					)}
 					{connections.map((connection) => (
@@ -39,19 +34,17 @@ export const NetworkContent = () => {
 						>
 							<span className="font-medium">{connection.peer}</span>
 						</div>
-					))}
+					))} */}
 				</div>
 			</div>
-			{deviceId && (
-				<div className="flex flex-col gap-4 rounded-xl bg-card p-4">
-					<p className="text-center text-muted-foreground text-sm">
-						To connect to this device, enter the ID found below.
-					</p>
-					<p className="select-text text-center text-muted-foreground text-xs">
-						{deviceId}
-					</p>
-				</div>
-			)}
+			<div className="flex flex-col gap-4 rounded-xl bg-card p-4">
+				<p className="text-center text-muted-foreground text-sm">
+					To connect to this device, enter the ID found below.
+				</p>
+				<p className="select-text text-center text-muted-foreground text-xs">
+					{getDeviceId()}
+				</p>
+			</div>
 		</div>
 	);
 };

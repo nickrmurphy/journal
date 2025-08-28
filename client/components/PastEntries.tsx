@@ -1,4 +1,5 @@
 import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
+import type { Entry } from "client/collections/entries";
 import { formatMonthDateYear, formatTime, todayISO } from "../utils/formatDate";
 import { useQuery } from "./RepoContext";
 
@@ -8,17 +9,14 @@ type PastEntriesProps = {
 
 const DayEntries = (props: {
 	date: string;
+	entries: Entry[];
 	onSelect: (id: string) => void;
 }) => {
-	const data = useQuery((data) =>
-		data.filter((entry) => entry.date === props.date),
-	);
-
 	return (
 		<div className="rounded-md border bg-card p-3 text-card-foreground">
 			<h3 className="font-semibold">{formatMonthDateYear(props.date)}</h3>
 			<div className="divide-y divide-border/50">
-				{data.map((entry) => (
+				{props.entries.map((entry) => (
 					<article
 						key={entry.$id}
 						className="space-y-1 py-3 transition-all active:brightness-110"
@@ -47,14 +45,40 @@ const DayEntries = (props: {
 };
 
 export function PastEntries({ onSelect }: PastEntriesProps) {
-	const data = useQuery((data) =>
-		data.filter((entry) => entry.date < todayISO()),
-	);
+	const groups = useQuery((data) => {
+		// Only past entries
+		const filtered = data
+			.filter((entry) => entry.date < todayISO())
+			// Sort by date desc, then createdAt desc
+			.sort((a, b) =>
+				b.date === a.date
+					? b.createdAt.localeCompare(a.createdAt)
+					: b.date.localeCompare(a.date),
+			);
+
+		// Group by date
+		const byDate = new Map<string, Entry[]>();
+		for (const entry of filtered) {
+			const list = byDate.get(entry.date) ?? [];
+			list.push(entry);
+			byDate.set(entry.date, list);
+		}
+
+		return Array.from(byDate.entries()).map(([date, entries]) => ({
+			date,
+			entries,
+		}));
+	});
 
 	return (
 		<>
-			{data.map((e) => (
-				<DayEntries key={e.date} date={e.date} onSelect={onSelect} />
+			{groups.map((g) => (
+				<DayEntries
+					key={g.date}
+					date={g.date}
+					entries={g.entries}
+					onSelect={onSelect}
+				/>
 			))}
 		</>
 	);

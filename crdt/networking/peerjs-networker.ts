@@ -1,141 +1,69 @@
 import { type DataConnection, Peer } from "peerjs";
-import type { Persister } from "../persistence";
-import type { CRDTState } from "../state";
+import type { Message } from "../repo";
 import type { Networker, PeerId } from "./types";
 
-export type Message =
-	| {
-			type: "push";
-			data: CRDTState;
-	  }
-	| {
-			type: "pull";
-			data: never;
-	  }
-	| {
-			type: "ping";
-			data: never;
-	  };
-
-export const createNetworker = (persister: Persister): Networker => {
+export const createPeerJsNetworker = (deviceId: string): Networker => {
+	const peer = new Peer(deviceId);
 	const connections: Map<PeerId, DataConnection> = new Map();
-	let onConnectionCallback: () => void;
-	let pushCallback: (data: CRDTState) => void;
-	let pullCallback: () => CRDTState;
+	const listeners: Map<Message["type"], (peerId: string, data: any) => void> =
+		new Map();
+	let handleConnect: ((peerId: string) => void) | null = null;
+	let handleDisconnect: ((peerId: string) => void) | null = null;
 
-	const init = (async () => {
-		let deviceId = await persister.get<string>("deviceId");
-		if (!deviceId) {
-			deviceId = crypto.randomUUID();
-			await persister.set("deviceId", deviceId);
-		}
-
-		const peer = new Peer(deviceId);
-		peer.on("connection", (conn) => {
-			registerConnection(conn);
-			conn.on("open", () => {
-				onConnectionCallback();
-			});
-		});
-
-		return { peer, deviceId };
-	})();
-
-	const registerConnection = (conn: DataConnection) => {
-		conn.on("data", (data) => {
-			const message = data as Message;
-			switch (message.type) {
-				case "push": {
-					pushCallback(message.data);
-					break;
-				}
-				case "pull": {
-					const state = pullCallback();
-					conn.send({
-						type: "push",
-						data: state,
-					});
-					break;
-				}
-				case "ping":
-					console.log(
-						`Ping message received on connection Id [${conn.connectionId}]  from peer Id [${conn.peer}]`,
-					);
-					break;
-				default:
-					console.log("Unexpected message received", message);
+	const handleMessage = (peerId: string, message: unknown) => {
+		if (typeof message === "object" && message !== null) {
+			const msg = message as Message;
+			const listener = listeners.get(msg.type);
+			if (listener) {
+				listener(peerId, msg.data);
 			}
-		});
-
-		conn.on("close", () => {
-			connections.delete(conn.peer);
-		});
-
-		connections.set(conn.peer, conn);
-	};
-
-	const connect = async (peerId: string, pullOnOpen = false) => {
-		const { peer } = await init;
-		const conn = peer.connect(peerId);
-
-		registerConnection(conn);
-
-		if (pullOnOpen) {
-			conn.on("open", () => {
-				onConnectionCallback();
-				conn.send({
-					type: "pull",
-				});
-			});
+		} else {
+			console.warn("Received invalid message:", message);
 		}
-	};
-
-	const sendState = (state: CRDTState) => {
-		for (const connection of connections.values()) {
-			connection.send({
-				type: "sync",
-				data: state,
-			});
-		}
-	};
-
-	const getDeviceId = async () => {
-		const { deviceId } = await init;
-		return deviceId;
-	};
-
-	const onPushMessage = (callback: (data: CRDTState) => void) => {
-		pushCallback = callback;
-	};
-
-	const onPullMessage = (callback: () => CRDTState) => {
-		pullCallback = callback;
-	};
-
-	const onConnection = (callback: () => void) => {
-		onConnectionCallback = callback;
-	};
-
-	const pingConnections = async () => {
-		for (const connection of connections.values()) {
-			connection.send({
-				type: "ping",
-			});
-		}
-	};
-
-	const getConnections = () => {
-		return Array.from(connections.values());
 	};
 
 	return {
-		connect,
-		sendState,
-		getDeviceId,
-		getConnections,
-		pingConnections,
-		onPushMessage,
-		onPullMessage,
-		onConnection,
+		send: (message) => {
+			for (const conn of connections.values()) {
+				conn.send(message);
+			}
+		},
+		sendTo: (peerId, message) => {
+			const conn = connections.get(peerId);
+			if (conn) {
+				conn.send(message);
+			} else {
+				console.warn(
+					`Tried to send a message of type '${message.type}' to ${peerId}, but no connection exists.`,
+				);
+			}
+		},
+		onConnect: (callback) => {
+			handleConnect = callback;
+		},
+		onDisconnect: (callback) => {
+			handleDisconnect = callback;
+		},
+		connect: async (peerId) => {
+			const conn = peer.connect(peerId);
+			conn.on("open", () => {
+				connections.set(peerId, conn);
+				handleConnect?.(peerId);
+			});
+			conn.on("data", (message) => {
+				handleMessage(conn.peer, message);
+			});
+			conn.on("close", () => {
+				connections.delete(peerId);
+				handleDisconnect?.(peerId);
+			});
+		},
+		listen: (type, callback) => {
+			listeners.set(type, callback);
+
+			return () => {
+				listeners.delete(type);
+			};
+		},
 	};
 };
