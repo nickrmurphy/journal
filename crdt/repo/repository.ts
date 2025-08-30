@@ -1,7 +1,7 @@
 import { type DataConnection, Peer } from "peerjs";
 import type { PeerId } from "../networking";
 import type { Persister } from "../persistence";
-import type { Entity } from "../state";
+import type { CRDTState, Entity } from "../state";
 import { createStore } from "../state";
 import type { Repository } from "./types";
 
@@ -24,7 +24,16 @@ export const createRepository = <T extends Entity>({
 	peer.on("open", (id) => {
 		console.log("Peer connection opened:", id);
 		defaultConnections.forEach((peerId) => {
-			peer.connect(peerId);
+			const conn = peer.connect(peerId);
+			conn.on("open", () => {
+				connections.set(peerId, conn);
+			});
+			conn.on("close", () => {
+				connections.delete(peerId);
+			});
+			conn.on("data", (data) => {
+				console.log("Received data:", data);
+			});
 		});
 	});
 
@@ -34,13 +43,19 @@ export const createRepository = <T extends Entity>({
 		conn.on("close", () => {
 			connections.delete(conn.peer);
 		});
-		conn.on("data", (data) => {
+		conn.on("data", async (data) => {
+			const message = data as { type: string; data: { state: CRDTState } };
+			const changed = await store.merge(message.data.state);
+			if (changed) {
+				notify();
+			}
 			console.log("Received data:", data);
 		});
 	});
 
 	const notify = async (broadcast = false) => {
 		if (broadcast) {
+			console.log("Broadcasting state to peers:", connections);
 			const state = await store.getState();
 			connections.forEach((conn) => {
 				conn.send({ type: "send-state", data: { state } });
@@ -75,8 +90,12 @@ export const createRepository = <T extends Entity>({
 				conn.on("close", () => {
 					connections.delete(peerId);
 				});
-				conn.on("data", (data) => {
-					console.log("Received data:", data);
+				conn.on("data", async (data) => {
+					const message = data as { type: string; data: { state: CRDTState } };
+					const changed = await store.merge(message.data.state);
+					if (changed) {
+						notify();
+					}
 				});
 				conn.on("open", () => {
 					connections.set(peerId, conn);
