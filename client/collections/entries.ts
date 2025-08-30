@@ -1,4 +1,4 @@
-import { createPeerJsNetworker } from "@crdt/networking";
+// import { createPeerJsNetworker } from "@crdt/networking";
 import { createIdbPersister } from "@crdt/persistence";
 import { createRepository } from "@crdt/repo";
 
@@ -44,10 +44,11 @@ const persister = createIdbPersister({
 	dbName: "journal",
 });
 
-const networker = createPeerJsNetworker(getDeviceId());
+const STORAGE_KEY = "connections";
 
 export const entryRepo = createRepository<Entry>({
 	collectionName: "entries",
 	persister,
-	networker,
+	deviceId: getDeviceId(),
+	defaultConnections: JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"),
 });

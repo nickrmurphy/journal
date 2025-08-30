@@ -1,16 +1,20 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { getDeviceId } from "../collections/entries";
 import { Button } from "./Button";
+import { useConnections } from "./Connections";
 import { useRepo } from "./RepoContext";
 
 export const NetworkContent = () => {
+	const { connections, addConnection } = useConnections();
 	const { repo } = useRepo();
 
 	const handleLink = () => {
 		const peerId = prompt("Enter the ID of the device you want to connect to");
 		if (typeof peerId === "string") {
-			repo.connect(peerId);
-			console.log("Connected to peer:", peerId);
+			repo.connect(peerId).then(() => {
+				console.log("Connected to peer:", peerId);
+				addConnection(peerId);
+			});
 		}
 	};
 
@@ -24,17 +28,17 @@ export const NetworkContent = () => {
 					</Button>
 				</div>
 				<div className="space-y-1">
-					{/* {connections.length === 0 && (
+					{connections.length === 0 && (
 						<div className="p-2 text-muted-foreground">No connections yet.</div>
 					)}
 					{connections.map((connection) => (
 						<div
-							key={connection.connectionId}
+							key={connection}
 							className="flex items-center justify-between p-2"
 						>
-							<span className="font-medium">{connection.peer}</span>
+							<span className="font-medium">{connection}</span>
 						</div>
-					))} */}
+					))}
 				</div>
 			</div>
 			<div className="flex flex-col gap-4 rounded-xl bg-card p-4">

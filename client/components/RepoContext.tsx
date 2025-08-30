@@ -14,6 +14,7 @@ import {
 	entry,
 	entryRepo,
 } from "../collections/entries";
+import { useConnections } from "./Connections";
 
 const RepoContext = createContext<{
 	data: Entry[];

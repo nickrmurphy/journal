@@ -15,5 +15,5 @@ export type Repository<T extends Entity> = {
 	materialize: () => Promise<T[]>;
 	mutate: (data: Partial<T> & { $id: string }) => void;
 	subscribe: (fn: () => void) => () => void;
-	connect: (peerId: PeerId) => void;
+	connect: (peerId: PeerId) => Promise<void>;
 };

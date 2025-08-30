@@ -1,4 +1,5 @@
-import type { Networker, PeerId } from "../networking";
+import { type DataConnection, Peer } from "peerjs";
+import type { PeerId } from "../networking";
 import type { Persister } from "../persistence";
 import type { Entity } from "../state";
 import { createStore } from "../state";
@@ -7,32 +8,43 @@ import type { Repository } from "./types";
 export const createRepository = <T extends Entity>({
 	collectionName,
 	persister,
-	networker: _networker,
+	deviceId,
+	defaultConnections,
 }: {
 	collectionName: string;
 	persister: Persister;
-	networker: Networker;
+	deviceId: string;
+	defaultConnections: PeerId[];
 }): Repository<T> => {
 	const subscribers = new Set<() => void>();
 	const store = createStore<T>({ collectionName, persister });
-	const networker = (() => {
-		_networker.onConnect(async (peer) => {
-			const state = await store.getState();
-			_networker.sendTo(peer, { type: "send-state", data: { state } });
+	const connections = new Map<PeerId, DataConnection>();
+	const peer = new Peer(deviceId);
+
+	peer.on("open", (id) => {
+		console.log("Peer connection opened:", id);
+		defaultConnections.forEach((peerId) => {
+			peer.connect(peerId);
 		});
-		_networker.listen("send-state", async (_, data) => {
-			const changed = await store.merge(data.state);
-			if (changed) {
-				notify();
-			}
+	});
+
+	peer.on("connection", (conn) => {
+		console.log("New connection:", conn.peer);
+		connections.set(conn.peer, conn);
+		conn.on("close", () => {
+			connections.delete(conn.peer);
 		});
-		return _networker;
-	})();
+		conn.on("data", (data) => {
+			console.log("Received data:", data);
+		});
+	});
 
 	const notify = async (broadcast = false) => {
 		if (broadcast) {
 			const state = await store.getState();
-			networker.send({ type: "send-state", data: { state } });
+			connections.forEach((conn) => {
+				conn.send({ type: "send-state", data: { state } });
+			});
 		}
 		subscribers.forEach((fn) => fn());
 	};
@@ -51,8 +63,29 @@ export const createRepository = <T extends Entity>({
 				subscribers.delete(fn);
 			};
 		},
-		connect: (peerId: PeerId) => {
-			networker.connect(peerId);
-		},
+		connect: (peerId: PeerId) =>
+			new Promise<void>((resolve, reject) => {
+				if (connections.has(peerId)) {
+					resolve();
+					return;
+				}
+
+				console.log("Connecting to peer:", peerId);
+				const conn = peer.connect(peerId);
+				conn.on("close", () => {
+					connections.delete(peerId);
+				});
+				conn.on("data", (data) => {
+					console.log("Received data:", data);
+				});
+				conn.on("open", () => {
+					connections.set(peerId, conn);
+					resolve();
+				});
+				conn.on("error", (err) => {
+					console.error("Connection error:", err);
+					reject(err);
+				});
+			}),
 	};
 };
