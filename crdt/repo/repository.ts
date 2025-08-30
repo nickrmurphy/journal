@@ -77,15 +77,14 @@ export const createRepository = <T extends Entity>({
 		connect: (peerId: PeerId) => {
 			return new Promise<void>((resolve, reject) => {
 				if (connections.has(peerId)) {
-					resolve();
-					return;
+					return resolve();
 				}
 
 				const conn = peer.connect(peerId);
 
 				conn.on("error", (err) => {
 					console.error("Connection error:", err);
-					reject(err);
+					return reject(err);
 				});
 
 				registerConnection(conn);
