@@ -21,30 +21,10 @@ export const createRepository = <T extends Entity>({
 	const connections = new Map<PeerId, DataConnection>();
 	const peer = new Peer(deviceId);
 
-	peer.on("open", (id) => {
-		console.log("Peer connection opened:", id);
-		defaultConnections.forEach((peerId) => {
-			const conn = peer.connect(peerId);
-			conn.on("open", () => {
-				connections.set(peerId, conn);
-			});
-			conn.on("close", () => {
-				connections.delete(peerId);
-			});
-			conn.on("data", async (data) => {
-				const message = data as { type: string; data: { state: CRDTState } };
-				const changed = await store.merge(message.data.state);
-				if (changed) {
-					notify();
-				}
-				console.log("Received data:", data);
-			});
+	const registerConnection = (conn: DataConnection) => {
+		conn.on("open", () => {
+			connections.set(conn.peer, conn);
 		});
-	});
-
-	peer.on("connection", (conn) => {
-		console.log("New connection:", conn.peer);
-		connections.set(conn.peer, conn);
 		conn.on("close", () => {
 			connections.delete(conn.peer);
 		});
@@ -54,19 +34,30 @@ export const createRepository = <T extends Entity>({
 			if (changed) {
 				notify();
 			}
-			console.log("Received data:", data);
+		});
+	};
+
+	peer.on("open", (id) => {
+		console.log("Peer connection opened:", id);
+		defaultConnections.forEach((peerId) => {
+			const conn = peer.connect(peerId);
+			registerConnection(conn);
 		});
 	});
 
+	peer.on("connection", (conn) => {
+		connections.set(conn.peer, conn);
+		registerConnection(conn);
+	});
+
 	const notify = async (broadcast = false) => {
+		subscribers.forEach((fn) => fn());
 		if (broadcast) {
-			console.log("Broadcasting state to peers:", connections);
 			const state = await store.getState();
 			connections.forEach((conn) => {
 				conn.send({ type: "send-state", data: { state } });
 			});
 		}
-		subscribers.forEach((fn) => fn());
 	};
 
 	return {
@@ -83,33 +74,22 @@ export const createRepository = <T extends Entity>({
 				subscribers.delete(fn);
 			};
 		},
-		connect: (peerId: PeerId) =>
-			new Promise<void>((resolve, reject) => {
+		connect: (peerId: PeerId) => {
+			return new Promise<void>((resolve, reject) => {
 				if (connections.has(peerId)) {
 					resolve();
 					return;
 				}
 
-				console.log("Connecting to peer:", peerId);
 				const conn = peer.connect(peerId);
-				conn.on("close", () => {
-					connections.delete(peerId);
-				});
-				conn.on("data", async (data) => {
-					const message = data as { type: string; data: { state: CRDTState } };
-					const changed = await store.merge(message.data.state);
-					if (changed) {
-						notify();
-					}
-				});
-				conn.on("open", () => {
-					connections.set(peerId, conn);
-					resolve();
-				});
+
 				conn.on("error", (err) => {
 					console.error("Connection error:", err);
 					reject(err);
 				});
-			}),
+
+				registerConnection(conn);
+			});
+		},
 	};
 };
