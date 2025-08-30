@@ -31,7 +31,12 @@ export const createRepository = <T extends Entity>({
 			conn.on("close", () => {
 				connections.delete(peerId);
 			});
-			conn.on("data", (data) => {
+			conn.on("data", async (data) => {
+				const message = data as { type: string; data: { state: CRDTState } };
+				const changed = await store.merge(message.data.state);
+				if (changed) {
+					notify();
+				}
 				console.log("Received data:", data);
 			});
 		});
