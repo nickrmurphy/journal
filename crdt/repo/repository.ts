@@ -21,7 +21,11 @@ export const createRepository = <T extends Entity>({
 	const connections = new Map<PeerId, DataConnection>();
 	const peer = new Peer(deviceId);
 
-	const registerConnection = (conn: DataConnection) => {
+	const registerConnection = (conn: DataConnection, setImmediately = false) => {
+		if (setImmediately) {
+			connections.set(conn.peer, conn);
+		}
+
 		conn.on("open", () => {
 			connections.set(conn.peer, conn);
 		});
@@ -32,13 +36,12 @@ export const createRepository = <T extends Entity>({
 			const message = data as { type: string; data: { state: CRDTState } };
 			const changed = await store.merge(message.data.state);
 			if (changed) {
-				notify();
+				subscribers.forEach((fn) => fn());
 			}
 		});
 	};
 
-	peer.on("open", (id) => {
-		console.log("Peer connection opened:", id);
+	peer.on("open", () => {
 		defaultConnections.forEach((peerId) => {
 			const conn = peer.connect(peerId);
 			registerConnection(conn);
@@ -46,26 +49,18 @@ export const createRepository = <T extends Entity>({
 	});
 
 	peer.on("connection", (conn) => {
-		connections.set(conn.peer, conn);
-		registerConnection(conn);
+		registerConnection(conn, true);
 	});
-
-	const notify = async (broadcast = false) => {
-		subscribers.forEach((fn) => fn());
-		if (broadcast) {
-			const state = await store.getState();
-			connections.forEach((conn) => {
-				conn.send({ type: "send-state", data: { state } });
-			});
-		}
-	};
 
 	return {
 		materialize: () => store.materialize(),
 		mutate: async (data) => {
 			const changed = await store.mutate(data);
 			if (changed) {
-				notify(true);
+				const state = await store.getState();
+				connections.forEach((conn) => {
+					conn.send({ type: "send-state", data: { state } });
+				});
 			}
 		},
 		subscribe: (fn: () => void) => {
