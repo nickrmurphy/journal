@@ -2,18 +2,20 @@ import type { CRDTState, Operation } from "./types";
 
 const merge = (state: CRDTState, next: Operation): [CRDTState, boolean] => {
 	// find matching entityId/path
-	const current = state.find((op) => op[1] === next[1] && op[2] === next[2]);
+	const current = state.find(
+		(op) => op.entityId === next.entityId && op.path === next.path,
+	);
 
 	if (!current) {
 		return [[...state, next], true];
 	}
 
-	if (current[0] > next[0]) {
+	if (current.eventstamp > next.eventstamp) {
 		return [[...state], false];
 	}
 
 	const newState = state.filter(
-		(op) => !(op[1] === next[1] && op[2] === next[2]),
+		(op) => !(op.entityId === next.entityId && op.path === next.path),
 	);
 
 	return [[...newState, next], true];

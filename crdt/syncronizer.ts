@@ -1,4 +1,4 @@
-import type { CRDTState, Operation } from "./types";
+import type { CRDTState, Operation } from "./state/types";
 
 export const hash = async (val: string) => {
 	const data = new TextEncoder().encode(val);

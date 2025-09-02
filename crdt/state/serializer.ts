@@ -1,28 +1,22 @@
 import { flatten, unflatten } from "flat";
-import type {
-	Entity,
-	EntityId,
-	Eventstamp,
-	JSONValue,
-	Operation,
-} from "./types";
+import type { Entity, EntityId, JSONValue, Operation } from "./types";
 
 export const serialize = <T extends Entity>(
-	eventstamp: Eventstamp,
+	eventstamp: string,
 	entityId: EntityId,
 	data: Partial<T>,
 ): Operation[] => {
 	const operations: Operation[] = [];
 	const flattened: Record<string, JSONValue> = flatten(data);
 	for (const [path, value] of Object.entries(flattened)) {
-		operations.push([eventstamp, entityId, path, value]);
+		operations.push({ eventstamp, entityId, path, value });
 	}
 	return operations;
 };
 
 export const deserialize = <T extends Entity>(data: Operation[]): T[] => {
 	const map = new Map<EntityId, Partial<T>>();
-	for (const [, entityId, path, value] of data) {
+	for (const { entityId, path, value } of data) {
 		if (!map.has(entityId)) {
 			map.set(entityId, {});
 		}

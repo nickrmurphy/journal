@@ -13,9 +13,12 @@ export type JSONValue =
 	| JSONArray;
 export type EntityId = string;
 export type Entity = { $id: EntityId } & Record<string, JSONValue>;
-export type Eventstamp = string;
-export type Path = string;
-export type Operation = [Eventstamp, EntityId, Path, JSONValue];
+export type Operation = {
+	eventstamp: string;
+	entityId: string;
+	path: string;
+	value: JSONValue;
+};
 export type CRDTState = Operation[];
 
 export type StoreOptions = {
