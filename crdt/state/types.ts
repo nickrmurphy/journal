@@ -1,18 +1,6 @@
 import type { Persister } from "@crdt/persistence";
 
-type JSONArray = JSONValue[];
-type JSONObject = {
-	[key: string]: JSONValue;
-};
-export type JSONValue =
-	| string
-	| number
-	| boolean
-	| null
-	| JSONObject
-	| JSONArray;
-export type EntityId = string;
-export type Entity = { $id: EntityId } & Record<string, JSONValue>;
+export type Entity = { $id: string } & Record<string, JSONValue>;
 export type Operation = {
 	eventstamp: string;
 	entityId: string;
@@ -28,7 +16,7 @@ export type StoreOptions = {
 
 export type Store<T> = {
 	materialize: () => Promise<T[]>;
-	mutate: (data: Partial<T> & { $id: EntityId }) => Promise<boolean>;
+	mutate: (data: Partial<T> & { $id: string }) => Promise<boolean>;
 	merge: (data: CRDTState) => Promise<boolean>;
 	getState: () => Promise<CRDTState>;
 };

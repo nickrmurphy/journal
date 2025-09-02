@@ -1,9 +1,9 @@
 import { flatten, unflatten } from "flat";
-import type { Entity, EntityId, JSONValue, Operation } from "./types";
+import type { Entity, Operation } from "./types";
 
 export const serialize = <T extends Entity>(
 	eventstamp: string,
-	entityId: EntityId,
+	entityId: string,
 	data: Partial<T>,
 ): Operation[] => {
 	const operations: Operation[] = [];
@@ -15,18 +15,22 @@ export const serialize = <T extends Entity>(
 };
 
 export const deserialize = <T extends Entity>(data: Operation[]): T[] => {
-	const map = new Map<EntityId, Partial<T>>();
-	for (const { entityId, path, value } of data) {
-		if (!map.has(entityId)) {
-			map.set(entityId, {});
-		}
-		// biome-ignore lint/style/noNonNullAssertion: <checked above>
-		(map.get(entityId)! as Record<string, JSONValue>)[path] = value;
-	}
+	const entitiesById = data.reduce(
+		(entities, { entityId, path, value }) => {
+			const existingProps = entities[entityId] || {};
+			return {
+				...entities,
+				[entityId]: {
+					...existingProps,
+					[path]: value,
+				},
+			};
+		},
+		{} as Record<string, Record<string, JSONValue>>,
+	);
 
-	const entities: T[] = [];
-	for (const [entityId, props] of map) {
-		entities.push({ ...unflatten(props), $id: entityId } as T);
-	}
-	return entities;
+	return Object.entries(entitiesById).map(([entityId, props]) => ({
+		...unflatten(props),
+		$id: entityId,
+	})) as T[];
 };

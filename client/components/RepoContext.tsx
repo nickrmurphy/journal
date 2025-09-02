@@ -1,4 +1,3 @@
-import type { EntityId } from "@crdt/state";
 import {
 	createContext,
 	type ReactNode,
@@ -14,7 +13,6 @@ import {
 	entry,
 	entryRepo,
 } from "../collections/entries";
-import { useConnections } from "./Connections";
 
 const RepoContext = createContext<{
 	data: Entry[];
@@ -70,7 +68,7 @@ export function useMutate() {
 
 	const update = useCallback(
 		async (
-			id: EntityId,
+			id: string,
 			mutator: (current: Entry) => Partial<Omit<Entry, "$id">>,
 		) => {
 			const currentData = await repo.materialize();

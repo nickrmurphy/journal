@@ -28,5 +28,5 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true
 	},
-	"include": ["client", "crdt"]
+	"include": ["client", "crdt", "global.d.ts"]
 }
