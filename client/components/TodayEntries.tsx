@@ -37,7 +37,7 @@ export const TodayEntries = (props: {
 	}, []);
 
 	const data = useQuery((d) =>
-		d
+		Object.values(d)
 			.filter((e) => e.date === todayISO())
 			.sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1)),
 	);

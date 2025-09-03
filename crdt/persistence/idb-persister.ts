@@ -1,4 +1,4 @@
-import type { Persister } from "./types";
+import type { PersistenceProvider } from "./types";
 
 const openDB = (dbName: string): Promise<IDBDatabase> => {
 	return new Promise((resolve, reject) => {
@@ -40,7 +40,7 @@ type IdbPersisterOptions = {
 
 export const createIdbPersister = ({
 	dbName,
-}: IdbPersisterOptions): Persister => {
+}: IdbPersisterOptions): PersistenceProvider => {
 	const dbPromise = openDB(dbName);
 
 	return {

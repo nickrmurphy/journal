@@ -11,31 +11,30 @@ import {
 	type CreateEntryInput,
 	type Entry,
 	entry,
-	entryRepo,
+	entryRepository,
 } from "../collections/entries";
 
 const RepoContext = createContext<{
-	data: Entry[];
-	repo: typeof entryRepo;
+	data: Record<string, Entry>;
+	repo: typeof entryRepository;
 } | null>(null);
 
 export function RepoProvider({ children }: { children: ReactNode }) {
-	const [data, setData] = useState<Entry[]>([]);
+	const [data, setData] = useState<Record<string, Entry>>({});
 
 	useEffect(() => {
-		const refreshData = async () => {
-			await entryRepo.materialize().then(setData);
-		};
+		const refreshData = () =>
+			entryRepository.get().then((data) => setData(data || {}));
 
 		refreshData();
-		const unsub = entryRepo.subscribe(refreshData);
+		const unsub = entryRepository.on("mutate", refreshData);
 
 		return () => {
 			unsub();
 		};
 	}, []);
 
-	const contextValue = useMemo(() => ({ data, repo: entryRepo }), [data]);
+	const contextValue = useMemo(() => ({ data, repo: entryRepository }), [data]);
 
 	return (
 		<RepoContext.Provider value={contextValue}>{children}</RepoContext.Provider>
@@ -50,7 +49,7 @@ export function useRepo() {
 	return repo;
 }
 
-export function useQuery<T>(selector: (data: Entry[]) => T) {
+export function useQuery<T>(selector: (data: Record<string, Entry>) => T) {
 	const { data } = useRepo();
 	return useMemo(() => selector(data), [data, selector]);
 }
@@ -61,7 +60,7 @@ export function useMutate() {
 	const insert = useCallback(
 		(data: CreateEntryInput) => {
 			const parsedData = entry(data);
-			repo.mutate(parsedData);
+			repo.set({ [parsedData.$id]: parsedData });
 		},
 		[repo],
 	);
@@ -71,15 +70,12 @@ export function useMutate() {
 			id: string,
 			mutator: (current: Entry) => Partial<Omit<Entry, "$id">>,
 		) => {
-			const currentData = await repo.materialize();
-			const current = currentData.find((entry) => entry.$id === id);
+			const currentData = (await repo.get()) || {};
+			const current = currentData[id];
 			if (!current) return;
 
 			const modified = mutator(current);
-			await repo.mutate({
-				$id: id,
-				...modified,
-			});
+			await repo.set({ [id]: { ...current, ...modified } });
 		},
 		[repo],
 	);

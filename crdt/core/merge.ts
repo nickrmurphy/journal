@@ -4,9 +4,7 @@ const findField = (state: State, next: Field) =>
 	state.find((f) => f.path === next.path);
 
 const replaceField = (state: State, next: Field) => {
-	const removed = state.filter(
-		(existing) => existing.path !== next.path,
-	);
+	const removed = state.filter((existing) => existing.path !== next.path);
 	return [...removed, next];
 };
 

@@ -1,6 +1,6 @@
-// import { createPeerJsNetworker } from "@crdt/networking";
-import { createIdbPersister } from "@crdt/persistence";
-import { createRepository } from "@crdt/repo";
+import { createSystemClock } from "@crdt/clock/system";
+import { createIdbPersister } from "@crdt/persistence/idb-persister";
+import { createRepository } from "@crdt/repository/repo";
 
 export type Comment = {
 	id: string;
@@ -40,15 +40,14 @@ export const getDeviceId = () => {
 	return newId;
 };
 
-const persister = createIdbPersister({
+export const persister = createIdbPersister({
 	dbName: "journal",
 });
 
-const STORAGE_KEY = "connections";
-
-export const entryRepo = createRepository<Entry>({
-	collectionName: "entries",
-	persister,
-	deviceId: getDeviceId(),
-	defaultConnections: JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"),
-});
+export const entryRepository = createRepository<Record<string, Entry>>(
+	"entries",
+	{
+		clockProvider: createSystemClock(),
+		persistenceProvider: persister,
+	},
+);

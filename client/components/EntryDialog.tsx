@@ -27,7 +27,7 @@ export const EntryDialog = ({
 	const [commenting, setCommenting] = useState(false);
 	const [comment, setComment] = useState("");
 
-	const entry = useQuery((data) => data.find((entry) => entry.$id === entryId));
+	const entry = useQuery((data) => (entryId ? data[entryId] : undefined));
 
 	const handleCommentSubmit = () => {
 		if (!entryId) return;

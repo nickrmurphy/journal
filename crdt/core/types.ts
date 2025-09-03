@@ -8,4 +8,8 @@ export type Field = {
 	path: string;
 	value: JSONValue;
 };
+
 export type State = Field[];
+export type ClockProvider = {
+	tick: () => string;
+};

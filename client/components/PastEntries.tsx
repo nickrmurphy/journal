@@ -47,7 +47,7 @@ const DayEntries = (props: {
 export function PastEntries({ onSelect }: PastEntriesProps) {
 	const groups = useQuery((data) => {
 		// Only past entries
-		const filtered = data
+		const filtered = Object.values(data)
 			.filter((entry) => entry.date < todayISO())
 			// Sort by date desc, then createdAt desc
 			.sort((a, b) =>
