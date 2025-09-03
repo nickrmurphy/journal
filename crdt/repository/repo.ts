@@ -42,11 +42,9 @@ export const createRepository = <T extends JSONValue>(
 	return {
 		get: async () => {
 			const store = await storePromise;
-			console.log("Data s", store.get());
 			return store.get();
 		},
 		set: async (data: Partial<T>) => {
-			console.log("Data setting", data);
 			return maybeMutate(data);
 		},
 		on: (event: "mutate", listener: EventListener) => {
