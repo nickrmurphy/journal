@@ -3,12 +3,10 @@
  * State, in this context, is an array of Fields that describe a single object.
  */
 
-export type Field = {
-	eventstamp: string;
-	path: string;
-	value: JSONValue;
-};
-
+export type Eventstamp = string;
+export type Path = string;
+export type Value = JSONValue;
+export type Field = [Eventstamp, Path, Value];
 export type State = Field[];
 export type ClockProvider = {
 	tick: () => string;
