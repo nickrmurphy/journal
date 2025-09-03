@@ -1,4 +1,4 @@
-import type { Persister } from "@crdt/persistence";
+import type { Persister } from "./types";
 
 const openDB = (dbName: string): Promise<IDBDatabase> => {
 	return new Promise((resolve, reject) => {

@@ -1,4 +1,4 @@
-import { objectFromState, objectToState, mergeState } from "@crdt/core";
+import { mergeState, objectFromState, objectToState } from "@crdt/core";
 import type { State } from "@crdt/core/types";
 
 type Materializer<T> = () => T;
