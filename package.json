@@ -7,6 +7,7 @@
 		"dev": "vite",
 		"build": "tsc -b && vite build",
 		"check": "biome check --write",
+		"test": "bun test",
 		"preview": "vite preview",
 		"deploy": "bun check && wrangler deploy"
 	},

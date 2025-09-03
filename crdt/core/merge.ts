@@ -1,18 +1,17 @@
 import type { Field, State } from "./types";
 
 const findField = (state: State, next: Field) =>
-	state.find((f) => f.entityId === next.entityId && f.path === next.path);
+	state.find((f) => f.path === next.path);
 
 const replaceField = (state: State, next: Field) => {
 	const removed = state.filter(
-		(existing) =>
-			existing.entityId !== next.entityId || existing.path !== next.path,
+		(existing) => existing.path !== next.path,
 	);
 	return [...removed, next];
 };
 
 export const mergeField = (state: State, next: Field): [State, boolean] => {
-	// find matching entityId/path
+	// find matching path
 	const current = findField(state, next);
 	if (!current) {
 		return [[...state, next], true];

@@ -1,22 +1,22 @@
-import { entitiesFromState, entityToState, mergeState } from "@crdt/core";
-import type { Entity, State } from "@crdt/core/types";
+import { objectFromState, objectToState, mergeState } from "@crdt/core";
+import type { State } from "@crdt/core/types";
 
-type Materializer<T> = () => T[];
+type Materializer<T> = () => T;
 type StateAccessor = () => State;
 type Mutator<T> = (data: Partial<T>) => boolean;
 
 export type Store<T> = [Materializer<T>, Mutator<T>, StateAccessor];
 
-export const createStore = <T extends Entity>(
+export const createStore = <T extends Record<string, JSONValue>>(
 	defaultState: State = [],
 	eventstampProvider: () => string,
 ): Store<T> => {
 	let state = defaultState;
 
 	return [
-		() => entitiesFromState<T>(state),
+		() => objectFromState<T>(state),
 		(data: Partial<T>) => {
-			const t = entityToState(data, eventstampProvider);
+			const t = objectToState(data, eventstampProvider);
 			const [next, changed] = mergeState(state, t);
 			if (changed) {
 				state = next;

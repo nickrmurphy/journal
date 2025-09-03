@@ -1,37 +1,27 @@
 import { flatten, unflatten } from "flat";
-import { makeEntity, makeField } from "./shared";
-import type { Entity, State } from "./types";
+import type { State } from "./types";
 
-export const entityToState = <T extends Entity>(
-	entity: Partial<T> & { $id: string },
+export const objectToState = <T extends Record<string, JSONValue>>(
+	object: Partial<T>,
 	getEventstamp: () => string,
 ): State => {
-	const { $id, ...data } = entity;
-	const flattened: { [key: string]: JSONValue } = flatten(data);
-	return Object.entries(flattened).map((entry) =>
-		makeField($id, entry, getEventstamp),
-	);
+	const flattened: { [key: string]: JSONValue } = flatten(object);
+	return Object.entries(flattened).map(([path, value]) => ({
+		path,
+		value,
+		eventstamp: getEventstamp(),
+	}));
 };
 
-export const entitiesFromState = <T extends Entity>(state: State): T[] => {
-	const byEntityId = state.reduce(
+export const objectFromState = <T extends Record<string, JSONValue>>(
+	state: State,
+): T => {
+	const flattened = state.reduce(
 		(acc, field) => {
-			if (!acc[field.entityId]) {
-				acc[field.entityId] = [];
-			}
-			acc[field.entityId].push(field);
+			acc[field.path] = field.value;
 			return acc;
 		},
-		{} as Record<string, State>,
+		{} as Record<string, JSONValue>,
 	);
-	return Object.entries(byEntityId).map(([entityId, props]) => {
-		const flattened = props.reduce(
-			(acc, field) => {
-				acc[field.path] = field.value;
-				return acc;
-			},
-			{} as Record<string, JSONValue>,
-		);
-		return makeEntity(entityId, unflatten(flattened));
-	}) as T[];
+	return unflatten(flattened) as T;
 };

@@ -1,171 +1,257 @@
-import { expect, test } from "bun:test";
+import { test, expect } from "bun:test";
 import { mergeField, mergeState } from "./merge";
 import type { Field, State } from "./types";
 
-test("mergeField - adds new field when not present", () => {
+test("mergeField adds new field to empty state", () => {
 	const state: State = [];
-	const newField: Field = {
-		entityId: "entity1",
-		eventstamp: "2023-01-01T00:00:00Z",
+	const field: Field = {
 		path: "name",
-		value: "test",
+		value: "Alice",
+		eventstamp: "2023-01-01T00:00:00Z",
 	};
 
-	const [result, modified] = mergeField(state, newField);
+	const [newState, modified] = mergeField(state, field);
 
 	expect(modified).toBe(true);
-	expect(result).toEqual([newField]);
+	expect(newState).toHaveLength(1);
+	expect(newState).toContain(field);
 });
 
-test("mergeField - ignores older field", () => {
-	const existingField: Field = {
-		entityId: "entity1",
+test("mergeField adds new field to existing state", () => {
+	const state: State = [
+		{ path: "age", value: 30, eventstamp: "2023-01-01T00:00:00Z" },
+	];
+	const field: Field = {
+		path: "name",
+		value: "Bob",
 		eventstamp: "2023-01-02T00:00:00Z",
-		path: "name",
-		value: "current",
-	};
-	const state: State = [existingField];
-	const olderField: Field = {
-		entityId: "entity1",
-		eventstamp: "2023-01-01T00:00:00Z",
-		path: "name",
-		value: "old",
 	};
 
-	const [result, modified] = mergeField(state, olderField);
+	const [newState, modified] = mergeField(state, field);
 
-	expect(modified).toBe(false);
-	expect(result).toEqual(state);
+	expect(modified).toBe(true);
+	expect(newState).toHaveLength(2);
+	expect(newState).toContain(field);
+	expect(newState).toContain(state[0]);
 });
 
-test("mergeField - replaces with newer field", () => {
-	const existingField: Field = {
-		entityId: "entity1",
-		eventstamp: "2023-01-01T00:00:00Z",
-		path: "name",
-		value: "old",
-	};
-	const state: State = [existingField];
+test("mergeField replaces field with newer eventstamp", () => {
+	const state: State = [
+		{ path: "name", value: "Charlie", eventstamp: "2023-01-01T00:00:00Z" },
+	];
 	const newerField: Field = {
-		entityId: "entity1",
+		path: "name",
+		value: "David",
 		eventstamp: "2023-01-02T00:00:00Z",
-		path: "name",
-		value: "new",
 	};
 
-	const [result, modified] = mergeField(state, newerField);
+	const [newState, modified] = mergeField(state, newerField);
 
 	expect(modified).toBe(true);
-	expect(result).toEqual([newerField]);
+	expect(newState).toHaveLength(1);
+	expect(newState[0]).toEqual(newerField);
 });
 
-test("mergeField - handles different entity IDs", () => {
-	const existingField: Field = {
-		entityId: "entity1",
-		eventstamp: "2023-01-01T00:00:00Z",
+test("mergeField ignores field with older eventstamp", () => {
+	const currentField: Field = {
 		path: "name",
-		value: "entity1-name",
+		value: "Eve",
+		eventstamp: "2023-01-02T00:00:00Z",
 	};
-	const state: State = [existingField];
-	const differentEntityField: Field = {
-		entityId: "entity2",
-		eventstamp: "2023-01-01T00:00:00Z",
+	const state: State = [currentField];
+	const olderField: Field = {
 		path: "name",
-		value: "entity2-name",
-	};
-
-	const [result, modified] = mergeField(state, differentEntityField);
-
-	expect(modified).toBe(true);
-	expect(result).toHaveLength(2);
-	expect(result).toContain(existingField);
-	expect(result).toContain(differentEntityField);
-});
-
-test("mergeField - handles different paths", () => {
-	const existingField: Field = {
-		entityId: "entity1",
+		value: "Frank",
 		eventstamp: "2023-01-01T00:00:00Z",
-		path: "name",
-		value: "test-name",
-	};
-	const state: State = [existingField];
-	const differentPathField: Field = {
-		entityId: "entity1",
-		eventstamp: "2023-01-01T00:00:00Z",
-		path: "age",
-		value: 25,
 	};
 
-	const [result, modified] = mergeField(state, differentPathField);
-
-	expect(modified).toBe(true);
-	expect(result).toHaveLength(2);
-	expect(result).toContain(existingField);
-	expect(result).toContain(differentPathField);
-});
-
-test("mergeState - merges empty states", () => {
-	const state: State = [];
-	const nextState: State = [];
-
-	const [result, modified] = mergeState(state, nextState);
+	const [newState, modified] = mergeField(state, olderField);
 
 	expect(modified).toBe(false);
-	expect(result).toEqual([]);
+	expect(newState).toBe(state);
+	expect(newState[0]).toEqual(currentField);
 });
 
-test("mergeState - merges multiple fields", () => {
-	const state: State = [];
-	const nextState: State = [
-		{
-			entityId: "entity1",
-			eventstamp: "2023-01-01T00:00:00Z",
-			path: "name",
-			value: "test",
-		},
-		{
-			entityId: "entity1",
-			eventstamp: "2023-01-01T00:00:00Z",
-			path: "age",
-			value: 25,
-		},
+test("mergeField handles equal eventstamps by replacing", () => {
+	const state: State = [
+		{ path: "status", value: "draft", eventstamp: "2023-01-01T12:00:00Z" },
 	];
-
-	const [result, modified] = mergeState(state, nextState);
-
-	expect(modified).toBe(true);
-	expect(result).toEqual(nextState);
-});
-
-test("mergeState - handles mixed old and new fields", () => {
-	const existingField: Field = {
-		entityId: "entity1",
-		eventstamp: "2023-01-02T00:00:00Z",
-		path: "name",
-		value: "current",
+	const sameTimestampField: Field = {
+		path: "status",
+		value: "published",
+		eventstamp: "2023-01-01T12:00:00Z",
 	};
-	const state: State = [existingField];
 
-	const nextState: State = [
-		{
-			entityId: "entity1",
-			eventstamp: "2023-01-01T00:00:00Z", // older
-			path: "name",
-			value: "old",
-		},
-		{
-			entityId: "entity1",
-			eventstamp: "2023-01-03T00:00:00Z", // newer
-			path: "age",
-			value: 30,
-		},
-	];
-
-	const [result, modified] = mergeState(state, nextState);
+	const [newState, modified] = mergeField(state, sameTimestampField);
 
 	expect(modified).toBe(true);
-	expect(result).toHaveLength(2);
-	expect(result.find((f) => f.path === "name")?.value).toBe("current");
-	expect(result.find((f) => f.path === "age")?.value).toBe(30);
+	expect(newState).toHaveLength(1);
+	expect(newState[0]).toEqual(sameTimestampField);
+});
+
+test("mergeField preserves other fields when replacing", () => {
+	const state: State = [
+		{ path: "id", value: 123, eventstamp: "2023-01-01T00:00:00Z" },
+		{ path: "name", value: "Grace", eventstamp: "2023-01-01T00:00:00Z" },
+		{ path: "email", value: "grace@example.com", eventstamp: "2023-01-01T00:00:00Z" },
+	];
+	const updatedField: Field = {
+		path: "name",
+		value: "Grace Updated",
+		eventstamp: "2023-01-02T00:00:00Z",
+	};
+
+	const [newState, modified] = mergeField(state, updatedField);
+
+	expect(modified).toBe(true);
+	expect(newState).toHaveLength(3);
+	expect(newState.find(f => f.path === "id")).toEqual(state[0]);
+	expect(newState.find(f => f.path === "email")).toEqual(state[2]);
+	expect(newState.find(f => f.path === "name")).toEqual(updatedField);
+});
+
+test("mergeState merges empty states", () => {
+	const state1: State = [];
+	const state2: State = [];
+
+	const [newState, modified] = mergeState(state1, state2);
+
+	expect(modified).toBe(false);
+	expect(newState).toEqual([]);
+});
+
+test("mergeState merges state with empty state", () => {
+	const state1: State = [
+		{ path: "name", value: "Henry", eventstamp: "2023-01-01T00:00:00Z" },
+	];
+	const state2: State = [];
+
+	const [newState, modified] = mergeState(state1, state2);
+
+	expect(modified).toBe(false);
+	expect(newState).toEqual(state1);
+});
+
+test("mergeState merges empty state with state", () => {
+	const state1: State = [];
+	const state2: State = [
+		{ path: "age", value: 28, eventstamp: "2023-01-01T00:00:00Z" },
+	];
+
+	const [newState, modified] = mergeState(state1, state2);
+
+	expect(modified).toBe(true);
+	expect(newState).toEqual(state2);
+});
+
+test("mergeState merges non-overlapping fields", () => {
+	const state1: State = [
+		{ path: "name", value: "Ian", eventstamp: "2023-01-01T00:00:00Z" },
+	];
+	const state2: State = [
+		{ path: "age", value: 32, eventstamp: "2023-01-01T00:00:00Z" },
+		{ path: "email", value: "ian@example.com", eventstamp: "2023-01-01T00:00:00Z" },
+	];
+
+	const [newState, modified] = mergeState(state1, state2);
+
+	expect(modified).toBe(true);
+	expect(newState).toHaveLength(3);
+	expect(newState).toContainEqual(state1[0]);
+	expect(newState).toContainEqual(state2[0]);
+	expect(newState).toContainEqual(state2[1]);
+});
+
+test("mergeState handles conflicting fields with newer eventstamps", () => {
+	const state1: State = [
+		{ path: "name", value: "Jane", eventstamp: "2023-01-01T00:00:00Z" },
+		{ path: "status", value: "active", eventstamp: "2023-01-01T00:00:00Z" },
+	];
+	const state2: State = [
+		{ path: "name", value: "Jane Updated", eventstamp: "2023-01-02T00:00:00Z" },
+		{ path: "email", value: "jane@example.com", eventstamp: "2023-01-01T00:00:00Z" },
+	];
+
+	const [newState, modified] = mergeState(state1, state2);
+
+	expect(modified).toBe(true);
+	expect(newState).toHaveLength(3);
+	expect(newState.find(f => f.path === "name")).toEqual(state2[0]);
+	expect(newState.find(f => f.path === "status")).toEqual(state1[1]);
+	expect(newState.find(f => f.path === "email")).toEqual(state2[1]);
+});
+
+test("mergeState handles conflicting fields with older eventstamps", () => {
+	const state1: State = [
+		{ path: "title", value: "Current Title", eventstamp: "2023-01-02T00:00:00Z" },
+	];
+	const state2: State = [
+		{ path: "title", value: "Old Title", eventstamp: "2023-01-01T00:00:00Z" },
+		{ path: "content", value: "New content", eventstamp: "2023-01-02T00:00:00Z" },
+	];
+
+	const [newState, modified] = mergeState(state1, state2);
+
+	expect(modified).toBe(true);
+	expect(newState).toHaveLength(2);
+	expect(newState.find(f => f.path === "title")).toEqual(state1[0]);
+	expect(newState.find(f => f.path === "content")).toEqual(state2[1]);
+});
+
+test("mergeState reports no modification when all fields are older", () => {
+	const state1: State = [
+		{ path: "name", value: "Kevin", eventstamp: "2023-01-02T00:00:00Z" },
+		{ path: "age", value: 35, eventstamp: "2023-01-02T00:00:00Z" },
+	];
+	const state2: State = [
+		{ path: "name", value: "Kevin Old", eventstamp: "2023-01-01T00:00:00Z" },
+		{ path: "age", value: 34, eventstamp: "2023-01-01T00:00:00Z" },
+	];
+
+	const [newState, modified] = mergeState(state1, state2);
+
+	expect(modified).toBe(false);
+	expect(newState).toEqual(state1);
+});
+
+test("mergeState handles mixed scenarios", () => {
+	const state1: State = [
+		{ path: "id", value: 1, eventstamp: "2023-01-01T00:00:00Z" },
+		{ path: "name", value: "Laura", eventstamp: "2023-01-01T00:00:00Z" },
+		{ path: "status", value: "draft", eventstamp: "2023-01-02T00:00:00Z" },
+	];
+	const state2: State = [
+		{ path: "name", value: "Laura Updated", eventstamp: "2023-01-02T00:00:00Z" },
+		{ path: "status", value: "published", eventstamp: "2023-01-01T00:00:00Z" },
+		{ path: "tags", value: ["new", "important"], eventstamp: "2023-01-01T00:00:00Z" },
+	];
+
+	const [newState, modified] = mergeState(state1, state2);
+
+	expect(modified).toBe(true);
+	expect(newState).toHaveLength(4);
+	expect(newState.find(f => f.path === "id")).toEqual(state1[0]);
+	expect(newState.find(f => f.path === "name")).toEqual(state2[0]);
+	expect(newState.find(f => f.path === "status")).toEqual(state1[2]);
+	expect(newState.find(f => f.path === "tags")).toEqual(state2[2]);
+});
+
+test("mergeState with complex eventstamp comparisons", () => {
+	const state1: State = [
+		{ path: "field1", value: "a", eventstamp: "2023-01-01T12:00:00Z" },
+		{ path: "field2", value: "b", eventstamp: "2023-01-01T13:00:00Z" },
+	];
+	const state2: State = [
+		{ path: "field1", value: "updated_a", eventstamp: "2023-01-01T12:30:00Z" },
+		{ path: "field2", value: "updated_b", eventstamp: "2023-01-01T11:00:00Z" },
+		{ path: "field3", value: "c", eventstamp: "2023-01-01T14:00:00Z" },
+	];
+
+	const [newState, modified] = mergeState(state1, state2);
+
+	expect(modified).toBe(true);
+	expect(newState).toHaveLength(3);
+	expect(newState.find(f => f.path === "field1")?.value).toBe("updated_a");
+	expect(newState.find(f => f.path === "field2")?.value).toBe("b");
+	expect(newState.find(f => f.path === "field3")?.value).toBe("c");
 });
