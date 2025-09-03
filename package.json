@@ -6,9 +6,9 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc -b && vite build",
-		"check": "biome check --write .",
+		"check": "biome check --write",
 		"preview": "vite preview",
-		"deploy": "pnpm check && wrangler deploy"
+		"deploy": "bun check && wrangler deploy"
 	},
 	"dependencies": {
 		"@formkit/auto-animate": "^0.8.2",

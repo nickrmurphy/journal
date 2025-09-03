@@ -6,4 +6,4 @@ declare global {
 	type JSONValue = string | number | boolean | null | JSONObject | JSONArray;
 }
 
-export { };
+export {};
