@@ -1,42 +1,28 @@
-import { set } from "./mutator";
-import { deserialize, serialize } from "./serializer";
-import type { CRDTState, Entity, Store, StoreOptions } from "./types";
+import { entitiesFromState, entityToState, mergeState } from "@crdt/core";
+import type { Entity, State } from "@crdt/core/types";
 
-export const createStore = <T extends Entity>({
-	collectionName,
-	persister,
-}: StoreOptions): Store<T> => {
-	const load = async () => {
-		const loadedState = await persister.get<CRDTState>(collectionName);
-		return loadedState || [];
-	};
+type Materializer<T> = () => T[];
+type StateAccessor = () => State;
+type Mutator<T> = (data: Partial<T>) => boolean;
 
-	const persist = async (state: CRDTState) => {
-		return persister.set(collectionName, state);
-	};
+export type Store<T> = [Materializer<T>, Mutator<T>, StateAccessor];
 
-	return {
-		materialize: async () => {
-			const state = await load();
-			return state ? deserialize(state) : [];
-		},
-		mutate: async (data) => {
-			const state = await load();
-			const operations = serialize(new Date().toISOString(), data.$id, data);
-			const [newstate, changed] = set(state, operations);
+export const createStore = <T extends Entity>(
+	defaultState: State = [],
+	eventstampProvider: () => string,
+): Store<T> => {
+	let state = defaultState;
+
+	return [
+		() => entitiesFromState<T>(state),
+		(data: Partial<T>) => {
+			const t = entityToState(data, eventstampProvider);
+			const [next, changed] = mergeState(state, t);
 			if (changed) {
-				await persist(newstate);
+				state = next;
 			}
 			return changed;
 		},
-		merge: async (data) => {
-			const state = await load();
-			const [mergedState, changed] = set(state, data);
-			if (changed) {
-				await persist(mergedState);
-			}
-			return changed;
-		},
-		getState: () => load(),
-	};
+		() => state,
+	];
 };
