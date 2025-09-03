@@ -24,7 +24,14 @@ export const entitiesFromState = <T extends Entity>(state: State): T[] => {
 		},
 		{} as Record<string, State>,
 	);
-	return Object.entries(byEntityId).map(([entityId, props]) =>
-		makeEntity(entityId, unflatten(props)),
-	) as T[];
+	return Object.entries(byEntityId).map(([entityId, props]) => {
+		const flattened = props.reduce(
+			(acc, field) => {
+				acc[field.path] = field.value;
+				return acc;
+			},
+			{} as Record<string, JSONValue>,
+		);
+		return makeEntity(entityId, unflatten(flattened));
+	}) as T[];
 };
