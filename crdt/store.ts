@@ -1,4 +1,4 @@
-import { mergeState, objectFromState, objectToState } from "@crdt/core";
+import * as core from "@crdt/core";
 import type { ClockProvider, State } from "@crdt/core/types";
 
 type Materializer<T> = () => T | null;
@@ -10,27 +10,41 @@ export type Store<T> = {
 	get: Materializer<T>;
 	set: Mutator<T>;
 	getState: StateAccessor;
+	setState: (next: State) => boolean;
 	on: (event: "mutate", listener: EventListener) => () => void;
 };
 
-export const createStore = <T extends JSONValue>(
-	defaultState: State = [],
-	clockProvider: ClockProvider,
-): Store<T> => {
+export const createStore = <T extends JSONValue>({
+	defaultState,
+	clockProvider,
+}: {
+	defaultState: State;
+	clockProvider: ClockProvider;
+}): Store<T> => {
 	let state = defaultState;
 	const listeners = new Set<EventListener>();
 
-	return {
-		get: () => objectFromState<T>(state),
-		set: (data: Partial<T>) => {
-			const t = objectToState(data, clockProvider);
-			const [next, changed] = mergeState(state, t);
-			if (changed) {
-				state = next;
+	const maybeMutate = (next: State) => {
+		const [merged, changed] = core.mergeState(state, next);
+		if (changed) {
+			state = merged;
+			for (const listener of listeners) {
+				listener();
 			}
-			return changed;
+		}
+		return changed;
+	};
+
+	return {
+		get: () => core.objectFromState<T>(state),
+		set: (data: Partial<T>) => {
+			const next = core.objectToState(data, clockProvider);
+			return maybeMutate(next);
 		},
 		getState: () => state,
+		setState: (next: State) => {
+			return maybeMutate(next);
+		},
 		on: (event: "mutate", listener: EventListener) => {
 			if (event === "mutate") {
 				listeners.add(listener);

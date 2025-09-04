@@ -1,6 +1,6 @@
 import type { ClockProvider, State } from "@crdt/core/types";
 import type { PersistenceProvider } from "@crdt/persistence/types";
-import { createStore } from "./store";
+import { createStore } from "../store";
 
 type EventListener = () => void;
 
@@ -22,7 +22,10 @@ export const createRepository = <T extends JSONValue>(
 	const listeners = new Set<EventListener>();
 	const storePromise = (async () => {
 		const defaultState = await persistenceProvider.get<State>(key);
-		const store = createStore<T>(defaultState || [], clockProvider);
+		const store = createStore<T>({
+			defaultState: defaultState || [],
+			clockProvider,
+		});
 		return store;
 	})();
 

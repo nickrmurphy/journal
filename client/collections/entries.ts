@@ -1,6 +1,8 @@
 import { createSystemClock } from "@crdt/clock/system";
 import { createIdbPersister } from "@crdt/persistence/idb-persister";
+import { withPersistence } from "@crdt/persistence/with-persistence";
 import { createRepository } from "@crdt/repository/repo";
+import { createStore } from "@crdt/store";
 
 export type Comment = {
 	id: string;
@@ -44,10 +46,12 @@ export const persister = createIdbPersister({
 	dbName: "journal",
 });
 
-export const entryRepository = createRepository<Record<string, Entry>>(
-	"entries",
-	{
-		clockProvider: createSystemClock(),
-		persistenceProvider: persister,
-	},
-);
+const _entryStore = createStore<Record<string, Entry>>({
+	defaultState: [],
+	clockProvider: createSystemClock(),
+});
+
+export const entryStore = withPersistence(_entryStore, {
+	key: "entries",
+	persistenceProvider: persister,
+});

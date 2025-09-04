@@ -11,30 +11,34 @@ import {
 	type CreateEntryInput,
 	type Entry,
 	entry,
-	entryRepository,
+	entryStore,
 } from "../collections/entries";
 
 const RepoContext = createContext<{
 	data: Record<string, Entry>;
-	repo: typeof entryRepository;
+	repo: typeof entryStore;
 } | null>(null);
 
 export function RepoProvider({ children }: { children: ReactNode }) {
 	const [data, setData] = useState<Record<string, Entry>>({});
 
 	useEffect(() => {
-		const refreshData = () =>
-			entryRepository.get().then((data) => setData(data || {}));
+		const refreshData = () => {
+			entryStore.load().then(() => {
+				const data = entryStore.get();
+				setData(data || {});
+			});
+		};
 
 		refreshData();
-		const unsub = entryRepository.on("mutate", refreshData);
+		const unsub = entryStore.on("mutate", refreshData);
 
 		return () => {
 			unsub();
 		};
 	}, []);
 
-	const contextValue = useMemo(() => ({ data, repo: entryRepository }), [data]);
+	const contextValue = useMemo(() => ({ data, repo: entryStore }), [data]);
 
 	return (
 		<RepoContext.Provider value={contextValue}>{children}</RepoContext.Provider>
