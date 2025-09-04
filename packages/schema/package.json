@@ -9,6 +9,7 @@
 		"typescript": "^5"
 	},
 	"dependencies": {
+		"@journal/fn": "workspace:*",
 		"zod": "^4.1.5"
 	}
 }

@@ -1,3 +1,4 @@
+import { err, ok, type Result } from "@journal/fn";
 import { z } from "zod";
 
 export const entrySchema = z.object({
@@ -17,6 +18,11 @@ export const entrySchema = z.object({
 		)
 		.default([]),
 });
+
+export const makeEntry = (data: NewEntry): Result<Entry, string> => {
+	const parsed = entrySchema.safeParse(data);
+	return parsed.success ? ok(parsed.data) : err(parsed.error.message);
+};
 
 export type Entry = z.infer<typeof entrySchema>;
 export type NewEntry = z.input<typeof entrySchema>;

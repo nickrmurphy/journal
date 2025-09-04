@@ -3,11 +3,11 @@ import { err, ok } from "./result";
 
 describe("Result utilities", () => {
 	describe("ok", () => {
-		it("creates Ok object with correct tag and data", () => {
+		it("creates Ok object with correct ok field and data", () => {
 			const result = ok("test data");
 			expect(result).toEqual({
 				data: "test data",
-				tag: "ok",
+				ok: true,
 			});
 		});
 
@@ -17,9 +17,9 @@ describe("Result utilities", () => {
 				key: "value",
 			});
 
-			expect(numberResult.tag).toBe("ok");
+			expect(numberResult.ok).toBe(true);
 			expect(numberResult.data).toBe(42);
-			expect(objectResult.tag).toBe("ok");
+			expect(objectResult.ok).toBe(true);
 			expect(objectResult.data).toEqual({
 				key: "value",
 			});
@@ -27,11 +27,11 @@ describe("Result utilities", () => {
 	});
 
 	describe("err", () => {
-		it("creates Err object with correct tag and error", () => {
+		it("creates Err object with correct ok field and error", () => {
 			const result = err("error message");
 			expect(result).toEqual({
 				error: "error message",
-				tag: "err",
+				ok: false,
 			});
 		});
 
@@ -42,9 +42,9 @@ describe("Result utilities", () => {
 				message: "Server error",
 			});
 
-			expect(stringError.tag).toBe("err");
+			expect(stringError.ok).toBe(false);
 			expect(stringError.error).toBe("string error");
-			expect(objectError.tag).toBe("err");
+			expect(objectError.ok).toBe(false);
 			expect(objectError.error).toEqual({
 				code: 500,
 				message: "Server error",
@@ -53,15 +53,15 @@ describe("Result utilities", () => {
 	});
 
 	describe("type discrimination", () => {
-		it("can discriminate between ok and err using tag", () => {
+		it("can discriminate between ok and err using ok boolean", () => {
 			const okResult = ok("success");
 			const errResult = err("failure");
 
-			if (okResult.tag === "ok") {
+			if (okResult.ok) {
 				expect(okResult.data).toBe("success");
 			}
 
-			if (errResult.tag === "err") {
+			if (!errResult.ok) {
 				expect(errResult.error).toBe("failure");
 			}
 		});
@@ -72,9 +72,9 @@ describe("Result utilities", () => {
 			const nullResult = ok(null);
 			const undefinedResult = ok(undefined);
 
-			expect(nullResult.tag).toBe("ok");
+			expect(nullResult.ok).toBe(true);
 			expect(nullResult.data).toBe(null);
-			expect(undefinedResult.tag).toBe("ok");
+			expect(undefinedResult.ok).toBe(true);
 			expect(undefinedResult.data).toBe(undefined);
 		});
 
@@ -82,9 +82,9 @@ describe("Result utilities", () => {
 			const nullResult = err(null);
 			const undefinedResult = err(undefined);
 
-			expect(nullResult.tag).toBe("err");
+			expect(nullResult.ok).toBe(false);
 			expect(nullResult.error).toBe(null);
-			expect(undefinedResult.tag).toBe("err");
+			expect(undefinedResult.ok).toBe(false);
 			expect(undefinedResult.error).toBe(undefined);
 		});
 

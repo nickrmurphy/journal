@@ -34,6 +34,8 @@
       "name": "cli",
       "dependencies": {
         "@journal/crdt": "workspace:*",
+        "@journal/schema": "workspace:*",
+        "@journal/services": "workspace:*",
         "commander": "^14.0.0",
       },
       "devDependencies": {
@@ -80,7 +82,22 @@
     "packages/schema": {
       "name": "@journal/schema",
       "dependencies": {
+        "@journal/fn": "workspace:*",
         "zod": "^4.1.5",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
+      },
+    },
+    "packages/services": {
+      "name": "@journal/services",
+      "dependencies": {
+        "@journal/crdt": "workspace:*",
+        "@journal/fn": "workspace:*",
+        "@journal/schema": "workspace:*",
       },
       "devDependencies": {
         "@types/bun": "latest",
@@ -282,6 +299,8 @@
     "@journal/fn": ["@journal/fn@workspace:packages/fn"],
 
     "@journal/schema": ["@journal/schema@workspace:packages/schema"],
+
+    "@journal/services": ["@journal/services@workspace:packages/services"],
 
     "@journal/web": ["@journal/web@workspace:apps/web"],
 
