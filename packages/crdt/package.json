@@ -1,6 +1,23 @@
 {
 	"name": "@journal/crdt",
-	"module": "index.ts",
+	"exports": {
+		".": {
+			"import": "./index.ts",
+			"types": "./index.ts"
+		},
+		"./persistence": {
+			"import": "./persistence/index.ts",
+			"types": "./persistence/index.ts"
+		},
+		"./clock": {
+			"import": "./clock/index.ts",
+			"types": "./clock/index.ts"
+		},
+		"./store": {
+			"import": "./store.ts",
+			"types": "./store.ts"
+		}
+	},
 	"type": "module",
 	"devDependencies": {
 		"@types/bun": "latest"

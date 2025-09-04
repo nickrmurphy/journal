@@ -1,6 +1,6 @@
 import * as flat from "flat";
 import * as S from "./field";
-import type { ClockProvider, State } from "./types";
+import type { ClockProvider, JSONValue, State } from "./types";
 
 export const objectToState = <T extends JSONValue>(
 	object: Partial<T>,

@@ -1,5 +1,5 @@
-import type { State } from "@crdt/core/types";
 import Peer, { type DataConnection } from "peerjs";
+import type { State } from "../core/types";
 import { createConnectionManager } from "./connection-manager";
 import type {
 	ConnectionHandler,

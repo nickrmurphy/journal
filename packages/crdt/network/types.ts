@@ -1,5 +1,5 @@
-import type { State } from "@crdt/core/types";
 import type { DataConnection } from "peerjs";
+import type { State } from "../core/types";
 
 export type PushHandler = (data: State) => void;
 export type ConnectionHandler = (peerId: string) => void;

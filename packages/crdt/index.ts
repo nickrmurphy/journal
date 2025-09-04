@@ -1,3 +1,1 @@
-export const test = () => {
-	console.log("Hello via Bun!");
-};
+export * from "./core/types";

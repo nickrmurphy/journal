@@ -1,5 +1,5 @@
-import type { State } from "@crdt/core/types";
-import type { Store } from "@crdt/store";
+import type { State } from "../core/types";
+import type { Store } from "../store";
 import type { PersistenceProvider } from "./types";
 
 export type PersistentStore<T> = Store<T> & {
