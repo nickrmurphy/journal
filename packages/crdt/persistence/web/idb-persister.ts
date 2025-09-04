@@ -1,4 +1,4 @@
-import type { PersistenceProvider } from "./types";
+import type { PersistenceProvider } from "../types";
 
 const openDB = (dbName: string): Promise<IDBDatabase> => {
 	return new Promise((resolve, reject) => {

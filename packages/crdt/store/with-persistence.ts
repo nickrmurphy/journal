@@ -1,6 +1,6 @@
 import type { State } from "../core/types";
+import type { PersistenceProvider } from "../persistence";
 import type { Store } from "../store";
-import type { PersistenceProvider } from "./types";
 
 export type PersistentStore<T> = Store<T> & {
 	load: () => Promise<void>;

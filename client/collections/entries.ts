@@ -1,6 +1,6 @@
 import { createSystemClock } from "@journal/crdt/clock";
-import { createIdbPersister, withPersistence } from "@journal/crdt/persistence";
-import { createStore } from "@journal/crdt/store";
+import { createIdbPersister } from "@journal/crdt/persistence/web";
+import { createStore, withPersistence } from "@journal/crdt/store";
 
 export type Comment = {
 	id: string;

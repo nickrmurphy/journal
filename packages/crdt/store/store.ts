@@ -1,5 +1,5 @@
-import * as core from "./core";
-import type { ClockProvider, JSONValue, State } from "./core/types";
+import * as core from "../core";
+import type { ClockProvider, JSONValue, State } from "../core/types";
 
 type Materializer<T> = () => T | null;
 type StateAccessor = () => State;

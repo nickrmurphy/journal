@@ -5,17 +5,21 @@
 			"import": "./index.ts",
 			"types": "./index.ts"
 		},
-		"./persistence": {
-			"import": "./persistence/index.ts",
-			"types": "./persistence/index.ts"
+		"./persistence/bun": {
+			"import": "./persistence/bun/index.ts",
+			"types": "./persistence/bun/index.ts"
+		},
+		"./persistence/web": {
+			"import": "./persistence/web/index.ts",
+			"types": "./persistence/web/index.ts"
 		},
 		"./clock": {
 			"import": "./clock/index.ts",
 			"types": "./clock/index.ts"
 		},
 		"./store": {
-			"import": "./store.ts",
-			"types": "./store.ts"
+			"import": "./store/index.ts",
+			"types": "./store/index.ts"
 		}
 	},
 	"type": "module",
