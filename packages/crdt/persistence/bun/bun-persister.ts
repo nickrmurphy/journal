@@ -14,12 +14,14 @@ const get = async <T>(db: SQL, key: string): Promise<T | null> => {
 	const results = await db`
     SELECT value FROM keyval WHERE key = ${key}
   `;
-	return results[0] || null;
+	const row = results[0];
+	return row ? (JSON.parse(row.value) as T) : null;
 };
 
 const set = async <T>(db: SQL, key: string, value: T): Promise<void> => {
 	await db`
-    INSERT INTO keyval (key, value) VALUES (${key}, ${value})
+    INSERT INTO keyval (key, value) VALUES (${key}, ${JSON.stringify(value)})
+    ON CONFLICT(key) DO UPDATE SET value = excluded.value
   `;
 };
 

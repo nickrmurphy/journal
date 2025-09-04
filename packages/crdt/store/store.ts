@@ -15,10 +15,10 @@ export type Store<T> = {
 };
 
 export const createStore = <T extends JSONValue>({
-	defaultState,
+	defaultState = [],
 	clockProvider,
 }: {
-	defaultState: State;
+	defaultState?: State;
 	clockProvider: ClockProvider;
 }): Store<T> => {
 	let state = defaultState;
