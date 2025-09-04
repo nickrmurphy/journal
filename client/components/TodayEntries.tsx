@@ -2,7 +2,7 @@ import autoAnimate from "@formkit/auto-animate";
 import { ArrowTurnDownRightIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef } from "react";
 import { formatTime, todayISO } from "../utils/formatDate";
-import { useQuery } from "./RepoContext";
+import { useQuery } from "./StoreContext";
 
 const EntryComments = (props: {
 	comments: Array<{ id: string; content: string }>;

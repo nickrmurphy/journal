@@ -1,7 +1,7 @@
 import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
 import type { Entry } from "client/collections/entries";
 import { formatMonthDateYear, formatTime, todayISO } from "../utils/formatDate";
-import { useQuery } from "./RepoContext";
+import { useQuery } from "./StoreContext";
 
 type PastEntriesProps = {
 	onSelect: (id: string) => void;

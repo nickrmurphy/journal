@@ -13,7 +13,7 @@ import {
 import { useState } from "react";
 import { formatEntryDate } from "../utils/formatDate";
 import { Button } from "./Button";
-import { useMutate, useQuery } from "./RepoContext";
+import { useMutate, useQuery } from "./StoreContext";
 import { Textarea } from "./Textarea";
 
 export const EntryDialog = ({

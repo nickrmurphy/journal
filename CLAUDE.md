@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `bun dev` - Start the development server with Vite
 - `bun build` - Type check with TypeScript and build for production
 - `bun check` - Format and lint code with Biome (includes --write flag)
+- `bun test` - Run tests using Bun's built-in test runner
 - `bun preview` - Preview the production build locally
 - `bun deploy` - Run checks and deploy to Cloudflare Workers
 
@@ -25,7 +26,6 @@ This is a React + TypeScript journal application with a custom CRDT (Conflict-fr
 **CRDT System (`crdt/`)**
 - `core/` - CRDT merge algorithms and serialization
 - `state/` - Store implementation for managing CRDT state
-- `repo/` - Repository pattern with PeerJS networking
 - `persistence/` - IndexedDB persistence layer
 - `networking/` - PeerJS-based peer-to-peer networking
 

@@ -2,20 +2,13 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { getDeviceId } from "../collections/entries";
 import { Button } from "./Button";
 import { useConnections } from "./Connections";
-// import { useRepo } from "./RepoContext";
 
 export const NetworkContent = () => {
-	const { connections, addConnection } = useConnections();
-	// const { repo } = useRepo();
+	const { connections } = useConnections();
 
 	const handleLink = () => {
 		const peerId = prompt("Enter the ID of the device you want to connect to");
-		if (typeof peerId === "string") {
-			// repo.connect(peerId).then(() => {
-			// 	console.log("Connected to peer:", peerId);
-			// 	addConnection(peerId);
-			// });
-		}
+		console.log("Link to peer ID:", peerId);
 	};
 
 	return (

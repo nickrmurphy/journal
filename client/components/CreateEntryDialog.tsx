@@ -8,7 +8,7 @@ import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { entry } from "../collections/entries";
 import { Button } from "./Button";
-import { useMutate } from "./RepoContext";
+import { useMutate } from "./StoreContext";
 import { Textarea } from "./Textarea";
 
 export const CreateEntryDialog = ({

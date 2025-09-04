@@ -14,9 +14,9 @@ import {
 	entryStore,
 } from "../collections/entries";
 
-const RepoContext = createContext<{
+const StoreContext = createContext<{
 	data: Record<string, Entry>;
-	repo: typeof entryStore;
+	store: typeof entryStore;
 } | null>(null);
 
 export function RepoProvider({ children }: { children: ReactNode }) {
@@ -38,50 +38,49 @@ export function RepoProvider({ children }: { children: ReactNode }) {
 		};
 	}, []);
 
-	const contextValue = useMemo(() => ({ data, repo: entryStore }), [data]);
+	const contextValue = useMemo(() => ({ data, store: entryStore }), [data]);
 
 	return (
-		<RepoContext.Provider value={contextValue}>{children}</RepoContext.Provider>
+		<StoreContext.Provider value={contextValue}>
+			{children}
+		</StoreContext.Provider>
 	);
 }
 
-export function useRepo() {
-	const repo = useContext(RepoContext);
-	if (!repo) {
-		throw new Error("useRepo must be used within a RepoProvider");
+export function useStore() {
+	const store = useContext(StoreContext);
+	if (!store) {
+		throw new Error("useStore must be used within a StoreProvider");
 	}
-	return repo;
+	return store;
 }
 
 export function useQuery<T>(selector: (data: Record<string, Entry>) => T) {
-	const { data } = useRepo();
+	const { data } = useStore();
 	return useMemo(() => selector(data), [data, selector]);
 }
 
 export function useMutate() {
-	const { repo } = useRepo();
+	const { store } = useStore();
 
 	const insert = useCallback(
 		(data: CreateEntryInput) => {
 			const parsedData = entry(data);
-			repo.set({ [parsedData.$id]: parsedData });
+			store.set({ [parsedData.$id]: parsedData });
 		},
-		[repo],
+		[store],
 	);
 
 	const update = useCallback(
-		async (
-			id: string,
-			mutator: (current: Entry) => Partial<Omit<Entry, "$id">>,
-		) => {
-			const currentData = (await repo.get()) || {};
+		(id: string, mutator: (current: Entry) => Partial<Omit<Entry, "$id">>) => {
+			const currentData = store.get() || {};
 			const current = currentData[id];
 			if (!current) return;
 
 			const modified = mutator(current);
-			await repo.set({ [id]: { ...current, ...modified } });
+			store.set({ [id]: { ...current, ...modified } });
 		},
-		[repo],
+		[store],
 	);
 
 	return useMemo(() => ({ insert, update }), [insert, update]);

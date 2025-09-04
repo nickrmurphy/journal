@@ -1,7 +1,6 @@
 import { createSystemClock } from "@crdt/clock/system";
 import { createIdbPersister } from "@crdt/persistence/idb-persister";
 import { withPersistence } from "@crdt/persistence/with-persistence";
-import { createRepository } from "@crdt/repository/repo";
 import { createStore } from "@crdt/store";
 
 export type Comment = {
