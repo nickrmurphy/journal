@@ -14,10 +14,6 @@
 	"devDependencies": {
 		"@types/bun": "latest",
 		"@biomejs/biome": "2.1.4",
-		"@types/node": "^24.2.1",
-		"@types/react": "^19.1.9",
-		"@types/react-dom": "^19.1.7",
-		"globals": "^16.3.0",
 		"typescript": "~5.8.3",
 		"wrangler": "^4.28.1"
 	},
