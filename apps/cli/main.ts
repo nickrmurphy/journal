@@ -34,4 +34,18 @@ program
 		}
 	});
 
+program
+	.command("comment")
+	.description("Add a comment to a journal entry")
+	.argument("<entryId>", "ID of the journal entry")
+	.argument("<content>", "Content of the comment")
+	.action(async (entryId, content) => {
+		const result = await entryService.createComment(entryId, content);
+		if (result.ok) {
+			console.log("Comment added successfully.");
+		} else {
+			console.error("Failed to add comment:", result.error);
+		}
+	});
+
 program.parse();
