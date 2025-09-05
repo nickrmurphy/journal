@@ -3,14 +3,6 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
-	"scripts": {
-		"dev": "vite",
-		"build": "tsc -b && vite build",
-		"check": "biome check --write",
-		"test": "bun test",
-		"preview": "vite preview",
-		"deploy": "bun check && wrangler deploy"
-	},
 	"devDependencies": {
 		"@types/bun": "latest",
 		"@biomejs/biome": "2.1.4",
