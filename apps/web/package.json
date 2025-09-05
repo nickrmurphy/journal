@@ -13,7 +13,11 @@
 	"dependencies": {
 		"bun-plugin-tailwind": "^0.0.14",
 		"@journal/crdt": "workspace:*",
+		"@formkit/auto-animate": "^0.8.2",
+		"@headlessui/react": "^2.2.7",
+		"@heroicons/react": "^2.2.0",
 		"react": "^19",
+		"cva": "1.0.0-beta.4",
 		"react-dom": "^19",
 		"tailwindcss": "^4.0.6"
 	},

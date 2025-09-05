@@ -23,6 +23,9 @@
 		}
 	},
 	"type": "module",
+	"dependencies": {
+		"flat": "^6.0.1"
+	},
 	"devDependencies": {
 		"@types/bun": "latest"
 	},
