@@ -28,3 +28,16 @@ export function err<TError>(error?: TError): Err<TError> {
 		ok: false,
 	};
 }
+
+export function when<OkType, ErrType, OkR, ErrR>(
+	result: Result<OkType, ErrType>,
+	handlers: {
+		ok: (data: OkType) => Result<OkR, ErrR>;
+		err: (error: ErrType) => Result<OkR, ErrR>;
+	},
+): Result<OkR, ErrR> {
+	if (result.ok) {
+		return handlers.ok(result.data);
+	}
+	return handlers.err(result.error);
+}

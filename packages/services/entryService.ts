@@ -1,5 +1,5 @@
 import type { PersistentStore, Store } from "@journal/crdt/store";
-import { err, ok, type Result } from "@journal/fn";
+import { err, ok, type Result, when } from "@journal/fn";
 import { type Entry, makeComment, makeEntry } from "@journal/schema";
 
 const getEntries = (store: Store<Record<string, Entry>>) => {
@@ -9,14 +9,14 @@ const getEntries = (store: Store<Record<string, Entry>>) => {
 const createEntry = (
 	store: Store<Record<string, Entry>>,
 	content: string,
-): Result<void, string> => {
-	const entry = makeEntry({ content });
-	if (!entry.ok) {
-		return err(entry.error);
-	}
-	store.set({ [entry.data._id]: entry.data });
-	return ok();
-};
+): Result<void, string> =>
+	when(makeEntry({ content }), {
+		ok: (data) => {
+			store.set({ [data._id]: data });
+			return ok();
+		},
+		err: (error) => err(`Validation error: ${error}`),
+	});
 
 const createComment = (
 	store: Store<Record<string, Entry>>,
@@ -28,13 +28,14 @@ const createComment = (
 	if (!entry) {
 		return err("Entry not found");
 	}
-	const comment = makeComment({ content });
-	if (!comment.ok) {
-		return err(comment.error);
-	}
-	entry.comments.push(comment.data);
-	store.set({ [entryId]: entry });
-	return ok();
+	return when(makeComment({ content }), {
+		ok: (data) => {
+			entry.comments.push(data);
+			store.set({ [entryId]: entry });
+			return ok();
+		},
+		err: (error) => err(`Validation error: ${error}`),
+	});
 };
 
 export const createEntryService = (

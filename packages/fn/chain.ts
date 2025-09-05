@@ -4,7 +4,7 @@ export type Chain<T> = {
 	tap(fn: (value: T) => void): Chain<T>;
 };
 
-export const chain = <T>(value: T): Chain<T> => ({
+export const chain = <T = undefined>(value: T = undefined as T): Chain<T> => ({
 	get: () => value,
 	pipe: <U>(fn: (value: T) => U): Chain<U> => chain(fn(value)),
 	tap: (fn: (value: T) => void) => {

@@ -5,11 +5,12 @@ import { chain } from "@journal/fn";
 import type { Entry } from "@journal/schema";
 import { createEntryService } from "@journal/services";
 
-export const entryService = chain(
-	createStore<Record<string, Entry>>({
-		clockProvider: createSystemClock(),
-	}),
-)
+export const entryService = chain()
+	.pipe(() =>
+		createStore<Record<string, Entry>>({
+			clockProvider: createSystemClock(),
+		}),
+	)
 	.pipe((store) =>
 		withPersistence(store, {
 			key: "entries",
