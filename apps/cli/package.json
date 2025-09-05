@@ -1,10 +1,11 @@
 {
 	"name": "cli",
-	"module": "index.ts",
+	"module": "main.ts",
 	"type": "module",
 	"private": true,
 	"dependencies": {
 		"@journal/crdt": "workspace:*",
+		"@journal/fn": "workspace:*",
 		"@journal/schema": "workspace:*",
 		"@journal/services": "workspace:*",
 		"commander": "^14.0.0"

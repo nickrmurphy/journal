@@ -1,24 +1,7 @@
-import { createSystemClock } from "@journal/crdt/clock";
-import { createBunPersister } from "@journal/crdt/persistence/bun";
-import { createStore, withPersistence } from "@journal/crdt/store";
-import type { Entry } from "@journal/schema";
-import { createEntryService } from "@journal/services";
 import { Command } from "commander";
-
-const clockProvider = createSystemClock();
-const persistenceProvider = createBunPersister({
-	dbPath: "sqlite://journal.db",
-});
-const store = createStore<Record<string, Entry>>({
-	clockProvider,
-});
-const entryStore = withPersistence(store, {
-	key: "entries",
-	persistenceProvider,
-});
+import { entryService } from "./services";
 
 const program = new Command();
-const entryService = createEntryService(entryStore);
 
 program
 	.name("journal")
