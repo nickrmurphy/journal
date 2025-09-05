@@ -1,11 +1,9 @@
 import "./index.css";
-import * as crdt from "@journal/crdt";
 import { APITester } from "./APITester";
 import logo from "./logo.svg";
 import reactLogo from "./react.svg";
 
 export function App() {
-	crdt.test();
 	return (
 		<div className="relative z-10 mx-auto max-w-7xl p-8 text-center">
 			<div className="mb-8 flex items-center justify-center gap-8">
