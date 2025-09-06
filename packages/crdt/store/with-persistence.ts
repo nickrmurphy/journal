@@ -1,9 +1,13 @@
 import type { State } from "../core/types";
-import type { PersistenceProvider } from "../persistence";
 import type { Store } from "../store";
 
 export type PersistentStore<T> = Store<T> & {
 	load: () => Promise<void>;
+};
+
+export type PersistenceProvider = {
+	get: <T>(key: string) => Promise<T | null>;
+	set: <T>(key: string, data: T) => Promise<void>;
 };
 
 export const withPersistence = <T>(

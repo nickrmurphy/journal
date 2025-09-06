@@ -1,5 +1,5 @@
 import { SQL } from "bun";
-import type { PersistenceProvider } from "../types";
+import type { PersistenceProvider } from "../../store";
 
 const init = async (db: SQL) => {
 	await db`
