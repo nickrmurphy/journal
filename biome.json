@@ -10,7 +10,20 @@
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "tab"
+		"indentStyle": "tab",
+		"includes": [
+			"**/*.ts",
+			"**/*.tsx",
+			"**/*.js",
+			"**/*.jsx",
+			"**/*.json",
+			"**/*.jsonc",
+			"**/*.md",
+			"**/*.html",
+			"**/*.css",
+			"!**/node_modules/**",
+			"!**/dist/**"
+		]
 	},
 	"linter": {
 		"enabled": true,
@@ -22,7 +35,20 @@
 		},
 		"domains": {
 			"react": "recommended"
-		}
+		},
+		"includes": [
+			"**/*.ts",
+			"**/*.tsx",
+			"**/*.js",
+			"**/*.jsx",
+			"**/*.json",
+			"**/*.jsonc",
+			"**/*.md",
+			"**/*.html",
+			"**/*.css",
+			"!**/node_modules/**",
+			"!**/dist/**"
+		]
 	},
 	"javascript": {
 		"formatter": {

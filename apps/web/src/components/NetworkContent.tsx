@@ -36,7 +36,7 @@ export const NetworkContent = () => {
 	};
 
 	return (
-		<div className="space-y-4">
+		<div className="flex h-full flex-col gap-4">
 			<div className="flex flex-col gap-4 rounded-xl bg-card p-2">
 				<div className="flex items-center justify-between">
 					<h2 className="p-2 font-semibold">Connections</h2>
@@ -46,7 +46,9 @@ export const NetworkContent = () => {
 				</div>
 				<div className="space-y-1">
 					{connections.length === 0 && (
-						<div className="p-2 text-muted-foreground">No connections yet.</div>
+						<div className="p-2 text-center text-muted-foreground">
+							No connections yet.
+						</div>
 					)}
 					{connections.map((connection) => (
 						<div
@@ -57,21 +59,21 @@ export const NetworkContent = () => {
 						</div>
 					))}
 				</div>
+				<div className="flex flex-col gap-2 rounded-lg border p-3">
+					<p className="text-center text-muted-foreground text-xs">
+						To connect to this device, enter the ID found below.
+					</p>
+					<p className="select-text text-center text-muted-foreground text-xs">
+						{getDeviceId()}
+					</p>
+				</div>
 			</div>
-			<div className="flex flex-col gap-4 rounded-xl bg-card p-4">
-				<p className="text-center text-muted-foreground text-sm">
-					To connect to this device, enter the ID found below.
-				</p>
-				<p className="select-text text-center text-muted-foreground text-xs">
-					{getDeviceId()}
-				</p>
-			</div>
-			<div className="flex gap-4 rounded-xl bg-card p-4">
-				<Button variant="outline" onClick={handleExport}>
+			<div className="mt-auto flex gap-4 rounded-xl bg-card p-4">
+				<Button className="w-full" variant="outline" onClick={handleExport}>
 					<ArrowUpTrayIcon />
 					Export
 				</Button>
-				<Button variant="outline" onClick={handleImport}>
+				<Button className="w-full" variant="outline" onClick={handleImport}>
 					<ArrowDownTrayIcon />
 					Import
 				</Button>

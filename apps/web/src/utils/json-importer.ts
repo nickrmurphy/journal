@@ -181,8 +181,8 @@ export async function selectAndReadJsonFile(): Promise<FileReadResult> {
 			],
 		});
 
-		const file = await fileHandle!.getFile();
-		return await readJsonFile(file);
+		const file = await fileHandle?.getFile();
+		return await readJsonFile(file!);
 	} catch (error) {
 		if (error instanceof Error && error.name === "AbortError") {
 			return {
