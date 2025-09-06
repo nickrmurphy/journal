@@ -1,0 +1,14 @@
+{
+	"name": "@journal/components",
+	"module": "index.ts",
+	"type": "module",
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"goober": "^2.1.16"
+	}
+}
