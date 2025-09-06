@@ -1,5 +1,9 @@
-import { PlusIcon } from "@heroicons/react/24/outline";
-import { getDeviceId } from "../collections/entries";
+import { ArrowDownTrayIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
+import { chain } from "@journal/fn";
+import { downloadFile } from "@/utils/file-downloader";
+import { type Entry, entryStore, getDeviceId } from "../collections/entries";
+import { triggerJsonFileSelection } from "../utils/json-importer";
 import { Button } from "./Button";
 import { useConnections } from "./Connections";
 
@@ -11,6 +15,23 @@ export const NetworkContent = () => {
 		const finalPeerId = peerId?.trim();
 		if (finalPeerId) {
 			connect(finalPeerId);
+		}
+	};
+
+	const handleExport = () => {
+		const stringifiedRecords = chain(entryStore.get())
+			.pipe((records) => JSON.stringify(records))
+			.get();
+		downloadFile(
+			stringifiedRecords,
+			`journal-${new Date().toISOString()}.json`,
+		);
+	};
+
+	const handleImport = async () => {
+		const result = await triggerJsonFileSelection();
+		if (result.success) {
+			entryStore.set(result.data as Record<string, Entry>);
 		}
 	};
 
@@ -44,6 +65,16 @@ export const NetworkContent = () => {
 				<p className="select-text text-center text-muted-foreground text-xs">
 					{getDeviceId()}
 				</p>
+			</div>
+			<div className="flex gap-4 rounded-xl bg-card p-4">
+				<Button variant="outline" onClick={handleExport}>
+					<ArrowUpTrayIcon />
+					Export
+				</Button>
+				<Button variant="outline" onClick={handleImport}>
+					<ArrowDownTrayIcon />
+					Import
+				</Button>
 			</div>
 		</div>
 	);
