@@ -50,7 +50,7 @@ export const persister = createIdbPersister({
 	dbName: "journal",
 });
 
-const networkProvider = createWebRTCAdapter(getDeviceId());
+export const networkProvider = createWebRTCAdapter(getDeviceId());
 
 export const entryStore = chain()
 	.pipe(() =>

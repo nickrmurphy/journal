@@ -1,82 +1,37 @@
-import {
-	createContext,
-	type ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
+import type { ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { entryStore, networkProvider } from "@/collections/entries";
 
 const ConnectionsContext = createContext<{
 	connections: string[];
-	// todo: implement addConnection
-	addConnection: (peerId: string) => void;
+	connect: (peerId: string) => void;
 } | null>(null);
 
 export function ConnectionsProvider({ children }: { children: ReactNode }) {
-	const STORAGE_KEY = "connections";
+	const [connections, setConnections] = useState<string[]>([]);
 
-	// Lazy-init from localStorage with basic validation and SSR safety
-	const [connections, setConnections] = useState<string[]>(() => {
-		if (typeof window === "undefined") return [];
-		try {
-			const raw = window.localStorage.getItem(STORAGE_KEY);
-			if (!raw) return [];
-			const parsed = JSON.parse(raw);
-			return Array.isArray(parsed) && parsed.every((v) => typeof v === "string")
-				? (parsed as string[])
-				: [];
-		} catch {
-			return [];
-		}
-	});
-
-	const skipNextPersistRef = useRef(false);
-
-	// Persist on change
 	useEffect(() => {
-		if (typeof window === "undefined") return;
-		if (skipNextPersistRef.current) {
-			skipNextPersistRef.current = false;
-			return;
-		}
-		try {
-			window.localStorage.setItem(STORAGE_KEY, JSON.stringify(connections));
-		} catch {
-			// best-effort persistence; ignore quota or serialization errors
-		}
-	}, [connections]);
+		const unsub = networkProvider.onConnection((event, peerId) => {
+			const id = peerId.trim();
+			if (!id) return;
 
-	// Keep state in sync if another tab updates localStorage
-	useEffect(() => {
-		if (typeof window === "undefined") return;
-		const onStorage = (e: StorageEvent) => {
-			if (e.key !== STORAGE_KEY) return;
-			try {
-				const next = e.newValue ? JSON.parse(e.newValue) : [];
-				if (Array.isArray(next) && next.every((v) => typeof v === "string")) {
-					skipNextPersistRef.current = true;
-					setConnections(next as string[]);
-				}
-			} catch {
-				// ignore invalid updates
+			switch (event) {
+				case "add":
+					networkProvider.broadcastState(entryStore.getState());
+					setConnections((prev) => (prev.includes(id) ? prev : [...prev, id]));
+					break;
+				case "remove":
+					setConnections((prev) => prev.filter((c) => c !== id));
+					break;
 			}
-		};
-		window.addEventListener("storage", onStorage);
-		return () => window.removeEventListener("storage", onStorage);
-	}, []);
+		});
 
-	const addConnection = useCallback((peerId: string) => {
-		const id = peerId.trim();
-		if (!id) return;
-		setConnections((prev) => (prev.includes(id) ? prev : [...prev, id]));
+		return () => unsub();
 	}, []);
 
 	const contextValue = useMemo(
-		() => ({ connections, addConnection }),
-		[connections, addConnection],
+		() => ({ connections, connect: networkProvider.connect }),
+		[connections],
 	);
 
 	return (

@@ -6,7 +6,7 @@ export type NetworkProvider = {
 	onReceiveState: (listener: (state: State) => void) => () => void;
 	onConnection: (
 		listener: (event: "add" | "remove", peerId: string) => void,
-	) => void;
+	) => () =>void;
 };
 
 export const withNetworking = <T>(

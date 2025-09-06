@@ -4,11 +4,14 @@ import { Button } from "./Button";
 import { useConnections } from "./Connections";
 
 export const NetworkContent = () => {
-	const { connections } = useConnections();
+	const { connections, connect } = useConnections();
 
 	const handleLink = () => {
 		const peerId = prompt("Enter the ID of the device you want to connect to");
-		console.log("Link to peer ID:", peerId);
+		const finalPeerId = peerId?.trim();
+		if (finalPeerId) {
+			connect(finalPeerId);
+		}
 	};
 
 	return (

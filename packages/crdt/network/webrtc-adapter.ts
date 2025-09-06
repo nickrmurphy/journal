@@ -1,4 +1,4 @@
-import Peer from "peerjs";
+import Peer, { type DataConnection } from "peerjs";
 import type { State } from "../core/types";
 import type { NetworkProvider } from "../store/with-network";
 import { createConnectionManager } from "./connection-manager";
@@ -25,7 +25,7 @@ export const createWebRTCAdapter = (deviceId: string): WebRTCAdapter => {
 		| ((event: "add" | "remove", peerId: string) => void)
 		| null = null;
 
-	peer.on("connection", (conn) => {
+	const registerConnection = (conn: DataConnection) => {
 		// Register the new connection
 		connectionManager.add(conn.peer, conn);
 		connectionHandler?.("add", conn.peer);
@@ -39,12 +39,15 @@ export const createWebRTCAdapter = (deviceId: string): WebRTCAdapter => {
 		// Handle incoming data
 		conn.on("data", (data) => {
 			const msg = data as Message;
-
 			// Raise event on state message
 			if (msg.type === "state" && receiveStateHandler) {
 				receiveStateHandler(msg.data);
 			}
 		});
+	};
+
+	peer.on("connection", (conn) => {
+		registerConnection(conn);
 	});
 
 	return {
@@ -71,7 +74,10 @@ export const createWebRTCAdapter = (deviceId: string): WebRTCAdapter => {
 			};
 		},
 		connect: (peerId: string) => {
-			peer.connect(peerId);
+			const conn = peer.connect(peerId);
+			conn.on("open", () => {
+				registerConnection(conn);
+			});
 		},
 	};
 };
