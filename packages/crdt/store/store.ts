@@ -10,7 +10,7 @@ export type Store<T> = {
 	get: Materializer<T>;
 	set: Mutator<T>;
 	getState: StateAccessor;
-	setState: (next: State) => boolean;
+	mergeState: (next: State) => boolean;
 	on: (event: "mutate", listener: EventListener) => () => void;
 };
 
@@ -42,7 +42,7 @@ export const createStore = <T extends JSONValue>({
 			return maybeMutate(next);
 		},
 		getState: () => state,
-		setState: (next: State) => {
+		mergeState: (next: State) => {
 			return maybeMutate(next);
 		},
 		on: (event: "mutate", listener: EventListener) => {
