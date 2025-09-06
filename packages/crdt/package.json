@@ -20,6 +20,10 @@
 		"./store": {
 			"import": "./store/index.ts",
 			"types": "./store/index.ts"
+		},
+		"./network": {
+			"import": "./network/index.ts",
+			"types": "./network/index.ts"
 		}
 	},
 	"type": "module",
@@ -30,6 +34,12 @@
 		"@types/bun": "latest"
 	},
 	"peerDependencies": {
+		"peerjs": "^1.5.5",
 		"typescript": "^5"
+	},
+	"peerDependenciesMeta": {
+		"peerjs": {
+			"optional": true
+		}
 	}
 }

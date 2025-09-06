@@ -1,5 +1,12 @@
 import type { DataConnection } from "peerjs";
-import type { ConnectionManager } from "./types";
+export type ConnectionManager = {
+	add: (peerId: string, connection: DataConnection) => void;
+	get: (peerId: string) => DataConnection | undefined;
+	getAll: () => DataConnection[];
+	remove: (peerId: string) => void;
+	clear: () => void;
+	size: () => number;
+};
 
 export const createConnectionManager = (): ConnectionManager => {
 	const connections = new Map<string, DataConnection>();
