@@ -24,4 +24,6 @@ export const withNetworking = <T>(
 	store.on("mutate", () => {
 		networkProvider.broadcastState(store.getState());
 	});
+
+	return store;
 };

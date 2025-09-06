@@ -1,6 +1,12 @@
 import { createSystemClock } from "@journal/crdt/clock";
+import { createWebRTCAdapter } from "@journal/crdt/network";
 import { createIdbPersister } from "@journal/crdt/persistence/web";
-import { createStore, withPersistence } from "@journal/crdt/store";
+import {
+	createStore,
+	withNetworking,
+	withPersistence,
+} from "@journal/crdt/store";
+import { chain } from "@journal/fn";
 
 export type Comment = {
 	id: string;
@@ -44,12 +50,23 @@ export const persister = createIdbPersister({
 	dbName: "journal",
 });
 
-const _entryStore = createStore<Record<string, Entry>>({
-	defaultState: [],
-	clockProvider: createSystemClock(),
-});
+const networkProvider = createWebRTCAdapter(getDeviceId());
 
-export const entryStore = withPersistence(_entryStore, {
-	key: "entries",
-	persistenceProvider: persister,
-});
+export const entryStore = chain()
+	.pipe(() =>
+		createStore<Record<string, Entry>>({
+			clockProvider: createSystemClock(),
+		}),
+	)
+	.pipe((store) =>
+		withNetworking(store, {
+			networkProvider,
+		}),
+	)
+	.pipe((store) =>
+		withPersistence(store, {
+			key: "entries",
+			persistenceProvider: persister,
+		}),
+	)
+	.get();

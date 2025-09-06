@@ -28,7 +28,7 @@ export const withPersistence = <T>(
 	const load = async () => {
 		const state = await persistenceProvider.get<State>(key);
 		if (state) {
-			store.mergeState(state);
+			store.mergeState(state, true);
 		}
 	};
 

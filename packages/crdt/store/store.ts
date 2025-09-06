@@ -10,7 +10,7 @@ export type Store<T> = {
 	get: Materializer<T>;
 	set: Mutator<T>;
 	getState: StateAccessor;
-	mergeState: (next: State) => boolean;
+	mergeState: (next: State, silent?: boolean) => boolean;
 	on: (event: "mutate", listener: EventListener) => () => void;
 };
 
@@ -24,12 +24,14 @@ export const createStore = <T extends JSONValue>({
 	let state = defaultState;
 	const listeners = new Set<EventListener>();
 
-	const maybeMutate = (next: State) => {
+	const maybeMutate = (next: State, silent?: boolean) => {
 		const [merged, changed] = core.mergeState(state, next);
 		if (changed) {
 			state = merged;
-			for (const listener of listeners) {
-				listener();
+			if (!silent) {
+				for (const listener of listeners) {
+					listener();
+				}
 			}
 		}
 		return changed;
@@ -42,8 +44,8 @@ export const createStore = <T extends JSONValue>({
 			return maybeMutate(next);
 		},
 		getState: () => state,
-		mergeState: (next: State) => {
-			return maybeMutate(next);
+		mergeState: (next: State, silent?: boolean) => {
+			return maybeMutate(next, silent);
 		},
 		on: (event: "mutate", listener: EventListener) => {
 			if (event === "mutate") {

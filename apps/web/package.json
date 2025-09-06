@@ -11,14 +11,16 @@
 		"build": "bun run build.ts"
 	},
 	"dependencies": {
-		"bun-plugin-tailwind": "^0.0.14",
-		"@journal/crdt": "workspace:*",
-		"@journal/components": "workspace:*",
 		"@formkit/auto-animate": "^0.8.2",
 		"@headlessui/react": "^2.2.7",
 		"@heroicons/react": "^2.2.0",
-		"react": "^19",
+		"@journal/components": "workspace:*",
+		"@journal/crdt": "workspace:*",
+		"@journal/fn": "workspace:*",
+		"bun-plugin-tailwind": "^0.0.14",
 		"cva": "1.0.0-beta.4",
+		"peerjs": "^1.5.5",
+		"react": "^19",
 		"react-dom": "^19",
 		"tailwindcss": "^4.0.6"
 	},
