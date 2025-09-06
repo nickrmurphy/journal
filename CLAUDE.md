@@ -1,3 +1,8 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Development Environment
 
 Default to using Bun instead of Node.js.
 
@@ -8,7 +13,58 @@ Default to using Bun instead of Node.js.
 - Use `bun run <script>` instead of `npm run <script>` or `yarn run <script>` or `pnpm run <script>`
 - Bun automatically loads .env, so don't use dotenv.
 
-## APIs
+## Common Commands
+
+- **Linting**: Use Biome for code formatting and linting: `bunx biome check --write .`
+- **Build Workshop App**: `cd apps/workshop && bun run build`
+- **Run Workshop Dev Server**: `cd apps/workshop && bun run dev`
+- **Run Tests**: `bun test` (tests are located throughout packages with `.test.ts` suffix)
+
+## Architecture Overview
+
+This is a monorepo using Bun workspaces with the following structure:
+
+### Core Packages
+
+- **`packages/crdt/`**: Core CRDT (Conflict-free Replicated Data Type) implementation
+  - `core/`: Basic CRDT field, merge, and serialization logic
+  - `store/`: Higher-level store abstraction with state management
+  - `network/`: WebRTC networking and connection management via PeerJS
+  - `persistence/`: Storage adapters for different environments (bun/web)
+  - `clock/`: Timestamp/clock provider implementations
+
+- **`packages/components/`**: Reusable React components
+- **`packages/fn/`**: Utility functions
+- **`packages/schema/`**: Data schema definitions  
+- **`packages/services/`**: Business logic services
+
+### Applications
+
+- **`apps/workshop/`**: React development environment for testing components and samples
+- **`apps/web/`**: Main web application
+- **`apps/cli/`**: Command-line interface
+
+### Key Architectural Patterns
+
+**CRDT State Management**: The core architecture uses a Field-based CRDT system where:
+- `Field = [Eventstamp, Path, Value]` represents a change at a specific path
+- `State = Field[]` represents the complete state as an array of fields
+- State merging uses last-write-wins with timestamp resolution
+
+**Store Pattern**: The store provides a high-level API over CRDT operations:
+- `set()`: Mutate local state and trigger listeners
+- `mergeState()`: Merge remote state (with optional silent mode)  
+- `get()`: Materialize current object from CRDT state
+- Event listeners for state changes
+
+**Network Synchronization**: WebRTC-based P2P networking with:
+- Connection management via PeerJS
+- Automatic state synchronization between peers
+- Connection lifecycle management
+
+**Component Workshop**: The workshop app uses dynamic module loading to showcase component samples with configurable props and render functions.
+
+## Preferred APIs
 
 - `Bun.serve()` supports WebSockets, HTTPS, and routes. Don't use `express`.
 - `bun:sqlite` for SQLite. Don't use `better-sqlite3`.
@@ -20,87 +76,28 @@ Default to using Bun instead of Node.js.
 
 ## Testing
 
-Use `bun test` to run tests.
+Use `bun test` to run tests. Tests use the Bun test runner:
 
-```ts#index.test.ts
+```ts
 import { test, expect } from "bun:test";
 
-test("hello world", () => {
+test("example test", () => {
   expect(1).toBe(1);
 });
 ```
 
-## Frontend
+## Frontend Development
 
 Use HTML imports with `Bun.serve()`. Don't use `vite`. HTML imports fully support React, CSS, Tailwind.
 
-Server:
+The workshop app demonstrates this pattern - HTML files can import .tsx/.jsx files directly and Bun's bundler handles transpilation and bundling automatically.
 
-```ts#index.ts
-import index from "./index.html"
+For development: `bun --hot ./src/index.tsx`
+For build: `bun build ./src/index.html --outdir=dist --sourcemap --target=browser`
 
-Bun.serve({
-  routes: {
-    "/": index,
-    "/api/users/:id": {
-      GET: (req) => {
-        return new Response(JSON.stringify({ id: req.params.id }));
-      },
-    },
-  },
-  // optional websocket support
-  websocket: {
-    open: (ws) => {
-      ws.send("Hello, world!");
-    },
-    message: (ws, message) => {
-      ws.send(message);
-    },
-    close: (ws) => {
-      // handle close
-    }
-  },
-  development: {
-    hmr: true,
-    console: true,
-  }
-})
-```
+## Code Style
 
-HTML files can import .tsx, .jsx or .js files directly and Bun's bundler will transpile & bundle automatically. `<link>` tags can point to stylesheets and Bun's CSS bundler will bundle.
-
-```html#index.html
-<html>
-  <body>
-    <h1>Hello, world!</h1>
-    <script type="module" src="./frontend.tsx"></script>
-  </body>
-</html>
-```
-
-With the following `frontend.tsx`:
-
-```tsx#frontend.tsx
-import React from "react";
-
-// import .css files directly and it works
-import './index.css';
-
-import { createRoot } from "react-dom/client";
-
-const root = createRoot(document.body);
-
-export default function Frontend() {
-  return <h1>Hello, world!</h1>;
-}
-
-root.render(<Frontend />);
-```
-
-Then, run index.ts
-
-```sh
-bun --hot ./index.ts
-```
-
-For more information, read the Bun API docs in `node_modules/bun-types/docs/**.md`.
+- Uses Biome for formatting with tab indentation and double quotes
+- TypeScript throughout with strict typing
+- ESM modules (`"type": "module"` in package.json)
+- Workspace dependencies use `workspace:*` protocol
