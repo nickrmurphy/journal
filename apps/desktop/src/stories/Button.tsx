@@ -1,37 +1,28 @@
-export interface ButtonProps {
-	/** Is this the principal call to action on the page? */
-	primary?: boolean;
-	/** What background color to use */
-	backgroundColor?: string;
-	/** How large should the button be? */
-	size?: "small" | "medium" | "large";
-	/** Button contents */
-	label: string;
-	/** Optional click handler */
-	onClick?: () => void;
-}
+import { cva, type VariantProps } from "cva";
+import type { ComponentProps } from "react";
 
-/** Primary UI component for user interaction */
-export const Button = ({
-	primary = false,
-	size = "medium",
-	backgroundColor,
-	label,
-	...props
-}: ButtonProps) => {
-	const mode = primary
-		? "storybook-button--primary"
-		: "storybook-button--secondary";
-	return (
-		<button
-			type="button"
-			className={["storybook-button", `storybook-button--${size}`, mode].join(
-				" ",
-			)}
-			style={{ backgroundColor }}
-			{...props}
-		>
-			{label}
-		</button>
-	);
-};
+const button = cva({
+	base: "rounded-full text-sm active:scale-105 transition-all",
+	variants: {
+		variant: {
+			"solid-black": "bg-black text-lightgray hover:bg-black/90 ",
+			"outline-black": "border border-black text-black hover:bg-black/5",
+			"solid-yellow": "bg-yellow text-black hover:bg-yellow/90",
+			"outline-yellow": "border border-yellow text-black hover:bg-yellow/10",
+		},
+		size: {
+			md: "px-3.5 py-2",
+		},
+	},
+	defaultVariants: {
+		variant: "solid-black",
+		size: "md",
+	},
+});
+
+export type ButtonProps = ComponentProps<"button"> &
+	VariantProps<typeof button>;
+
+export const Button = ({ ...props }: ButtonProps) => (
+	<button type="button" {...props} className={button(props)} />
+);

@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+@theme {
+  /* biome-ignore lint/correctness/noUnknownPseudoClass: <explanation> */
+  --color-*: initial;
+  --color-black: #171717;
+  --color-yellow: #FFCA67;
+  --color-lightgray: #dedede;
+  --color-darkgray: #4d4d4d;
+
+  --font-sans: "Work Sans", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-serif: "Crimson Pro", Georgia, "Times New Roman", Times, serif;
+}
+
+body {
+  @apply font-sans;
+}
