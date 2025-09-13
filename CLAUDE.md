@@ -18,7 +18,11 @@ Default to using Bun instead of Node.js.
 - **Linting**: Use Biome for code formatting and linting: `bunx biome check --write .`
 - **Build Workshop App**: `cd apps/workshop && bun run build`
 - **Run Workshop Dev Server**: `cd apps/workshop && bun run dev`
+- **Run Workshop Storybook**: `cd apps/workshop && bun run storybook`
+- **Run Web App Dev Server**: `cd apps/web && bun run dev`
+- **Build Web App**: `cd apps/web && bun run build`
 - **Run Tests**: `bun test` (tests are located throughout packages with `.test.ts` suffix)
+- **Run Single Test**: `bun test <test-file.test.ts>`
 
 ## Architecture Overview
 
@@ -86,14 +90,19 @@ test("example test", () => {
 });
 ```
 
+**Note**: The workshop app also uses Vitest for browser testing with Playwright. Run tests with:
+- `cd apps/workshop && bun test` for Vitest tests
+- `cd apps/workshop && bun run storybook` for Storybook component testing
+
 ## Frontend Development
 
-Use HTML imports with `Bun.serve()`. Don't use `vite`. HTML imports fully support React, CSS, Tailwind.
+**Web App**: Uses HTML imports with `Bun.serve()`. Don't use `vite`. HTML files can import .tsx/.jsx files directly and Bun's bundler handles transpilation and bundling automatically.
+- For development: `bun --hot ./src/index.tsx`
+- For build: `bun build ./src/index.html --outdir=dist --sourcemap --target=browser`
 
-The workshop app demonstrates this pattern - HTML files can import .tsx/.jsx files directly and Bun's bundler handles transpilation and bundling automatically.
-
-For development: `bun --hot ./src/index.tsx`
-For build: `bun build ./src/index.html --outdir=dist --sourcemap --target=browser`
+**Workshop App**: Uses Vite for development with Storybook for component documentation and testing. This is an exception to the Bun-first approach to leverage Storybook's ecosystem.
+- For development: `bun run dev` (uses Vite)
+- For component development: `bun run storybook`
 
 ## Code Style
 
