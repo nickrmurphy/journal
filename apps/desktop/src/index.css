@@ -14,5 +14,20 @@
 }
 
 body {
-  @apply font-sans;
+  @apply font-sans bg-black text-lightgray;
+}
+
+* {
+  @apply border-darkgray/50 divide-lightgray/50;
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }

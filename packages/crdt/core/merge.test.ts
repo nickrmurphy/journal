@@ -1,4 +1,4 @@
-import { test, expect } from "bun:test";
+import { expect, test } from "bun:test";
 import { mergeField, mergeState } from "./merge";
 import type { Field, State } from "./types";
 
@@ -93,7 +93,11 @@ test("mergeField preserves other fields when replacing", () => {
 	const state: State = [
 		{ path: "id", value: 123, eventstamp: "2023-01-01T00:00:00Z" },
 		{ path: "name", value: "Grace", eventstamp: "2023-01-01T00:00:00Z" },
-		{ path: "email", value: "grace@example.com", eventstamp: "2023-01-01T00:00:00Z" },
+		{
+			path: "email",
+			value: "grace@example.com",
+			eventstamp: "2023-01-01T00:00:00Z",
+		},
 	];
 	const updatedField: Field = {
 		path: "name",
@@ -105,9 +109,9 @@ test("mergeField preserves other fields when replacing", () => {
 
 	expect(modified).toBe(true);
 	expect(newState).toHaveLength(3);
-	expect(newState.find(f => f.path === "id")).toEqual(state[0]);
-	expect(newState.find(f => f.path === "email")).toEqual(state[2]);
-	expect(newState.find(f => f.path === "name")).toEqual(updatedField);
+	expect(newState.find((f) => f.path === "id")).toEqual(state[0]);
+	expect(newState.find((f) => f.path === "email")).toEqual(state[2]);
+	expect(newState.find((f) => f.path === "name")).toEqual(updatedField);
 });
 
 test("mergeState merges empty states", () => {
@@ -150,7 +154,11 @@ test("mergeState merges non-overlapping fields", () => {
 	];
 	const state2: State = [
 		{ path: "age", value: 32, eventstamp: "2023-01-01T00:00:00Z" },
-		{ path: "email", value: "ian@example.com", eventstamp: "2023-01-01T00:00:00Z" },
+		{
+			path: "email",
+			value: "ian@example.com",
+			eventstamp: "2023-01-01T00:00:00Z",
+		},
 	];
 
 	const [newState, modified] = mergeState(state1, state2);
@@ -169,33 +177,45 @@ test("mergeState handles conflicting fields with newer eventstamps", () => {
 	];
 	const state2: State = [
 		{ path: "name", value: "Jane Updated", eventstamp: "2023-01-02T00:00:00Z" },
-		{ path: "email", value: "jane@example.com", eventstamp: "2023-01-01T00:00:00Z" },
+		{
+			path: "email",
+			value: "jane@example.com",
+			eventstamp: "2023-01-01T00:00:00Z",
+		},
 	];
 
 	const [newState, modified] = mergeState(state1, state2);
 
 	expect(modified).toBe(true);
 	expect(newState).toHaveLength(3);
-	expect(newState.find(f => f.path === "name")).toEqual(state2[0]);
-	expect(newState.find(f => f.path === "status")).toEqual(state1[1]);
-	expect(newState.find(f => f.path === "email")).toEqual(state2[1]);
+	expect(newState.find((f) => f.path === "name")).toEqual(state2[0]);
+	expect(newState.find((f) => f.path === "status")).toEqual(state1[1]);
+	expect(newState.find((f) => f.path === "email")).toEqual(state2[1]);
 });
 
 test("mergeState handles conflicting fields with older eventstamps", () => {
 	const state1: State = [
-		{ path: "title", value: "Current Title", eventstamp: "2023-01-02T00:00:00Z" },
+		{
+			path: "title",
+			value: "Current Title",
+			eventstamp: "2023-01-02T00:00:00Z",
+		},
 	];
 	const state2: State = [
 		{ path: "title", value: "Old Title", eventstamp: "2023-01-01T00:00:00Z" },
-		{ path: "content", value: "New content", eventstamp: "2023-01-02T00:00:00Z" },
+		{
+			path: "content",
+			value: "New content",
+			eventstamp: "2023-01-02T00:00:00Z",
+		},
 	];
 
 	const [newState, modified] = mergeState(state1, state2);
 
 	expect(modified).toBe(true);
 	expect(newState).toHaveLength(2);
-	expect(newState.find(f => f.path === "title")).toEqual(state1[0]);
-	expect(newState.find(f => f.path === "content")).toEqual(state2[1]);
+	expect(newState.find((f) => f.path === "title")).toEqual(state1[0]);
+	expect(newState.find((f) => f.path === "content")).toEqual(state2[1]);
 });
 
 test("mergeState reports no modification when all fields are older", () => {
@@ -221,19 +241,27 @@ test("mergeState handles mixed scenarios", () => {
 		{ path: "status", value: "draft", eventstamp: "2023-01-02T00:00:00Z" },
 	];
 	const state2: State = [
-		{ path: "name", value: "Laura Updated", eventstamp: "2023-01-02T00:00:00Z" },
+		{
+			path: "name",
+			value: "Laura Updated",
+			eventstamp: "2023-01-02T00:00:00Z",
+		},
 		{ path: "status", value: "published", eventstamp: "2023-01-01T00:00:00Z" },
-		{ path: "tags", value: ["new", "important"], eventstamp: "2023-01-01T00:00:00Z" },
+		{
+			path: "tags",
+			value: ["new", "important"],
+			eventstamp: "2023-01-01T00:00:00Z",
+		},
 	];
 
 	const [newState, modified] = mergeState(state1, state2);
 
 	expect(modified).toBe(true);
 	expect(newState).toHaveLength(4);
-	expect(newState.find(f => f.path === "id")).toEqual(state1[0]);
-	expect(newState.find(f => f.path === "name")).toEqual(state2[0]);
-	expect(newState.find(f => f.path === "status")).toEqual(state1[2]);
-	expect(newState.find(f => f.path === "tags")).toEqual(state2[2]);
+	expect(newState.find((f) => f.path === "id")).toEqual(state1[0]);
+	expect(newState.find((f) => f.path === "name")).toEqual(state2[0]);
+	expect(newState.find((f) => f.path === "status")).toEqual(state1[2]);
+	expect(newState.find((f) => f.path === "tags")).toEqual(state2[2]);
 });
 
 test("mergeState with complex eventstamp comparisons", () => {
@@ -251,7 +279,7 @@ test("mergeState with complex eventstamp comparisons", () => {
 
 	expect(modified).toBe(true);
 	expect(newState).toHaveLength(3);
-	expect(newState.find(f => f.path === "field1")?.value).toBe("updated_a");
-	expect(newState.find(f => f.path === "field2")?.value).toBe("b");
-	expect(newState.find(f => f.path === "field3")?.value).toBe("c");
+	expect(newState.find((f) => f.path === "field1")?.value).toBe("updated_a");
+	expect(newState.find((f) => f.path === "field2")?.value).toBe("b");
+	expect(newState.find((f) => f.path === "field3")?.value).toBe("c");
 });
