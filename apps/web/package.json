@@ -14,7 +14,6 @@
 		"@formkit/auto-animate": "^0.8.2",
 		"@headlessui/react": "^2.2.7",
 		"@heroicons/react": "^2.2.0",
-		"@journal/components": "workspace:*",
 		"@journal/crdt": "workspace:*",
 		"@journal/fn": "workspace:*",
 		"bun-plugin-tailwind": "^0.0.14",
