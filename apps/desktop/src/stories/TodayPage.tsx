@@ -7,7 +7,7 @@ export const HomePage = () => {
 	return (
 		<>
 			{/* Past Entries Bar */}
-			<nav className="fixed w-xs inset-y-0 left-0 divide-y flex flex-col overflow-y-auto p-3 space-y-3">
+			<nav className="fixed w-xs inset-y-0 left-0 divide-y flex flex-col overflow-y-auto p-3 space-y-6">
 				{Object.entries(mockStore.pastEntries).map(([date, entries], i) => (
 					<div key={date} className="p-1 border rounded">
 						<h2 className="px-1.5 pt-2 pb-1 flex gap-1.5 items-baseline">
@@ -23,7 +23,7 @@ export const HomePage = () => {
 				))}
 			</nav>
 			<main className="fixed left-[var(--container-xs)] right-0 inset-y-0 p-3 overflow-y-auto flex flex-col gap-3">
-				<div className="flex items-baseline gap-2">
+				<div className="flex items-baseline gap-2 px-0.5">
 					<h1 className="text-lg font-semibold">
 						{format(new Date(), "MMMM d")}
 					</h1>
