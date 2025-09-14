@@ -9,12 +9,12 @@ export const HomePage = () => {
 	return (
 		<div className="fixed inset-0 grid grid-cols-6">
 			{/* Past Entries Bar */}
-			<section className="divide-y flex flex-col overflow-y-auto py-3 space-y-6 col-span-2 p-3">
+			<section className="col-span-2 flex flex-col space-y-6 divide-y overflow-y-auto p-3 py-3">
 				{Object.entries(mockStore.pastEntries).map(([date, entries]) => (
-					<div key={date} className="p-1 border rounded bg-black w-full shadow">
-						<h2 className="px-1.5 pt-2 pb-1 flex gap-1.5 items-baseline">
+					<div key={date} className="w-full rounded border bg-black p-1 shadow">
+						<h2 className="flex items-baseline gap-1.5 px-1.5 pt-2 pb-1">
 							<span className="text-sm">{format(new Date(date), "EEE d")}</span>
-							<span className="text-xs text-lightgray/70">
+							<span className="text-lightgray/70 text-xs">
 								{format(new Date(date), "MMM")}
 							</span>
 						</h2>
@@ -24,18 +24,18 @@ export const HomePage = () => {
 					</div>
 				))}
 			</section>
-			<main className="overflow-y-auto p-3 flex flex-col col-span-4">
+			<main className="col-span-4 flex flex-col overflow-y-auto p-3">
 				{/* centered inner container so content auto-centers in remaining space */}
-				<div className="w-full max-w-3xl mx-auto flex flex-col">
+				<div className="mx-auto flex w-full max-w-3xl flex-col">
 					<div
 						id="today-header"
-						className="sticky top-0 shadow-md z-10 flex bg-black/90 items-center backdrop-blur py-2 px-4 rounded-lg"
+						className="sticky top-0 z-10 flex items-center rounded-lg bg-black/90 px-4 py-2 shadow-md backdrop-blur"
 					>
-						<div className="flex items-baseline gap-2 ">
-							<h1 className="text-lg font-semibold">
+						<div className="flex items-baseline gap-2">
+							<h1 className="font-semibold text-lg">
 								{format(new Date(), "MMMM d")}
 							</h1>
-							<p className="text-xs text-lightgray/70">
+							<p className="text-lightgray/70 text-xs">
 								{format(new Date(), "EEEE")}
 							</p>
 						</div>
@@ -47,7 +47,7 @@ export const HomePage = () => {
 					</div>
 					<div
 						id="today-entries"
-						className="border rounded p-1.5 mt-3 bg-black shadow"
+						className="mt-3 rounded border bg-black p-1.5 shadow"
 					>
 						{mockStore.todayEntries.map((entry) => (
 							<EntryItem key={entry.createdAt} entry={entry} />
