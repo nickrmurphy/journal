@@ -14,7 +14,7 @@
 }
 
 body {
-  @apply font-sans bg-black text-lightgray;
+  @apply font-sans bg-darkgray text-lightgray;
 }
 
 * {
