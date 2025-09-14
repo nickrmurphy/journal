@@ -14,6 +14,7 @@
 		"packages/*"
 	],
 	"dependencies": {
+		"@base-ui-components/react": "^1.0.0-beta.3",
 		"cva": "^1.0.0-beta.4",
 		"zustand": "^5.0.8"
 	}

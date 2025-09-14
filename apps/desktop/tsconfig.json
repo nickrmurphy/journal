@@ -1,25 +1,43 @@
 {
 	"compilerOptions": {
-		"target": "ES2020",
-		"useDefineForClassFields": true,
-		"lib": ["ES2020", "DOM", "DOM.Iterable"],
-		"module": "ESNext",
-		"skipLibCheck": true,
+		// Environment setup & latest features
+		"lib": ["ESNext", "DOM"],
+		"target": "ESNext",
+		"module": "Preserve",
+		"moduleDetection": "force",
+		"jsx": "react-jsx",
+		"allowJs": true,
 
-		/* Bundler mode */
+		// Bundler mode
 		"moduleResolution": "bundler",
 		"allowImportingTsExtensions": true,
-		"resolveJsonModule": true,
-		"isolatedModules": true,
+		"verbatimModuleSyntax": true,
 		"noEmit": true,
-		"jsx": "react-jsx",
 
-		/* Linting */
+		// Best practices
 		"strict": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
+		"skipLibCheck": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
+		"noImplicitOverride": true,
+
+		// Path aliases
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		},
+
+		// Some stricter flags (disabled by default)
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"noPropertyAccessFromIndexSignature": false,
+
+		// Preserved from previous config (non-conflicting)
+		"useDefineForClassFields": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true
 	},
 	"include": ["src", "electron"],
+	"exclude": ["dist", "node_modules"],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }
