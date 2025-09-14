@@ -23,7 +23,7 @@ export const HomePage = () => {
 					<TodayHeader />
 					<div
 						id="today-entries"
-						className="mt-3 rounded border bg-black p-1.5 shadow"
+						className="mt-3 rounded bg-black p-1.5 shadow"
 					>
 						{mockStore.todayEntries.map((entry) => (
 							<EntryItem key={entry.createdAt} entry={entry} />
