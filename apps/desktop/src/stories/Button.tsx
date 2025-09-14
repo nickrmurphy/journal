@@ -8,10 +8,11 @@ const button = cva({
 			"solid-black": "bg-black text-lightgray hover:bg-black/90 ",
 			"outline-black": "border border-black text-black hover:bg-black/5",
 			"solid-yellow": "bg-yellow text-black hover:bg-yellow/90",
-			"outline-yellow": "border border-yellow text-black hover:bg-yellow/10",
+			"outline-yellow": "border border-yellow text-yellow hover:bg-yellow/10",
 		},
 		size: {
 			md: "px-3.5 py-2",
+			"md-icon": "p-2.5",
 		},
 	},
 	defaultVariants: {

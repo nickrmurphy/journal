@@ -351,7 +351,8 @@ export const mockStore: MockStore = {
 		{
 			date: "2023-03-01",
 			createdAt: "2023-03-01T15:15:00Z",
-			content: "Interesting development in the afternoon project meeting",
+			content:
+				"An unexpected technical insight surfaced during the afternoon project meeting that may materially reshape our roadmap: adopting a simpler architecture pattern could reduce system complexity, improve runtime performance, shorten delivery timelines, and lower long-term maintenance costs. We'll draft a concise proposal summarizing trade-offs, migration steps, risk mitigations, and recommended next actions to align engineering and product stakeholders.",
 			comments: [
 				{
 					createdAt: "2023-03-01T15:45:00Z",
@@ -363,6 +364,44 @@ export const mockStore: MockStore = {
 			date: "2023-03-01",
 			createdAt: "2023-03-01T17:30:00Z",
 			content: "End of day reflection on productive conversations",
+			comments: [],
+		},
+		{
+			date: "2023-03-01",
+			createdAt: "2023-03-01T18:45:00Z",
+			content:
+				"Quick follow-up after the meeting: clarified action items, assigned owners for next steps, and scheduled a short sync to validate assumptions before committing to changes.",
+			comments: [
+				{
+					createdAt: "2023-03-01T19:00:00Z",
+					content: "Thanks — assigning owners now",
+				},
+			],
+		},
+		{
+			date: "2023-03-01",
+			createdAt: "2023-03-01T20:15:00Z",
+			content:
+				"Evening planning: drafted a concise roadmap update and identified low-risk experiments to validate the new approach incrementally.",
+			comments: [],
+		},
+		{
+			date: "2023-03-01",
+			createdAt: "2023-03-01T21:45:00Z",
+			content:
+				"Personal note: took a short walk to clear my head and came back with renewed perspective on prioritization and team communication.",
+			comments: [
+				{
+					createdAt: "2023-03-01T22:00:00Z",
+					content: "Sounds restorative",
+				},
+			],
+		},
+		{
+			date: "2023-03-01",
+			createdAt: "2023-03-01T23:15:00Z",
+			content:
+				"Nightly summary: logged progress, updated task statuses, and planned a short retrospective for tomorrow to capture learnings while they're fresh.",
 			comments: [],
 		},
 	],

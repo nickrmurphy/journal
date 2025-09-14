@@ -1,4 +1,6 @@
+import { PenIcon } from "@phosphor-icons/react";
 import { format } from "date-fns";
+import { Button } from "./Button";
 import { EntryItem } from "./EntryItem";
 import { EntryOverview } from "./EntryOverview";
 import { mockStore } from "./mockData";
@@ -22,19 +24,26 @@ export const HomePage = () => {
 					</div>
 				))}
 			</nav>
-			<main className="fixed left-[var(--container-xs)] right-0 inset-y-0 p-3 overflow-y-auto flex flex-col gap-3">
-				<div className="flex items-baseline gap-2 px-0.5">
-					<h1 className="text-lg font-semibold">
-						{format(new Date(), "MMMM d")}
-					</h1>
-					<p className="text-xs text-lightgray/70">
-						{format(new Date(), "EEEE")}
-					</p>
-				</div>
+			<main className="fixed left-[var(--container-xs)] right-0 inset-y-0 pt-3 pb-3 px-3 overflow-y-auto flex flex-col max-w-3xl">
 				<div
-					data-slot="today-entries"
-					className="border rounded size-full p-1.5"
+					id="today-header"
+					className="sticky -mx-1 top-0 z-10 flex items-center backdrop-blur py-2 px-4 rounded-full border"
 				>
+					<div className="flex items-baseline gap-2">
+						<h1 className="text-lg font-semibold">
+							{format(new Date(), "MMMM d")}
+						</h1>
+						<p className="text-xs text-lightgray/70">
+							{format(new Date(), "EEEE")}
+						</p>
+					</div>
+					<div className="ms-auto">
+						<Button variant="solid-yellow" size="md-icon">
+							<PenIcon className="size-4" />
+						</Button>
+					</div>
+				</div>
+				<div id="today-entries" className="border rounded p-1.5 mt-3">
 					{mockStore.todayEntries.map((entry) => (
 						<EntryItem key={entry.createdAt} entry={entry} />
 					))}
