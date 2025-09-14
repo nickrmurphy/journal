@@ -1,9 +1,12 @@
 import { PenIcon } from "@phosphor-icons/react";
 import { format } from "date-fns";
+import { PocModal } from "../components/PocModal";
+import { useModalStore } from "../stores/modalStore";
 import { Button } from "./Button";
 
 export function TodayHeader() {
 	const now = new Date();
+	const { openModal } = useModalStore();
 	return (
 		<div
 			id="today-header"
@@ -14,7 +17,16 @@ export function TodayHeader() {
 				<p className="text-lightgray/70 text-xs">{format(now, "EEEE")}</p>
 			</div>
 			<div className="ms-auto">
-				<Button variant="solid-yellow" size="md-icon">
+				<Button
+					variant="solid-yellow"
+					size="md-icon"
+					onClick={() =>
+						openModal("poc-modal", PocModal, {
+							title: "New Entry",
+							message: "This modal opened from TodayHeader.",
+						})
+					}
+				>
 					<PenIcon className="size-4" />
 				</Button>
 			</div>
