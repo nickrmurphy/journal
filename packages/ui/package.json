@@ -1,0 +1,9 @@
+{
+  "name": "@journal/ui",
+  "module": "src/index.ts",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./components/*": "./src/components/*"
+  }
+}

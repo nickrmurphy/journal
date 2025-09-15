@@ -1,0 +1,15 @@
+{
+  "name": "@journal/shared",
+  "module": "src/index.ts",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./stores/*": "./src/stores/*",
+    "./utils/*": "./src/utils/*",
+    "./hooks/*": "./src/hooks/*"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "zustand": "*"
+  }
+}
