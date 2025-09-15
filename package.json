@@ -19,7 +19,8 @@
   "scripts": {
     "lint": "biome lint .",
     "format": "biome format . --write",
-    "check": "biome check . --write"
+    "check": "biome check . --write",
+    "dev:workshop": "bun run --cwd ./apps/workshop dev"
   },
   "dependencies": {
     "@base-ui-components/react": "^1.0.0-beta.3",
