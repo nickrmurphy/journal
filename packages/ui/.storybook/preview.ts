@@ -1,7 +1,8 @@
 import type { Preview } from "@storybook/react-vite";
-import "../index.css";
+import "../src/main.css";
 
 const preview: Preview = {
+	tags: ["autodocs"],
 	parameters: {
 		controls: {
 			matchers: {
@@ -9,12 +10,13 @@ const preview: Preview = {
 				date: /Date$/i,
 			},
 		},
-
+		// More info: https://storybook.js.org/docs/configure/story-layout
+		layout: "centered",
 		a11y: {
 			// 'todo' - show a11y violations in the test UI only
 			// 'error' - fail CI on a11y violations
 			// 'off' - skip a11y checks entirely
-			test: "todo",
+			test: "error",
 		},
 	},
 };

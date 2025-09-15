@@ -10,6 +10,14 @@ function getAbsolutePath(value: string): any {
 	return dirname(require.resolve(join(value, "package.json")));
 }
 const config: StorybookConfig = {
+	viteFinal: async (config) => {
+		const { default: tailwindcss } = await import("@tailwindcss/vite");
+
+		config.plugins ||= [];
+		config.plugins.push(tailwindcss());
+
+		return config;
+	},
 	stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
 	addons: [
 		getAbsolutePath("@chromatic-com/storybook"),
