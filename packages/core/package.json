@@ -6,8 +6,7 @@
     ".": "./src/index.ts",
     "./schemas/*": "./src/schemas/*",
     "./types/*": "./src/types/*",
-    "./stores/*": "./src/stores/*",
-    "./auth/*": "./src/auth/*"
+    "./stores/*": "./src/stores/*"
   },
   "dependencies": {
   },
