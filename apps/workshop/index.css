@@ -1,0 +1,4 @@
+@import "../../packages/styles/main.css";
+
+/* biome-ignore lint/suspicious/noUnknownAtRules: <Tailwindcss> */
+@source "../../packages/ui/**/*.{ts,tsx}";
