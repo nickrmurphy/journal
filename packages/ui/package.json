@@ -2,6 +2,10 @@
   "name": "@journal/ui",
   "module": "src/index.ts",
   "type": "module",
+  "dependencies": {
+    "@journal/core": "workspace:*",
+    "@journal/utils": "workspace:*"
+  },
   "exports": {
     ".": "./src/index.ts",
     "./components/*": "./src/components/*"

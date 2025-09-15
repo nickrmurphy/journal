@@ -5,7 +5,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./schemas/*": "./src/schemas/*",
-    "./types/*": "./src/types/*",
+    "./types": "./src/types/index.ts",
     "./stores/*": "./src/stores/*"
   },
   "dependencies": {
