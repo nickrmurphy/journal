@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@capacitor/core": "^7.4.3",
-    "@capacitor/ios": "^7.4.3"
+    "@capacitor/ios": "^7.4.3",
+    "@journal/core": "workspace:*",
+    "@journal/ui": "workspace:*",
+    "@journal/utils": "workspace:*"
   },
   "devDependencies": {
     "@capacitor/cli": "^7.4.3"

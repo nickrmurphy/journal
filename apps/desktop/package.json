@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@journal/ui": "workspace:*"
+    "@journal/core": "workspace:*",
+    "@journal/ui": "workspace:*",
+    "@journal/utils": "workspace:*"
   },
   "devDependencies": {
     "electron": "^30.0.1",

@@ -1,0 +1,11 @@
+{
+  "name": "@journal/utils",
+  "module": "src/index.ts",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./dates/*": "./src/dates/*",
+    "./strings/*": "./src/strings/*",
+    "./validation/*": "./src/validation/*"
+  }
+}

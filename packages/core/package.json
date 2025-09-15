@@ -1,0 +1,17 @@
+{
+  "name": "@journal/core",
+  "module": "src/index.ts",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schemas/*": "./src/schemas/*",
+    "./types/*": "./src/types/*",
+    "./stores/*": "./src/stores/*",
+    "./auth/*": "./src/auth/*"
+  },
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  }
+}

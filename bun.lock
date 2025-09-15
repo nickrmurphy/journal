@@ -8,6 +8,7 @@
         "cva": "^1.0.0-beta.4",
         "react": "19",
         "react-dom": "19",
+        "zod": "^4.1.8",
         "zustand": "^5.0.8",
       },
       "devDependencies": {
@@ -28,7 +29,9 @@
       "name": "desktop",
       "version": "0.0.0",
       "dependencies": {
+        "@journal/core": "workspace:*",
         "@journal/ui": "workspace:*",
+        "@journal/utils": "workspace:*",
       },
       "devDependencies": {
         "electron": "^30.0.1",
@@ -43,6 +46,9 @@
       "dependencies": {
         "@capacitor/core": "^7.4.3",
         "@capacitor/ios": "^7.4.3",
+        "@journal/core": "workspace:*",
+        "@journal/ui": "workspace:*",
+        "@journal/utils": "workspace:*",
       },
       "devDependencies": {
         "@capacitor/cli": "^7.4.3",
@@ -69,15 +75,17 @@
         "vitest": "^3.2.4",
       },
     },
-    "packages/shared": {
-      "name": "@journal/shared",
+    "packages/core": {
+      "name": "@journal/core",
       "peerDependencies": {
         "react": "^19.0.0",
-        "zustand": "*",
       },
     },
     "packages/ui": {
       "name": "@journal/ui",
+    },
+    "packages/utils": {
+      "name": "@journal/utils",
     },
   },
   "packages": {
@@ -259,9 +267,11 @@
 
     "@joshwooding/vite-plugin-react-docgen-typescript": ["@joshwooding/vite-plugin-react-docgen-typescript@0.6.1", "", { "dependencies": { "glob": "^10.0.0", "magic-string": "^0.30.0", "react-docgen-typescript": "^2.2.2" }, "peerDependencies": { "typescript": ">= 4.3.x", "vite": "^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0" }, "optionalPeers": ["typescript"] }, "sha512-J4BaTocTOYFkMHIra1JDWrMWpNmBl4EkplIwHEsV8aeUOtdWjwSnln9U7twjMFTAEB7mptNtSKyVi1Y2W9sDJw=="],
 
-    "@journal/shared": ["@journal/shared@workspace:packages/shared"],
+    "@journal/core": ["@journal/core@workspace:packages/core"],
 
     "@journal/ui": ["@journal/ui@workspace:packages/ui"],
+
+    "@journal/utils": ["@journal/utils@workspace:packages/utils"],
 
     "@jridgewell/gen-mapping": ["@jridgewell/gen-mapping@0.3.13", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.0", "@jridgewell/trace-mapping": "^0.3.24" } }, "sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA=="],
 
@@ -1236,6 +1246,8 @@
     "yocto-queue": ["yocto-queue@1.2.1", "", {}, "sha512-AyeEbWOu/TAXdxlV9wmGcR0+yh2j3vYPGOECcIj2S7MkrLyC7ne+oye2BKTItt0ii2PHk4cDy+95+LshzbXnGg=="],
 
     "zip-stream": ["zip-stream@4.1.1", "", { "dependencies": { "archiver-utils": "^3.0.4", "compress-commons": "^4.1.2", "readable-stream": "^3.6.0" } }, "sha512-9qv4rlDiopXg4E69k+vMHjNN63YFMe9sZMrdlvKnCjlCRWeCBswPPMPUfx+ipsAWq1LXHe70RcbaHdJJpS6hyQ=="],
+
+    "zod": ["zod@4.1.8", "", {}, "sha512-5R1P+WwQqmmMIEACyzSvo4JXHY5WiAFHRMg+zBZKgKS+Q1viRa0C1hmUKtHltoIFKtIdki3pRxkmpP74jnNYHQ=="],
 
     "zustand": ["zustand@5.0.8", "", { "peerDependencies": { "@types/react": ">=18.0.0", "immer": ">=9.0.6", "react": ">=18.0.0", "use-sync-external-store": ">=1.2.0" }, "optionalPeers": ["@types/react", "immer", "react", "use-sync-external-store"] }, "sha512-gyPKpIaxY9XcO2vSMrLbiER7QMAMGOQZVRdJ6Zi782jkbzZygq5GI9nG8g+sMgitRtndwaBSl7uiqC49o1SSiw=="],
 
