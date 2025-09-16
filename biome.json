@@ -6,7 +6,20 @@
 		"useIgnoreFile": false
 	},
 	"files": {
-		"ignoreUnknown": false
+		"ignoreUnknown": false,
+		"include": [
+			"**/*.js",
+			"**/*.ts",
+			"**/*.jsx",
+			"**/*.tsx",
+			"**/*.html",
+			"**/*.json",
+			"**/*.css",
+			"**/*.md",
+			"!**/dist/**",
+			"!**/node_modules/**",
+			"!packages/ui/src/tailwind.css"
+		]
 	},
 	"formatter": {
 		"enabled": true,

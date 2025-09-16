@@ -4,6 +4,12 @@ import "../src/main.css";
 const preview: Preview = {
 	tags: ["autodocs"],
 	parameters: {
+		backgrounds: {
+			options: {
+				// 👇 Add your own
+				bg: { name: "Background", value: "var(--color-darkgray)" },
+			},
+		},
 		controls: {
 			matchers: {
 				color: /(background|color)$/i,
@@ -18,6 +24,10 @@ const preview: Preview = {
 			// 'off' - skip a11y checks entirely
 			test: "error",
 		},
+	},
+	initialGlobals: {
+		// 👇 Set the initial background color
+		backgrounds: { value: "bg" },
 	},
 };
 
