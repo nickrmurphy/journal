@@ -104,3 +104,74 @@ bun --hot ./index.ts
 ```
 
 For more information, read the Bun API docs in `node_modules/bun-types/docs/**.md`.
+
+## Design Patterns
+
+### Compound Components
+
+Use the compound component pattern for organizing related UI components. Group components as properties of a single exported object using dot notation:
+
+```tsx
+const Root = (props: ComponentProps<"div">) => (
+  <div {...props} className={cx("base-styles", props.className)} />
+);
+
+const Header = (props: ComponentProps<"header">) => (
+  <header {...props} className={cx("header-styles", props.className)} />
+);
+
+const Content = (props: ComponentProps<"main">) => (
+  <main {...props} className={cx("content-styles", props.className)} />
+);
+
+export const Layout = {
+  Root,
+  Header,
+  Content,
+};
+```
+
+Usage:
+```tsx
+<Layout.Root>
+  <Layout.Header>Header content</Layout.Header>
+  <Layout.Content>Main content</Layout.Content>
+</Layout.Root>
+```
+
+Benefits:
+- Clear component relationships and hierarchy
+- Better discoverability via IDE autocomplete
+- Avoids namespace pollution
+- Flexible composition while maintaining semantic structure
+
+#### Internal Compound Components
+
+For components that capture business logic, use internal compound components. Keep the compound structure for code organization but export a single assembled component:
+
+```tsx
+const Root = (props: ComponentProps<"article">) => (
+  <article {...props} className={cx("base-styles", props.className)} />
+);
+
+const Header = (props: ComponentProps<"header">) => (
+  <header {...props} className={cx("header-styles", props.className)} />
+);
+
+const Content = (props: ComponentProps<"div">) => (
+  <div {...props} className={cx("content-styles", props.className)} />
+);
+
+export const EntryCard = (props: { entry: Entry }) => {
+  return (
+    <Root>
+      <Header>{entry.title}</Header>
+      <Content>{entry.content}</Content>
+    </Root>
+  );
+};
+```
+
+This pattern provides internal organization benefits while keeping a simple public API for consumers.
+
+**Note**: Don't over-engineer compound components. Use vanilla HTML elements when they don't need styling, logic, or props forwarding. Only create compound components when they add meaningful value through styling, behavior, or semantic structure.
