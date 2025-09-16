@@ -4,7 +4,7 @@ import { ArrowBendDownRightIcon } from "@phosphor-icons/react";
 
 export const EntryItem = (props: { entry: JournalEntry }) => {
 	return (
-		<article className="cursor-default bg-black rounded p-4 transition-all duration-300 hover:bg-black/70">
+		<article className="cursor-default bg-black rounded p-4 transition-all duration-300 hover:bg-darkgray/30">
 			<time className="text-lightgray/70 text-sm">
 				{formatTime(props.entry.createdAt)}
 			</time>
