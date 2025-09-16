@@ -16,8 +16,6 @@ const preview: Preview = {
 				date: /Date$/i,
 			},
 		},
-		// More info: https://storybook.js.org/docs/configure/story-layout
-		layout: "centered",
 		a11y: {
 			// 'todo' - show a11y violations in the test UI only
 			// 'error' - fail CI on a11y violations
