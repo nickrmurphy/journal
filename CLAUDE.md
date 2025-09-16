@@ -175,3 +175,43 @@ export const EntryCard = (props: { entry: Entry }) => {
 This pattern provides internal organization benefits while keeping a simple public API for consumers.
 
 **Note**: Don't over-engineer compound components. Use vanilla HTML elements when they don't need styling, logic, or props forwarding. Only create compound components when they add meaningful value through styling, behavior, or semantic structure.
+
+## Code Style
+
+### Guard Clauses
+
+Prefer guard clauses with early returns over nested if-else statements. This improves readability and reduces cognitive load.
+
+```ts
+// Preferred: Guard clauses
+function processData(input: unknown) {
+  if (!input) {
+    console.error("No input provided");
+    return undefined;
+  }
+
+  if (typeof input !== "string") {
+    console.error("Input must be a string");
+    return undefined;
+  }
+
+  // Happy path logic here
+  return input.toUpperCase();
+}
+
+// Avoid: Nested conditions
+function processData(input: unknown) {
+  if (input) {
+    if (typeof input === "string") {
+      // Happy path logic here
+      return input.toUpperCase();
+    } else {
+      console.error("Input must be a string");
+      return undefined;
+    }
+  } else {
+    console.error("No input provided");
+    return undefined;
+  }
+}
+```
