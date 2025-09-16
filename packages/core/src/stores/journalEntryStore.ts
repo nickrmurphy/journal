@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { JournalEntryCommentSchema, JournalEntrySchema } from "../schemas";
+import { Entry } from "../domains/entry";
 import type { CreateJournalEntry, JournalEntry } from "../types";
 
 type JournalEntriesState = {
@@ -11,52 +11,46 @@ type JournalEntriesState = {
 const useJournalEntries = create<JournalEntriesState>((set) => ({
 	entries: {},
 	addEntry: (entry: CreateJournalEntry) => {
-		const result = JournalEntrySchema.safeParse(entry);
-		if (!result.success) {
-			console.error("Failed to add entry:", result.error);
-			return undefined;
-		}
-
-		const validatedEntry = result.data;
-		set((state) => ({
-			entries: {
-				...state.entries,
-				[validatedEntry.id]: validatedEntry,
-			},
-		}));
-
-		return validatedEntry.id;
-	},
-	addComment: (entryId: string, content: string) => {
-		const result = JournalEntryCommentSchema.safeParse({ content });
-		if (!result.success) {
-			console.error("Failed to add comment:", result.error);
-			return undefined;
-		}
-
-		const validatedComment = result.data;
-		let entryExists = false;
-
-		set((state) => {
-			const entry = state.entries[entryId];
-			if (!entry) {
-				console.error(`Entry with ID ${entryId} not found`);
-				return state;
-			}
-
-			entryExists = true;
-			return {
+		try {
+			const validatedEntry = Entry.make(entry);
+			set((state) => ({
 				entries: {
 					...state.entries,
-					[entryId]: {
-						...entry,
-						comments: [...entry.comments, validatedComment],
-					},
+					[validatedEntry.id]: validatedEntry,
 				},
-			};
-		});
+			}));
 
-		return entryExists ? validatedComment.id : undefined;
+			return validatedEntry.id;
+		} catch (error) {
+			console.error("Failed to add entry:", error);
+			return undefined;
+		}
+	},
+	addComment: (entryId: string, content: string) => {
+		try {
+			const comment = Entry.makeComment(content);
+
+			set((state) => {
+				const entry = state.entries[entryId];
+				if (!entry) {
+					console.error(`Entry with ID ${entryId} not found`);
+					return state;
+				}
+
+				const updatedEntry = Entry.addComment(entry, comment);
+				return {
+					entries: {
+						...state.entries,
+						[entryId]: updatedEntry,
+					},
+				};
+			});
+
+			return comment.id;
+		} catch (error) {
+			console.error("Failed to add comment:", error);
+			return undefined;
+		}
 	},
 }));
 
