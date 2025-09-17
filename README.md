@@ -17,6 +17,27 @@ Instead of editing entries, you can reflect on them later by adding comments, cr
 - **Data Export**: Export your journal data as JSON
 - **P2P Sync** *(Coming Soon)*: End-to-end encrypted sync between your devices via WebRTC
 
+## Screenshots
+
+<div align="center">
+
+### Daily Journal View
+![Daily Journal Entries](images/daily-journal-entries-view.png)
+
+### New Entry Compose
+![New Entry Compose](images/new-entry-compose-view.png)
+
+### Chronological Entries List
+![Chronological Entries](images/chronological-entries-list.png)
+
+### Entry with Comment
+![Entry with Comment](images/entry-with-comment-detail.png)
+
+### Add Comment Modal
+![Add Comment Modal](images/add-comment-modal.png)
+
+</div>
+
 ## Privacy & Data
 
 Your journal data lives **only in your browser**. No servers store your personal thoughts. When P2P sync launches, data will be encrypted end-to-end and transmitted directly between your devices—never touching our servers.
