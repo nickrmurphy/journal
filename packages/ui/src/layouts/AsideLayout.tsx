@@ -19,11 +19,7 @@ const Main = (props: ComponentProps<"main">) => (
 	<main
 		{...props}
 		className={cx("col-span-4 overflow-y-auto p-3", props.className)}
-	>
-		<div className="mx-auto flex w-full max-w-3xl flex-col">
-			{props.children}
-		</div>
-	</main>
+	/>
 );
 
 export const AsideLayout = {

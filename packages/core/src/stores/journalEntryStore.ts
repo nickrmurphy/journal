@@ -1,4 +1,5 @@
-import { create } from "zustand";
+import { isSameDay, isWithinInterval } from "date-fns";
+import { create, type StateCreator } from "zustand";
 import { Entry } from "../domains/entry";
 import type { CreateJournalEntry, JournalEntry } from "../types";
 
@@ -8,7 +9,7 @@ type JournalEntriesState = {
 	addComment: (entryId: string, content: string) => string | undefined;
 };
 
-const useJournalEntries = create<JournalEntriesState>((set) => ({
+const journalEntryStateCreator: StateCreator<JournalEntriesState> = (set) => ({
 	entries: {},
 	addEntry: (entry: CreateJournalEntry) => {
 		try {
@@ -52,6 +53,23 @@ const useJournalEntries = create<JournalEntriesState>((set) => ({
 			return undefined;
 		}
 	},
-}));
+});
+
+const useJournalEntries = create(journalEntryStateCreator);
+
+export const useEntriesOnDate = (date: string) =>
+	useJournalEntries((state) =>
+		Object.values(state.entries).filter((e) => isSameDay(date, e.createdAt)),
+	);
+
+export const useEntriesInRange = (start: string, end: string) =>
+	useJournalEntries((state) =>
+		Object.values(state.entries).filter((e) =>
+			isWithinInterval(new Date(e.createdAt), {
+				start: new Date(start),
+				end: new Date(end),
+			}),
+		),
+	);
 
 export { useJournalEntries };

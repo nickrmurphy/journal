@@ -11,8 +11,8 @@ const button = cva({
 			"outline-yellow": "border border-yellow text-yellow hover:bg-yellow/10",
 		},
 		size: {
-			md: "px-3.5 py-2",
-			"md-icon": "p-2.5",
+			md: "px-3.5 py-2 [&>svg]:size-4",
+			"md-icon": "p-2.5  [&>svg]:size-4",
 		},
 	},
 	defaultVariants: {

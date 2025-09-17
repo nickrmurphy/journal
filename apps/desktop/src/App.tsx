@@ -1,40 +1,45 @@
-import { useState } from "react";
-import viteLogo from "/electron-vite.animate.svg";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
-import { Button } from "@journal/ui";
+import { useJournalEntries } from "@journal/core/stores/journalEntryStore.js";
+import { AsideLayout, Button, EntryList } from "@journal/ui";
+import { PenIcon } from "@phosphor-icons/react";
+import type { ReactNode } from "react";
 
-function App() {
-	const [count, setCount] = useState(0);
+const Container = (props: { children: ReactNode }) => (
+	<div className="mx-auto flex w-full max-w-3xl flex-col gap-3" {...props} />
+);
+
+const Navbar = () => {
+	const add = useJournalEntries((state) => state.addEntry);
 
 	return (
-		<>
-			<div>
-				<a
-					href="https://electron-vite.github.io"
-					target="_blank"
-					rel="noopener"
-				>
-					<img src={viteLogo} className="logo" alt="Vite logo" />
-				</a>
-				<a href="https://react.dev" target="_blank" rel="noopener">
-					<img src={reactLogo} className="logo react" alt="React logo" />
-				</a>
-			</div>
-			<h1>Vite + React</h1>
-			<Button />
-			<div className="card">
-				<button type="button" onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className="read-the-docs">
-				Click on the Vite and React logos to learn more
-			</p>
-		</>
+		<nav className="sticky top-0 bg-black/50 rounded-full backdrop-blur flex items-center border p-1.5 pl-3 mx-0.5">
+			Date
+			<Button
+				variant="solid-yellow"
+				size="md-icon"
+				className="ms-auto"
+				onClick={() => add({ content: "testing" })}
+			>
+				<PenIcon />
+			</Button>
+		</nav>
+	);
+};
+
+function App() {
+	const entries = useJournalEntries((state) => state.entries);
+
+	return (
+		<AsideLayout.Root>
+			<AsideLayout.Aside>
+				<div>Past stuff goes here</div>
+			</AsideLayout.Aside>
+			<AsideLayout.Main>
+				<Container>
+					<Navbar />
+					<EntryList entries={Object.values(entries)} />
+				</Container>
+			</AsideLayout.Main>
+		</AsideLayout.Root>
 	);
 }
 
