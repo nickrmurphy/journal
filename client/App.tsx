@@ -1,4 +1,4 @@
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import {
 	type FC,
 	type PropsWithChildren,
@@ -6,17 +6,15 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { entryCollection, type Entry } from "./collections/entries";
-import {
-  entryCommentCollection,
-  type EntryComment,
-} from "./collections/entryComments";
+import { entryCollection } from "./collections/entries";
+import { entryCommentCollection } from "./collections/entryComments";
 import { Button } from "./components/Button";
 import { CreateEntryDialog } from "./components/CreateEntryDialog";
 import { EntryDialog } from "./components/EntryDialog";
 import { PastEntries } from "./components/PastEntries";
 import { TodayEntries } from "./components/TodayEntries";
 import { TodayHeader } from "./components/TodayHeader";
+import { exportJournalData } from "./utils/exportData";
 
 const Nav = ({ onCreateEntry }: { onCreateEntry: () => void }) => (
 	<div className="fixed inset-x-4 bottom-[calc(var(--safe-bottom)+var(--spacing)*4)] flex justify-end">
@@ -46,38 +44,10 @@ function App() {
 	}, []);
 
 	const handleExport = () => {
-		// Convert IterableIterator to arrays
-		const entries: Entry[] = Array.from(entryCollection.values());
-		const entryComments: EntryComment[] = Array.from(
-			entryCommentCollection.values(),
+		exportJournalData(
+			Array.from(entryCollection.values()),
+			Array.from(entryCommentCollection.values()),
 		);
-
-		// Group comments by entryId for efficient join
-		const commentsByEntryId = new Map<string, EntryComment[]>();
-		for (const c of entryComments) {
-			const list = commentsByEntryId.get(c.entryId) ?? [];
-			list.push(c);
-			commentsByEntryId.set(c.entryId, list);
-		}
-
-		// Join comments to their respective entries via entryComment.entryId -> entry.id
-		const joined = entries.map((entry) => ({
-			...entry,
-			comments: commentsByEntryId.get(entry.id) ?? [],
-		}));
-
-		// Create a JSON blob and trigger a download
-		const json = JSON.stringify(joined, null, 2);
-		const blob = new Blob([json], { type: "application/json" });
-		const url = URL.createObjectURL(blob);
-		const a = document.createElement("a");
-		const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-		a.href = url;
-		a.download = `journal-export-${timestamp}.json`;
-		document.body.appendChild(a);
-		a.click();
-		document.body.removeChild(a);
-		URL.revokeObjectURL(url);
 	};
 
 	return (
@@ -111,7 +81,14 @@ function App() {
 
 				<section className="snap-center shrink-0 w-screen px-0">
 					<Page>
-						<Button onClick={handleExport}>Export</Button>
+						<Button
+							variant="outline"
+							className="mt-auto"
+							onClick={handleExport}
+						>
+							Export
+							<ArrowUpTrayIcon className="size-4" />
+						</Button>
 					</Page>
 				</section>
 			</div>
