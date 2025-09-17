@@ -1,69 +1,28 @@
-# React + TypeScript + Vite
+# Journal by Early Bird
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A local-first, simple journaling app for daily notes that encourages authentic self-expression.
 
-Currently, two official plugins are available:
+## Why Journal?
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Traditional digital journals make it too easy to self-censor: deleting, editing, and overthinking what you've written. Journal takes inspiration from pen and paper: **each entry, is a snapshot in time**. This encourages honest, unfiltered thoughts without the temptation to perfect or sanitize your authentic voice.
 
-## Expanding the ESLint configuration
+Instead of editing entries, you can reflect on them later by adding comments, creating a natural progression of thoughts over time.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Daily Notes**: Simple, focused journaling for daily reflection
+- **Immutable Entries**: Entries can't be edited once created to prevent self-censorship
+- **Reflective Comments**: Add comments to entries for later thoughts and insights
+- **Local-First**: All data stored in your browser—no servers, no accounts, complete privacy
+- **Data Export**: Export your journal data as JSON
+- **P2P Sync** *(Coming Soon)*: End-to-end encrypted sync between your devices via WebRTC
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Privacy & Data
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Your journal data lives **only in your browser**. No servers store your personal thoughts. When P2P sync launches, data will be encrypted end-to-end and transmitted directly between your devices—never touching our servers.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Availability
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Born out of a personal need for simple and private journaling, Journal by Early Bird will be enhanced and available for public use by the new year.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+🌐 Find the proof-of-concept here: [http://journal.rsvzgk29j8.workers.dev](http://journal.rsvzgk29j8.workers.dev)
