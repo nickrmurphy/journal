@@ -1,9 +1,11 @@
 import { isSameDay, isWithinInterval } from "date-fns";
 import { useMemo } from "react";
 import { create, type StateCreator } from "zustand";
+import { persist } from "zustand/middleware";
 import { useShallow } from "zustand/react/shallow";
 import { Entry } from "../domains/entry";
 import type { CreateJournalEntry, JournalEntry } from "../types";
+import { createStorage } from "./persist";
 
 type JournalEntriesState = {
 	entries: { [key: string]: JournalEntry };
@@ -11,13 +13,8 @@ type JournalEntriesState = {
 	addComment: (entryId: string, content: string) => string | undefined;
 };
 
-const journalEntryStateCreator: StateCreator<JournalEntriesState> = (set) => ({
-	entries: {
-		[crypto.randomUUID()]: {
-			...Entry.make({ content: "Hello, world!" }),
-			createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-		},
-	},
+const createJournalEntryState: StateCreator<JournalEntriesState> = (set) => ({
+	entries: {},
 	addEntry: (entry: CreateJournalEntry) => {
 		try {
 			const validatedEntry = Entry.make(entry);
@@ -62,7 +59,13 @@ const journalEntryStateCreator: StateCreator<JournalEntriesState> = (set) => ({
 	},
 });
 
-const useJournalEntries = create(journalEntryStateCreator);
+const useJournalEntries = create(
+	persist(createJournalEntryState, {
+		name: "journal-entries",
+		storage: createStorage(),
+		partialize: (state) => ({ entries: state.entries }),
+	}),
+);
 
 export const useEntriesOnDate = (date: string) =>
 	useJournalEntries(

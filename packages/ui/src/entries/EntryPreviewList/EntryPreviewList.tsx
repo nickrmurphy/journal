@@ -8,6 +8,18 @@ const Root = (props: ComponentProps<"div">) => (
 	<div {...props} className={cx("space-y-6 divide-y", props.className)} />
 );
 
+const EmptyState = (props: ComponentProps<"div">) => (
+	<div
+		{...props}
+		className={cx(
+			"p-4 text-center text-sm text-lightgray/70 m-auto my-auto self-center bg-black rounded shadow",
+			props.className,
+		)}
+	>
+		Previous entries will appear here
+	</div>
+);
+
 const Group = ({
 	date,
 	entries,
@@ -31,5 +43,6 @@ export const EntryPreviewList = (props: EntryPreviewListProps) => (
 		{props.data.map(({ date, entries }) => (
 			<Group key={date} date={date} entries={entries} />
 		))}
+		{props.data.length === 0 && <EmptyState />}
 	</Root>
 );

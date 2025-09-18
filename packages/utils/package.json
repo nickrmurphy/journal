@@ -5,6 +5,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./dates": "./src/dates/index.ts",
+    "./hooks": "./src/hooks/index.ts",
     "./strings/*": "./src/strings/*",
     "./validation/*": "./src/validation/*"
   },
