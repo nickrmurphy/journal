@@ -1,5 +1,6 @@
 import type { JournalEntry } from "@journal/core/types";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
 import { EntryList } from "./EntryList";
 
 const mockEntries: JournalEntry[] = [
@@ -27,11 +28,11 @@ const mockEntries: JournalEntry[] = [
 ];
 
 const meta = {
-	title: "Components/EntryList",
 	component: EntryList,
 	tags: ["autodocs"],
 	args: {
 		entries: mockEntries,
+		onComment: fn(),
 	},
 } satisfies Meta<typeof EntryList>;
 

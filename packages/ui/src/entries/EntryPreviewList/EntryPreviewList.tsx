@@ -23,25 +23,38 @@ const EmptyState = (props: ComponentProps<"div">) => (
 const Group = ({
 	date,
 	entries,
+	onEntryClick,
 }: {
 	date: string;
 	entries: JournalEntry[];
+	onEntryClick?: (entry: JournalEntry, layoutId: string) => void;
 }) => (
 	<EntryDateCard key={date} date={date}>
 		{entries.map((entry) => (
-			<EntryPreviewItem key={entry.createdAt} entry={entry} />
+			<EntryPreviewItem
+				key={entry.id}
+				entry={entry}
+				onClick={onEntryClick ? () => onEntryClick(entry, entry.id) : undefined}
+				layoutId={entry.id}
+			/>
 		))}
 	</EntryDateCard>
 );
 
 type EntryPreviewListProps = {
 	data: Array<{ date: string; entries: JournalEntry[] }>;
+	onEntryClick?: (entry: JournalEntry, layoutId: string) => void;
 };
 
 export const EntryPreviewList = (props: EntryPreviewListProps) => (
 	<Root>
 		{props.data.map(({ date, entries }) => (
-			<Group key={date} date={date} entries={entries} />
+			<Group
+				key={date}
+				date={date}
+				entries={entries}
+				onEntryClick={props.onEntryClick}
+			/>
 		))}
 		{props.data.length === 0 && <EmptyState />}
 	</Root>

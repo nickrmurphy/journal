@@ -50,7 +50,6 @@ const mockEntriesYesterday: JournalEntry[] = [
 ];
 
 const meta = {
-	title: "Components/EntryPreviewList",
 	component: EntryPreviewList,
 	tags: ["autodocs"],
 	args: {

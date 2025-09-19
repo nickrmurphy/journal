@@ -1,7 +1,7 @@
 import type { JournalEntry } from "@journal/core/types";
 import { cx } from "cva";
 import type { ComponentProps } from "react";
-import { EntryItem } from "../..";
+import { EntryItem } from "..";
 
 const Root = (props: ComponentProps<"div">) => (
 	<div
@@ -22,11 +22,26 @@ const EmptyState = (props: ComponentProps<"div">) => (
 	</div>
 );
 
-export const EntryList = ({ entries }: { entries: JournalEntry[] }) => (
-	<Root>
-		{entries.map((entry) => (
-			<EntryItem key={entry.createdAt} entry={entry} />
-		))}
-		{entries.length === 0 && <EmptyState />}
-	</Root>
-);
+export const EntryList = ({
+	entries,
+	onEntryClick,
+}: {
+	entries: JournalEntry[];
+	onEntryClick?: (entry: JournalEntry, layoutId: string) => void;
+}) => {
+	return (
+		<Root>
+			{entries.map((entry) => (
+				<EntryItem
+					key={entry.id}
+					entry={entry}
+					onClick={
+						onEntryClick ? () => onEntryClick(entry, entry.id) : undefined
+					}
+				/>
+			))}
+
+			{entries.length === 0 && <EmptyState />}
+		</Root>
+	);
+};

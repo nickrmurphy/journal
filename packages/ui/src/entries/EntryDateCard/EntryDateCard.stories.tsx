@@ -1,13 +1,14 @@
-import { EntryDateCard } from "./EntryDateCard";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { EntryDateCard } from "./EntryDateCard";
 
 const meta = {
-	title: "Components/EntryDateCard",
 	component: EntryDateCard,
 	tags: ["autodocs"],
 	args: {
 		date: "2023-01-15T12:00:00Z",
-		children: <div className="p-2 text-lightgray">Sample content goes here</div>,
+		children: (
+			<div className="p-2 text-lightgray">Sample content goes here</div>
+		),
 	},
 } satisfies Meta<typeof EntryDateCard>;
 

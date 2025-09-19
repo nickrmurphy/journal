@@ -6,14 +6,14 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { Button, Dialog } from "../../shared";
+import { Button, Dialog, Textarea } from "../../shared";
 
-type CreateEntryDialogProps = ComponentProps<typeof Dialog.Root> & {
+type EntryCreateDialogProps = ComponentProps<typeof Dialog.Root> & {
 	onSubmit: (content: string) => void;
 	onClose?: () => void;
 };
 
-export function CreateEntryDialog(props: CreateEntryDialogProps) {
+export function EntryCreateDialog(props: EntryCreateDialogProps) {
 	const [content, setContent] = useState("");
 	const formRef = useRef<HTMLFormElement | null>(null);
 
@@ -60,39 +60,43 @@ export function CreateEntryDialog(props: CreateEntryDialogProps) {
 		>
 			<Dialog.Content>
 				<Dialog.Title className="sr-only">Create Journal Entry</Dialog.Title>
-				<form
-					id="create-entry-form"
-					className="size-full"
-					onSubmit={handleSubmit}
-					ref={formRef}
-				>
-					<textarea
-						rows={6}
-						minLength={1}
-						className="size-full focus:outline-none resize-none placeholder:text-lightgray/50"
-						placeholder="What's on your mind?"
-						value={content}
-						onChange={(e) => setContent(e.target.value)}
-					/>
-				</form>
-				<div className="flex justify-between gap-2">
-					<Button
-						onClick={props.onClose}
-						variant="outline-lightgray"
-						size="md-icon"
+				<Dialog.Body>
+					<form
+						id="create-entry-form"
+						className="h-full"
+						onSubmit={handleSubmit}
+						ref={formRef}
 					>
-						<XIcon />
-					</Button>
-					<Button
-						form="create-entry-form"
-						variant="solid-yellow"
-						size="md-icon"
-						type="submit"
-						disabled={content.trim().length === 0}
-					>
-						<CheckIcon />
-					</Button>
-				</div>
+						<Textarea
+							rows={6}
+							minLength={1}
+							className="size-full placeholder:text-lightgray/50"
+							placeholder="What's on your mind?"
+							value={content}
+							onChange={(e) => setContent(e.target.value)}
+						/>
+					</form>
+				</Dialog.Body>
+				<Dialog.Footer>
+					<div className="flex justify-between gap-2 w-full">
+						<Button
+							onClick={props.onClose}
+							variant="outline-lightgray"
+							size="md-icon"
+						>
+							<XIcon />
+						</Button>
+						<Button
+							form="create-entry-form"
+							variant="solid-yellow"
+							size="md-icon"
+							type="submit"
+							disabled={content.trim().length === 0}
+						>
+							<CheckIcon />
+						</Button>
+					</div>
+				</Dialog.Footer>
 			</Dialog.Content>
 		</Dialog.Root>
 	);

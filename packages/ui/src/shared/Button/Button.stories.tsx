@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
 const meta = {
-	title: "Components/Button",
 	component: Button,
 	tags: ["autodocs"],
 	args: { onClick: fn(), children: "Button" },

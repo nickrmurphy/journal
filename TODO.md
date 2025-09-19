@@ -1,0 +1,3 @@
+- [x] Need to make a generic popover component probably
+- [x] Add a tooltip with the full datetime formatted around the comments "x mins/hours/days later"
+- [x] Make a shared Textarea component

@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "cva";
 import type { ComponentProps } from "react";
 
 const button = cva({
-	base: "rounded-full text-sm active:scale-105 disabled:active:scale-100 transition-all disabled:opacity-50",
+	base: "rounded-full shrink-0 text-sm active:scale-105 disabled:active:scale-100 transition-all disabled:opacity-50",
 	variants: {
 		variant: {
 			"solid-black": "bg-black text-lightgray hover:bg-black/90 ",
@@ -30,3 +30,5 @@ export type ButtonProps = ComponentProps<"button"> &
 export const Button = ({ ...props }: ButtonProps) => (
 	<button type="button" {...props} className={button(props)} />
 );
+
+export { button };

@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
-import { CreateEntryDialog } from "./CreateEntryDialog";
+import { EntryCreateDialog } from "./EntryCreateDialog";
 
-const meta: Meta<typeof CreateEntryDialog> = {
-	title: "Components/CreateEntryDialog",
-	component: CreateEntryDialog,
+const meta: Meta<typeof EntryCreateDialog> = {
+	component: EntryCreateDialog,
 	tags: ["autodocs"],
 	args: {
 		onOpenChangeComplete: fn(),
@@ -17,5 +16,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-	render: (args) => <CreateEntryDialog {...args} open={true} />,
+	render: (args) => <EntryCreateDialog {...args} open={true} />,
 };

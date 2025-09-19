@@ -1,0 +1,1 @@
+export { EntryCommentPopover } from "./EntryCommentPopover";

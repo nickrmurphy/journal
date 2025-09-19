@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AsideLayout } from "./AsideLayout";
 
 const meta = {
-	title: "Layouts/AsideLayout",
 	component: AsideLayout.Root,
 	parameters: {
 		layout: "fullscreen",

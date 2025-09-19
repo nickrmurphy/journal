@@ -1,14 +1,16 @@
+import { useEntryComments } from "@journal/core/stores/journalEntryStore.js";
 import type { JournalEntry } from "@journal/core/types";
 import { formatTime } from "@journal/utils/dates";
-import { ArrowBendDownRightIcon } from "@phosphor-icons/react";
 import { cx } from "cva";
+import { motion } from "motion/react";
 import type { ComponentProps } from "react";
+import { EntryCommentItem } from "../EntryCommentItem/EntryCommentItem";
 
-const Root = (props: ComponentProps<"article">) => (
-	<article
+const Root = (props: ComponentProps<typeof motion.article>) => (
+	<motion.article
 		{...props}
 		className={cx(
-			"cursor-default bg-black rounded p-4 transition-all duration-300 hover:bg-darkgray/30",
+			"cursor-default bg-black transition-colors rounded p-4 hover:bg-darkgray/30",
 			props.className,
 		)}
 	/>
@@ -31,40 +33,22 @@ const Content = (props: ComponentProps<"p">) => (
 	/>
 );
 
-const Comments = (props: ComponentProps<"div">) => (
-	<div {...props} className={cx("mt-1", props.className)} />
-);
+export const EntryItem = (props: {
+	entry: JournalEntry;
+	onClick?: () => void;
+}) => {
+	const comments = useEntryComments(props.entry.id);
 
-const Comment = (props: ComponentProps<"div">) => (
-	<div
-		{...props}
-		className={cx("flex items-center gap-2 p-2", props.className)}
-	>
-		<ArrowBendDownRightIcon className="size-4" />
-		{props.children}
-	</div>
-);
-
-const CommentText = (props: ComponentProps<"p">) => (
-	<p
-		{...props}
-		className={cx("max-w-[55ch] text-lightgray/70 text-sm", props.className)}
-	/>
-);
-
-export const EntryItem = (props: { entry: JournalEntry }) => {
 	return (
-		<Root>
+		<Root layoutId={props.entry.id} onClick={props.onClick}>
 			<Time>{formatTime(props.entry.createdAt)}</Time>
 			<Content>{props.entry.content}</Content>
-			{props.entry.comments.length > 0 && (
-				<Comments>
-					{props.entry.comments.map((comment) => (
-						<Comment key={comment.createdAt}>
-							<CommentText>{comment.content}</CommentText>
-						</Comment>
+			{comments.length > 0 && (
+				<div className="mt-1">
+					{comments.map((comment) => (
+						<EntryCommentItem key={comment.id} comment={comment} />
 					))}
-				</Comments>
+				</div>
 			)}
 		</Root>
 	);
