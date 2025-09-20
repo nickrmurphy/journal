@@ -178,6 +178,24 @@ This pattern provides internal organization benefits while keeping a simple publ
 
 ## Code Style
 
+### Type vs Interface
+
+Prefer `type` over `interface` for type definitions.
+
+```ts
+// Preferred: type
+type DataMenuProps = {
+	onExport?: () => void;
+	onImport?: () => void;
+};
+
+// Avoid: interface
+interface DataMenuProps {
+	onExport?: () => void;
+	onImport?: () => void;
+}
+```
+
 ### Guard Clauses
 
 Prefer guard clauses with early returns over nested if-else statements. This improves readability and reduces cognitive load.
