@@ -9,6 +9,7 @@ import type { JournalEntry } from "@journal/core/types";
 import {
 	AsideLayout,
 	Button,
+	button,
 	DataMenu,
 	EntryCreateDialog,
 	EntryDetailDialog,
@@ -66,10 +67,13 @@ const Navbar = () => {
 				</span>
 				<div className="ms-auto flex items-center gap-2">
 					<Menu.Root>
-						<Menu.Trigger>
-							<Button variant="outline-lightgray" size="md-icon">
-								<DotsThreeVerticalIcon />
-							</Button>
+						<Menu.Trigger
+							className={button({
+								variant: "outline-lightgray",
+								size: "md-icon",
+							})}
+						>
+							<DotsThreeVerticalIcon />
 						</Menu.Trigger>
 						<DataMenu onExport={handleExport} onImport={handleImport} />
 					</Menu.Root>

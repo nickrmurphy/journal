@@ -5,18 +5,21 @@ import { cx } from "cva";
 import type { ComponentProps } from "react";
 import { Tooltip } from "../../shared";
 
-const Root = (props: ComponentProps<"div"> & { hasTimestamp?: boolean }) => (
-	<div
-		{...props}
-		className={cx(
-			props.hasTimestamp ? "flex gap-2 p-2" : "flex items-center gap-2 p-2",
-			props.className,
-		)}
-	>
-		<ArrowBendDownRightIcon className="size-4 flex-shrink-0" />
-		{props.children}
-	</div>
-);
+const Root = (props: ComponentProps<"div"> & { hasTimestamp?: boolean }) => {
+	const { hasTimestamp, ...domProps } = props;
+	return (
+		<div
+			{...domProps}
+			className={cx(
+				hasTimestamp ? "flex gap-2 p-2" : "flex items-center gap-2 p-2",
+				props.className,
+			)}
+		>
+			<ArrowBendDownRightIcon className="size-4 flex-shrink-0" />
+			{props.children}
+		</div>
+	);
+};
 
 const Text = (props: ComponentProps<"p">) => (
 	<p

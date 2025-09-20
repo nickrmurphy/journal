@@ -1,4 +1,4 @@
-export { Button } from "./Button";
+export { Button, button } from "./Button";
 export { Dialog } from "./Dialog";
 export { Menu } from "./Menu";
 export { Popover } from "./Popover";
