@@ -1,4 +1,4 @@
-@import 'tailwindcss';
-@import '../../../packages/ui/src/main.css';
+@import "tailwindcss";
+@import "../../../packages/ui/src/main.css";
 /* biome-ignore lint/suspicious/noUnknownAtRules: <tailwindcss syntax> */
 @source '../../../packages/ui/src/**/*.tsx';

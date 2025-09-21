@@ -17,9 +17,7 @@ export const Default: Story = {
 			<Popover.Trigger>
 				<Button variant="solid-black">Open popover</Button>
 			</Popover.Trigger>
-			<Popover.Content>
-				This is a popover with helpful content
-			</Popover.Content>
+			<Popover.Content>This is a popover with helpful content</Popover.Content>
 		</Popover.Root>
 	),
 };
