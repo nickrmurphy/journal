@@ -81,9 +81,7 @@ const createJournalEntryState: StateCreator<JournalEntriesState> = (
 	},
 	getEntriesOnDate: (date: string) => {
 		const { entries } = get();
-		return Object.values(entries)
-			.filter((e) => isSameDay(date, e.createdAt))
-			.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+		return Object.values(entries).filter((e) => isSameDay(date, e.createdAt));
 	},
 	getEntriesInRange: (start: string, end: string) => {
 		const { entries } = get();
