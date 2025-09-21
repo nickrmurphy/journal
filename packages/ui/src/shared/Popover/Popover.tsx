@@ -10,7 +10,7 @@ const Popup = BasePopover.Popup;
 
 const popoverPopup = (className?: string) =>
 	cx(
-		"origin-[var(--transform-origin)] rounded-md shadow-lg transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0 bg-black border p-2",
+		"origin-[var(--transform-origin)] rounded-md shadow transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0 bg-black border p-2",
 		className,
 	);
 

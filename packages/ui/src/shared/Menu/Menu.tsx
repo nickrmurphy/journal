@@ -25,7 +25,7 @@ const Content = (props: React.ComponentProps<typeof BaseMenu.Positioner>) => {
 			<Positioner {...props}>
 				<Popup
 					className={cx(
-						"border p-0.5 origin-[var(--transform-origin)] rounded-md min-w-3xs bg-black shadow-md transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0",
+						"border p-0.5 origin-[var(--transform-origin)] rounded-md min-w-3xs bg-black shadow transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0",
 						props.className,
 					)}
 				>

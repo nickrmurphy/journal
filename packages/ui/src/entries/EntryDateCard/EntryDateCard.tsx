@@ -5,7 +5,7 @@ import type { ComponentProps, PropsWithChildren } from "react";
 const Root = (props: ComponentProps<"div">) => (
 	<div
 		{...props}
-		className={cx("w-full rounded bg-black p-1 shadow", props.className)}
+		className={cx("w-full rounded bg-black p-1", props.className)}
 	/>
 );
 

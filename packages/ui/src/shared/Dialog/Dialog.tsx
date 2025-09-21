@@ -19,7 +19,7 @@ const dialogBackdrop = (className?: string) =>
 
 const dialogPopup = (className?: string) =>
 	cx(
-		"fixed top-1/2 left-1/2 -mt-8 min-w-96 w-2/3 max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-md bg-black p-6 border shadow-lg max-h-[80vh]",
+		"fixed top-1/2 left-1/2 -mt-8 min-w-96 w-2/3 max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-md bg-black p-6 border shadow max-h-[80vh]",
 		className,
 	);
 
