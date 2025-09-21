@@ -1,48 +1,13 @@
-import { Popover } from "@base-ui-components/react/popover";
 import { useEntryComments } from "@journal/core/stores/journalEntryStore.js";
 import type { JournalEntry, JournalEntryComment } from "@journal/core/types";
 import { formatDateTime } from "@journal/utils/dates";
 import { ChatTeardropIcon, XIcon } from "@phosphor-icons/react";
-import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { Button } from "../../shared";
-import { button } from "../../shared/Button/Button";
-import {
-	Dialog,
-	dialogBackdrop,
-	dialogPopup,
-} from "../../shared/Dialog/Dialog";
+import { Dialog } from "../../shared/Dialog/Dialog";
+import { Popover } from "../../shared/Popover/Popover";
 import { EntryCommentItem } from "../EntryCommentItem/EntryCommentItem";
 import { EntryCommentPopover } from "../EntryCommentPopover/EntryCommentPopover";
-
-const Root = ({
-	isOpen,
-	onClose,
-	layoutId,
-	children,
-}: {
-	isOpen: boolean;
-	onClose: () => void;
-	layoutId: string;
-	children: React.ReactNode;
-}) => (
-	<Dialog.Root open={isOpen} onOpenChange={onClose}>
-		<AnimatePresence>
-			{isOpen && (
-				<Dialog.Portal>
-					<Dialog.Backdrop className={dialogBackdrop()} />
-					<motion.div
-						layoutId={layoutId}
-						className={dialogPopup("min-h-1/4 flex flex-col")}
-						transition={{ type: "spring", damping: 25, stiffness: 200 }}
-					>
-						{children}
-					</motion.div>
-				</Dialog.Portal>
-			)}
-		</AnimatePresence>
-	</Dialog.Root>
-);
 
 const Timestamp = ({ createdAt }: { createdAt: string }) => (
 	<time className="text-lightgray/70 text-sm mb-2">
@@ -88,16 +53,18 @@ const Actions = ({
 			</Button>
 			<Popover.Root
 				open={showCommentPopover}
-				onOpenChange={setShowCommentPopover}
+				onOpenChange={(details) => setShowCommentPopover(details.open)}
+				positioning={{
+					placement: "bottom-end",
+					offset: { mainAxis: 8 },
+				}}
 			>
-				<Popover.Trigger
-					disabled={showCommentPopover}
-					className={button({ variant: "outline-yellow", size: "md-icon" })}
-				>
-					<ChatTeardropIcon />
+				<Popover.Trigger disabled={showCommentPopover} asChild>
+					<Button variant="outline-yellow" size="md-icon">
+						<ChatTeardropIcon />
+					</Button>
 				</Popover.Trigger>
 				<EntryCommentPopover
-					open={showCommentPopover}
 					onClose={() => setShowCommentPopover(false)}
 					onSubmit={(comment) => {
 						onComment?.(comment);
@@ -112,28 +79,40 @@ const Actions = ({
 export const EntryDetailDialog = ({
 	isOpen,
 	onClose,
-	layoutId,
 	entry,
+	onExitComplete,
 	onComment,
 }: {
-	entry: JournalEntry;
+	entry: JournalEntry | undefined;
 	isOpen: boolean;
 	onClose: () => void;
-	layoutId: string;
+	onExitComplete?: () => void;
 	onComment?: (comment: string) => void;
 }) => {
-	const comments = useEntryComments(entry.id);
+	const comments = useEntryComments(entry?.id ?? "");
 
 	return (
-		<Root isOpen={isOpen} onClose={onClose} layoutId={layoutId}>
-			<Dialog.Body>
-				<Timestamp createdAt={entry.createdAt} />
-				<div>{entry.content}</div>
-				<Comments comments={comments} entryCreatedAt={entry.createdAt} />
-			</Dialog.Body>
-			<Dialog.Footer>
-				<Actions onClose={onClose} onComment={onComment} />
-			</Dialog.Footer>
-		</Root>
+		<Dialog.Root
+			open={isOpen}
+			onOpenChange={onClose}
+			onExitComplete={onExitComplete}
+		>
+			<Dialog.Content>
+				<Dialog.Body>
+					{entry && (
+						<>
+							<Timestamp createdAt={entry.createdAt} />
+							<div>{entry.content}</div>
+							<Comments comments={comments} entryCreatedAt={entry.createdAt} />
+						</>
+					)}
+				</Dialog.Body>
+				{entry && (
+					<Dialog.Footer>
+						<Actions onClose={onClose} onComment={onComment} />
+					</Dialog.Footer>
+				)}
+			</Dialog.Content>
+		</Dialog.Root>
 	);
 };

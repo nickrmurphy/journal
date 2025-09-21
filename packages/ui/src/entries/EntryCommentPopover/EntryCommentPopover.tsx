@@ -3,13 +3,11 @@ import { useState } from "react";
 import { Button, Popover, Textarea } from "../../shared";
 
 interface EntryCommentPopoverProps {
-	open: boolean;
 	onClose: () => void;
 	onSubmit?: (comment: string) => void;
 }
 
 export const EntryCommentPopover = ({
-	open,
 	onClose,
 	onSubmit,
 }: EntryCommentPopoverProps) => {
@@ -26,8 +24,6 @@ export const EntryCommentPopover = ({
 		setComment("");
 		onClose();
 	};
-
-	if (!open) return null;
 
 	return (
 		<Popover.Content className="flex items-center gap-2 min-w-[30ch]">

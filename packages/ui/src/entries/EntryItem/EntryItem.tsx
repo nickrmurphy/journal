@@ -2,12 +2,11 @@ import { useEntryComments } from "@journal/core/stores/journalEntryStore.js";
 import type { JournalEntry } from "@journal/core/types";
 import { formatTime } from "@journal/utils/dates";
 import { cx } from "cva";
-import { motion } from "motion/react";
 import type { ComponentProps } from "react";
 import { EntryCommentItem } from "../EntryCommentItem/EntryCommentItem";
 
-const Root = (props: ComponentProps<typeof motion.article>) => (
-	<motion.article
+const Root = (props: ComponentProps<"article">) => (
+	<article
 		{...props}
 		className={cx(
 			"cursor-default bg-black transition-colors rounded p-4 hover:bg-darkgray/30",
@@ -40,7 +39,7 @@ export const EntryItem = (props: {
 	const comments = useEntryComments(props.entry.id);
 
 	return (
-		<Root layoutId={props.entry.id} onClick={props.onClick}>
+		<Root onClick={props.onClick}>
 			<Time>{formatTime(props.entry.createdAt)}</Time>
 			<Content>{props.entry.content}</Content>
 			{comments.length > 0 && (

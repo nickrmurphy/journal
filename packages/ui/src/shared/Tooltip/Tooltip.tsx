@@ -1,50 +1,40 @@
-import { Tooltip as BaseTooltip } from "@base-ui-components/react/tooltip";
+import { Tooltip as ArkTooltip } from "@ark-ui/react/tooltip";
 import { cx } from "cva";
 import type * as React from "react";
 
-const Root = BaseTooltip.Root;
-const Trigger = BaseTooltip.Trigger;
-const Portal = BaseTooltip.Portal;
-const Positioner = BaseTooltip.Positioner;
-const Popup = BaseTooltip.Popup;
+const Root = ArkTooltip.Root;
+const Trigger = ArkTooltip.Trigger;
+const Positioner = ArkTooltip.Positioner;
 
 const tooltipPopup = (className?: string) =>
 	cx(
-		"origin-[var(--transform-origin)] rounded shadow transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0 bg-darkgray/90 backdrop-blur p-1 text-xs border",
+		"rounded shadow bg-darkgray/90 backdrop-blur p-1 text-xs border",
+		"data-[state=open]:animate-[fadeIn_150ms_ease-out]",
+		"data-[state=closed]:animate-[fadeOut_100ms_ease-in]",
 		className,
 	);
 
 const Content = ({
 	children,
-	align = "start",
-	side = "bottom",
-	sideOffset = 4,
 	className,
 	...props
 }: {
 	children: React.ReactNode;
-	align?: "start" | "center" | "end";
-	side?: "top" | "bottom" | "left" | "right";
-	sideOffset?: number;
 	className?: string;
-} & React.ComponentProps<typeof BaseTooltip.Popup>) => {
+} & React.ComponentProps<typeof ArkTooltip.Content>) => {
 	return (
-		<Portal>
-			<Positioner align={align} side={side} sideOffset={sideOffset}>
-				<Popup {...props} className={tooltipPopup(className)}>
-					{children}
-				</Popup>
-			</Positioner>
-		</Portal>
+		<Positioner>
+			<ArkTooltip.Content {...props} className={tooltipPopup(className)}>
+				{children}
+			</ArkTooltip.Content>
+		</Positioner>
 	);
 };
 
 export const Tooltip = {
 	Root,
 	Trigger,
-	Portal,
 	Positioner,
-	Popup,
 	Content,
 };
 

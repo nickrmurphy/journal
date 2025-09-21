@@ -1,6 +1,5 @@
 import type { Preview } from "@storybook/react-vite";
 import "../src/main.css";
-import { Tooltip } from "@base-ui-components/react/tooltip";
 
 const preview: Preview = {
 	tags: ["autodocs"],
@@ -24,13 +23,6 @@ const preview: Preview = {
 			test: "error",
 		},
 	},
-	decorators: [
-		(Story) => (
-			<Tooltip.Provider>
-				<Story />
-			</Tooltip.Provider>
-		),
-	],
 	initialGlobals: {
 		// 👇 Set the initial background color
 		backgrounds: { value: "bg" },

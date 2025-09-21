@@ -9,7 +9,6 @@ import type { JournalEntry } from "@journal/core/types";
 import {
 	AsideLayout,
 	Button,
-	button,
 	DataMenu,
 	EntryCreateDialog,
 	EntryDetailDialog,
@@ -66,14 +65,16 @@ const Navbar = () => {
 					<span className="text-sm text-lightgray/70">{formatDay(today)}</span>
 				</span>
 				<div className="ms-auto flex items-center gap-2">
-					<Menu.Root>
-						<Menu.Trigger
-							className={button({
-								variant: "outline-lightgray",
-								size: "md-icon",
-							})}
-						>
-							<DotsThreeVerticalIcon />
+					<Menu.Root
+						positioning={{
+							placement: "bottom-end",
+							offset: { mainAxis: 4 },
+						}}
+					>
+						<Menu.Trigger asChild>
+							<Button variant="outline-lightgray" size="md-icon">
+								<DotsThreeVerticalIcon />
+							</Button>
 						</Menu.Trigger>
 						<DataMenu onExport={handleExport} onImport={handleImport} />
 					</Menu.Root>
@@ -109,11 +110,12 @@ function App() {
 
 	const [selectedEntry, setSelectedEntry] = useState<{
 		entry: JournalEntry;
-		layoutId: string;
 	} | null>(null);
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-	const handleEntryClick = (entry: JournalEntry, layoutId: string) => {
-		setSelectedEntry({ entry, layoutId });
+	const handleEntryClick = (entry: JournalEntry, _layoutId: string) => {
+		setSelectedEntry({ entry });
+		setIsDialogOpen(true);
 	};
 
 	const handleComment = (content: string) => {
@@ -136,15 +138,13 @@ function App() {
 					/>
 				</Container>
 			</AsideLayout.Main>
-			{selectedEntry && (
-				<EntryDetailDialog
-					entry={selectedEntry.entry}
-					layoutId={selectedEntry.layoutId}
-					isOpen={!!selectedEntry}
-					onClose={() => setSelectedEntry(null)}
-					onComment={handleComment}
-				/>
-			)}
+			<EntryDetailDialog
+				entry={selectedEntry?.entry}
+				isOpen={isDialogOpen}
+				onClose={() => setIsDialogOpen(false)}
+				onExitComplete={() => setSelectedEntry(null)}
+				onComment={handleComment}
+			/>
 		</AsideLayout.Root>
 	);
 }

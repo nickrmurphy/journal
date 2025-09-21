@@ -23,10 +23,9 @@
     "dev:workshop": "bun run --cwd ./apps/workshop dev"
   },
   "dependencies": {
-    "@base-ui-components/react": "^1.0.0-beta.3",
+    "@ark-ui/react": "^5.25.0",
     "@phosphor-icons/react": "^2.1.10",
     "cva": "^1.0.0-beta.4",
-    "motion": "^12.23.15",
     "react": "19",
     "react-dom": "19",
     "zod": "^4.1.8",

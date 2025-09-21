@@ -1,16 +1,21 @@
-import { Popover as BasePopover } from "@base-ui-components/react/popover";
+import { Popover as ArkPopover } from "@ark-ui/react/popover";
+import { Portal } from "@ark-ui/react/portal";
 import { cx } from "cva";
 import type * as React from "react";
 
-const Root = BasePopover.Root;
-const Trigger = BasePopover.Trigger;
-const Portal = BasePopover.Portal;
-const Positioner = BasePopover.Positioner;
-const Popup = BasePopover.Popup;
+const Root = (props: React.ComponentProps<typeof ArkPopover.Root>) => (
+	<ArkPopover.Root {...props} />
+);
+
+const Trigger = (props: React.ComponentProps<typeof ArkPopover.Trigger>) => (
+	<ArkPopover.Trigger {...props} />
+);
+
+const Positioner = ArkPopover.Positioner;
 
 const popoverPopup = (className?: string) =>
 	cx(
-		"origin-[var(--transform-origin)] rounded-md shadow transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0 bg-black border p-2",
+		"origin-[var(--transform-origin)] rounded-md shadow bg-black border p-2 data-[state=open]:animate-[fadeIn_150ms_ease-out] data-[state=closed]:animate-[fadeOut_100ms_ease-in]",
 		className,
 	);
 
@@ -27,13 +32,13 @@ const Content = ({
 	side?: "top" | "bottom" | "left" | "right";
 	sideOffset?: number;
 	className?: string;
-} & React.ComponentProps<typeof BasePopover.Popup>) => {
+} & React.ComponentProps<typeof ArkPopover.Content>) => {
 	return (
 		<Portal>
-			<Positioner align={align} side={side} sideOffset={sideOffset}>
-				<Popup {...props} className={popoverPopup(className)}>
+			<Positioner>
+				<ArkPopover.Content {...props} className={popoverPopup(className)}>
 					{children}
-				</Popup>
+				</ArkPopover.Content>
 			</Positioner>
 		</Portal>
 	);
@@ -44,7 +49,6 @@ export const Popover = {
 	Trigger,
 	Portal,
 	Positioner,
-	Popup,
 	Content,
 };
 

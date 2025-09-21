@@ -1,25 +1,29 @@
-import { Dialog as BaseDialog } from "@base-ui-components/react/dialog";
+import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
+import { Portal } from "@ark-ui/react/portal";
 import { cx } from "cva";
 import type * as React from "react";
 
-const Portal = BaseDialog.Portal;
-const Backdrop = BaseDialog.Backdrop;
-const Popup = BaseDialog.Popup;
-const Root = BaseDialog.Root;
-const Trigger = BaseDialog.Trigger;
-const Close = BaseDialog.Close;
-const Title = BaseDialog.Title;
-const Description = BaseDialog.Description;
+const Backdrop = ArkDialog.Backdrop;
+const Positioner = ArkDialog.Positioner;
+const Root = ArkDialog.Root;
+const Trigger = ArkDialog.Trigger;
+const Close = ArkDialog.CloseTrigger;
+const Title = ArkDialog.Title;
+const Description = ArkDialog.Description;
 
 const dialogBackdrop = (className?: string) =>
 	cx(
-		"fixed inset-0 bg-black opacity-40 transition-all duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+		"fixed inset-0 bg-black/40",
+		"opacity-0 data-[state=open]:opacity-100",
+		"transition-opacity duration-150 ease-out data-[state=closed]:ease-in",
 		className,
 	);
 
-const dialogPopup = (className?: string) =>
+const dialogContent = (className?: string) =>
 	cx(
-		"fixed top-1/2 left-1/2 -mt-8 min-w-96 w-2/3 max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-md bg-black p-6 border shadow max-h-[80vh]",
+		"flex flex-col fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -mt-8 min-w-96 w-2/3 max-w-xl rounded-md bg-black p-6 border shadow max-h-[80vh]",
+		"data-[state=open]:animate-[slideUp_150ms_ease-out]",
+		"data-[state=closed]:animate-[slideOut_100ms_ease-in]",
 		className,
 	);
 
@@ -27,13 +31,11 @@ const Content = (props: { children: React.ReactNode }) => {
 	return (
 		<Portal>
 			<Backdrop className={dialogBackdrop()} />
-			<Popup
-				className={dialogPopup(
-					"transition-all duration-150 data-[ending-style]:-translate-y-4 data-[ending-style]:opacity-0 data-[starting-style]:-translate-y-4 data-[starting-style]:opacity-0 flex flex-col",
-				)}
-			>
-				{props.children}
-			</Popup>
+			<Positioner>
+				<ArkDialog.Content className={dialogContent()}>
+					{props.children}
+				</ArkDialog.Content>
+			</Positioner>
 		</Portal>
 	);
 };
@@ -54,7 +56,7 @@ export const Dialog = {
 	Root,
 	Portal,
 	Backdrop,
-	Popup,
+	Positioner,
 	Trigger,
 	Close,
 	Title,
@@ -63,5 +65,3 @@ export const Dialog = {
 	Body,
 	Footer,
 };
-
-export { dialogBackdrop, dialogPopup };

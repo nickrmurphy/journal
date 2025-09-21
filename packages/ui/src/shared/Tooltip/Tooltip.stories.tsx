@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	render: () => (
-		<Tooltip.Root>
+		<Tooltip.Root positioning={{ placement: "bottom", gutter: 4 }}>
 			<Tooltip.Trigger>
 				<Button variant="solid-black">Hover me</Button>
 			</Tooltip.Trigger>

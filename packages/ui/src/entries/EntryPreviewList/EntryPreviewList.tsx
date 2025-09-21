@@ -35,7 +35,6 @@ const Group = ({
 				key={entry.id}
 				entry={entry}
 				onClick={onEntryClick ? () => onEntryClick(entry, entry.id) : undefined}
-				layoutId={entry.id}
 			/>
 		))}
 	</EntryDateCard>

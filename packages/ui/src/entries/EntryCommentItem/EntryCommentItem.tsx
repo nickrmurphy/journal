@@ -41,7 +41,7 @@ const DistanceTimestamp = (
 	},
 ) => (
 	<Tooltip.Root>
-		<Tooltip.Trigger className="">
+		<Tooltip.Trigger asChild>
 			<time
 				{...props}
 				className={cx("text-lightgray/70 text-xs", props.className)}

@@ -30,5 +30,3 @@ export type ButtonProps = ComponentProps<"button"> &
 export const Button = ({ ...props }: ButtonProps) => (
 	<button type="button" {...props} className={button(props)} />
 );
-
-export { button };
