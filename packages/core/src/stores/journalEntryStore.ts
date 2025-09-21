@@ -22,6 +22,8 @@ type JournalEntriesState = {
 	addEntry: (entry: CreateJournalEntry) => string | undefined;
 	addComment: (entryId: string, content: string) => string | undefined;
 	getEntryComments: (entryId: string) => JournalEntryComment[];
+	getEntriesOnDate: (date: string) => JournalEntry[];
+	getEntriesInRange: (start: string, end: string) => JournalEntry[];
 };
 
 const createJournalEntryState: StateCreator<JournalEntriesState> = (
@@ -77,6 +79,23 @@ const createJournalEntryState: StateCreator<JournalEntriesState> = (
 			(comment) => comment.entryId === entryId,
 		);
 	},
+	getEntriesOnDate: (date: string) => {
+		const { entries } = get();
+		return Object.values(entries)
+			.filter((e) => isSameDay(date, e.createdAt))
+			.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+	},
+	getEntriesInRange: (start: string, end: string) => {
+		const { entries } = get();
+		return Object.values(entries)
+			.filter((e) =>
+				isWithinInterval(new Date(e.createdAt), {
+					start: new Date(start),
+					end: new Date(end),
+				}),
+			)
+			.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+	},
 });
 
 const useJournalEntries = create(
@@ -91,25 +110,14 @@ const useJournalEntries = create(
 );
 
 export const useEntriesOnDate = (date: string) =>
-	useJournalEntries(
-		useShallow((state) =>
-			Object.values(state.entries).filter((e) => isSameDay(date, e.createdAt)),
-		),
-	);
+	useJournalEntries(useShallow((state) => state.getEntriesOnDate(date)));
 
 export const useEntryComments = (entryId: string) =>
 	useJournalEntries(useShallow((state) => state.getEntryComments(entryId)));
 
 export const useEntriesInRange = (start: string, end: string) => {
 	const entries = useJournalEntries(
-		useShallow((state) =>
-			Object.values(state.entries).filter((e) =>
-				isWithinInterval(new Date(e.createdAt), {
-					start: new Date(start),
-					end: new Date(end),
-				}),
-			),
-		),
+		useShallow((state) => state.getEntriesInRange(start, end)),
 	);
 
 	return useMemo(() => {
