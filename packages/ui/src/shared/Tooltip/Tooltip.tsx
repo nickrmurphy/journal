@@ -10,7 +10,7 @@ const Popup = BaseTooltip.Popup;
 
 const tooltipPopup = (className?: string) =>
 	cx(
-		"bg-darkgray/90 backdrop-blur rounded shadow-lg p-1 text-xs border",
+		"origin-[var(--transform-origin)] rounded shadow-lg transition-[transform,scale,opacity] data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0 bg-darkgray/90 backdrop-blur p-1 text-xs border",
 		className,
 	);
 
