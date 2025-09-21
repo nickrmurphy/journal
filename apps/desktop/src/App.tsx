@@ -26,7 +26,7 @@ import {
 } from "../../../packages/utils/src/dates/format";
 
 const Container = (props: { children: ReactNode }) => (
-	<div className="mx-auto flex w-full max-w-3xl flex-col gap-3" {...props} />
+	<div className="mx-auto flex w-full flex-col gap-3" {...props} />
 );
 
 const Navbar = () => {
