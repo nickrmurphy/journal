@@ -6,7 +6,7 @@ export const commentsQuery = new Query().from({
 });
 
 export function useEntryComments(entryId: string) {
-	const { data, ...rest } = useLiveQuery(
+	return useLiveQuery(
 		(q) =>
 			q
 				.from({
@@ -16,6 +16,4 @@ export function useEntryComments(entryId: string) {
 				.orderBy(({ comments }) => comments.createdAt, "desc"),
 		[entryId],
 	);
-
-	return { data, ...rest };
 }

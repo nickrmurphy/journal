@@ -1,11 +1,11 @@
 import { createCollection, Query } from "@tanstack/react-db";
 import { isSameDay } from "date-fns";
-import { asyncLocalStorageCollectionOptions } from "../async-local-storage";
 import { createFileSystemAdapter } from "../filesystem-adapter";
+import { mergableCollectionOptions } from "../mergable-storage";
 import { EntrySchema } from "../schemas";
 
 export const entriesCollection = createCollection(
-	asyncLocalStorageCollectionOptions({
+	mergableCollectionOptions({
 		storageKey: "entries",
 		storage: createFileSystemAdapter("collections"),
 		getKey: (entry) => entry.id,
