@@ -1,1 +1,2 @@
-export * from "./journal";
+export * from "./comment";
+export * from "./entry";

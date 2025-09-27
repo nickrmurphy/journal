@@ -1,5 +1,5 @@
-import { useEntryComments } from "@journal/core/stores/journalEntryStore.js";
-import type { JournalEntry } from "@journal/core/types";
+import { useEntryComments } from "@journal/core/hooks";
+import type { Entry } from "@journal/core/schemas";
 import { formatTime } from "@journal/utils/dates";
 import { ChatTeardropIcon } from "@phosphor-icons/react";
 import { cx } from "cva";
@@ -38,10 +38,10 @@ const Content = (props: ComponentProps<"p">) => (
 );
 
 export const EntryPreviewItem = (props: {
-	entry: JournalEntry;
+	entry: Entry;
 	onClick?: () => void;
 }) => {
-	const comments = useEntryComments(props.entry.id);
+	const { data: comments } = useEntryComments(props.entry.id);
 
 	return (
 		<Root onClick={props.onClick} isClickable={!!props.onClick}>

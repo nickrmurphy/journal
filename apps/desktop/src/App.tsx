@@ -1,23 +1,21 @@
 import {
-	downloadJournalData,
-	importFromFile,
-	useEntriesInRange,
-	useEntriesOnDate,
-	useJournalEntries,
-} from "@journal/core/stores/journalEntryStore.js";
-import type { JournalEntry } from "@journal/core/types";
+	commentsCollection,
+	entriesCollection,
+} from "@journal/core/collections";
+import { useEntries, useEntriesOnDate } from "@journal/core/hooks";
+import type { Entry } from "@journal/core/schemas";
 import {
 	AsideLayout,
 	Button,
-	DataMenu,
 	EntryCreateDialog,
 	EntryDetailDialog,
 	EntryList,
 	EntryPreviewList,
-	Menu,
 } from "@journal/ui";
 import { useCurrentDate } from "@journal/utils/hooks";
-import { DotsThreeVerticalIcon, PenIcon } from "@phosphor-icons/react";
+import { PenIcon } from "@phosphor-icons/react";
+
+import { isSameDay } from "date-fns";
 import { type ReactNode, useMemo, useState } from "react";
 import {
 	formatDay,
@@ -29,31 +27,13 @@ const Container = (props: { children: ReactNode }) => (
 );
 
 const Navbar = () => {
-	const add = useJournalEntries((state) => state.addEntry);
+	const add = ({ content }: { content: string }) => {
+		entriesCollection.insert({
+			content,
+		});
+	};
 	const today = useCurrentDate();
 	const [showDialog, setShowDialog] = useState(false);
-
-	const handleExport = () => {
-		downloadJournalData();
-	};
-
-	const handleImport = async () => {
-		const result = await importFromFile();
-		if (result) {
-			if (result.success) {
-				console.log(
-					`Imported ${result.imported.entries} entries, ${result.imported.comments} comments`,
-				);
-				if (result.skipped.entries > 0 || result.skipped.comments > 0) {
-					console.log(
-						`Skipped ${result.skipped.entries} entries, ${result.skipped.comments} comments`,
-					);
-				}
-			} else {
-				console.error("Import failed:", result.errors);
-			}
-		}
-	};
 
 	return (
 		<>
@@ -65,19 +45,6 @@ const Navbar = () => {
 					<span className="text-sm text-lightgray/70">{formatDay(today)}</span>
 				</span>
 				<div className="ms-auto flex items-center gap-2">
-					<Menu.Root
-						positioning={{
-							placement: "bottom-end",
-							offset: { mainAxis: 4 },
-						}}
-					>
-						<Menu.Trigger asChild>
-							<Button variant="outline-lightgray" size="md-icon">
-								<DotsThreeVerticalIcon />
-							</Button>
-						</Menu.Trigger>
-						<DataMenu onExport={handleExport} onImport={handleImport} />
-					</Menu.Root>
 					<Button
 						variant="solid-yellow"
 						size="md-icon"
@@ -102,25 +69,56 @@ const Navbar = () => {
 
 function App() {
 	const today = useCurrentDate();
-	const entries = useEntriesOnDate(today);
-	const pastEntries = useEntriesInRange(new Date(0).toISOString(), today);
-	const comment = useJournalEntries((state) => state.addComment);
+	const { data: entries } = useEntriesOnDate(today);
+	const { data: allEntries } = useEntries();
 
-	const reversedEntries = useMemo(() => entries.toReversed(), [entries]);
+	const pastEntries = useMemo(() => {
+		if (!allEntries) return [];
+
+		const grouped = allEntries
+			.filter((e) => !isSameDay(today, e.createdAt))
+			.reduce(
+				(acc, entry) => {
+					// biome-ignore lint/style/noNonNullAssertion: <always defined>
+					const date = entry.createdAt.split("T")[0]!;
+					if (!acc[date]) {
+						acc[date] = [];
+					}
+					acc[date].push({
+						id: entry.id,
+						content: entry.content,
+						createdAt: entry.createdAt,
+					});
+					return acc;
+				},
+				{} as Record<
+					string,
+					{ id: string; content: string; createdAt: string }[]
+				>,
+			);
+
+		return Object.entries(grouped).map(([date, entries]) => ({
+			date,
+			entries,
+		}));
+	}, [allEntries, today]);
 
 	const [selectedEntry, setSelectedEntry] = useState<{
-		entry: JournalEntry;
+		entry: Entry;
 	} | null>(null);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-	const handleEntryClick = (entry: JournalEntry, _layoutId: string) => {
+	const handleEntryClick = (entry: Entry, _layoutId: string) => {
 		setSelectedEntry({ entry });
 		setIsDialogOpen(true);
 	};
 
 	const handleComment = (content: string) => {
 		if (selectedEntry) {
-			comment(selectedEntry.entry.id, content);
+			commentsCollection.insert({
+				entryId: selectedEntry.entry.id,
+				content,
+			});
 		}
 	};
 
@@ -132,10 +130,7 @@ function App() {
 			<AsideLayout.Main>
 				<Container>
 					<Navbar />
-					<EntryList
-						entries={reversedEntries}
-						onEntryClick={handleEntryClick}
-					/>
+					<EntryList entries={entries} onEntryClick={handleEntryClick} />
 				</Container>
 			</AsideLayout.Main>
 			<EntryDetailDialog

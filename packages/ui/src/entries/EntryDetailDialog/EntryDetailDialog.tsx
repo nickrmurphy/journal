@@ -1,5 +1,5 @@
-import { useEntryComments } from "@journal/core/stores/journalEntryStore.js";
-import type { JournalEntry, JournalEntryComment } from "@journal/core/types";
+import { useEntryComments } from "@journal/core/hooks";
+import type { Comment, Entry } from "@journal/core/schemas";
 import { formatDateTime } from "@journal/utils/dates";
 import { ChatTeardropIcon, XIcon } from "@phosphor-icons/react";
 import { useState } from "react";
@@ -19,7 +19,7 @@ const Comments = ({
 	comments,
 	entryCreatedAt,
 }: {
-	comments: JournalEntryComment[];
+	comments: Comment[];
 	entryCreatedAt: string;
 }) => (
 	<>
@@ -83,13 +83,13 @@ export const EntryDetailDialog = ({
 	onExitComplete,
 	onComment,
 }: {
-	entry: JournalEntry | undefined;
+	entry: Entry | undefined;
 	isOpen: boolean;
 	onClose: () => void;
 	onExitComplete?: () => void;
 	onComment?: (comment: string) => void;
 }) => {
-	const comments = useEntryComments(entry?.id ?? "");
+	const { data: comments } = useEntryComments(entry?.id ?? "");
 
 	return (
 		<Dialog.Root

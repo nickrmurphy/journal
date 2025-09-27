@@ -3,13 +3,7 @@
   "module": "src/index.ts",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
     "./dates": "./src/dates/index.ts",
-    "./hooks": "./src/hooks/index.ts",
-    "./strings/*": "./src/strings/*",
-    "./validation/*": "./src/validation/*"
-  },
-  "dependencies": {
-    "date-fns": "^4.1.0"
+    "./hooks": "./src/hooks/index.ts"
   }
 }

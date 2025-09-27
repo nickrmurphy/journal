@@ -3,10 +3,9 @@
   "module": "src/index.ts",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./schemas/*": "./src/schemas/*",
-    "./types": "./src/types/index.ts",
-    "./stores/*": "./src/stores/*"
+    "./collections": "./src/collections/index.ts",
+    "./hooks": "./src/hooks/index.ts",
+    "./schemas": "./src/schemas/index.ts"
   },
   "dependencies": {
   },

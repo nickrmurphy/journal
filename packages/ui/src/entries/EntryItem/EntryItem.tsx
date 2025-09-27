@@ -1,5 +1,5 @@
-import { useEntryComments } from "@journal/core/stores/journalEntryStore.js";
-import type { JournalEntry } from "@journal/core/types";
+import { useEntryComments } from "@journal/core/hooks";
+import type { Entry } from "@journal/core/schemas";
 import { formatTime } from "@journal/utils/dates";
 import { cx } from "cva";
 import type { ComponentProps } from "react";
@@ -32,11 +32,8 @@ const Content = (props: ComponentProps<"p">) => (
 	/>
 );
 
-export const EntryItem = (props: {
-	entry: JournalEntry;
-	onClick?: () => void;
-}) => {
-	const comments = useEntryComments(props.entry.id);
+export const EntryItem = (props: { entry: Entry; onClick?: () => void }) => {
+	const { data: comments } = useEntryComments(props.entry.id);
 
 	return (
 		<Root onClick={props.onClick}>

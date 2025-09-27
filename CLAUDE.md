@@ -178,6 +178,11 @@ This pattern provides internal organization benefits while keeping a simple publ
 
 ## Code Style
 
+### TypeScript
+
+- NEVER use `any` type. Always use proper TypeScript types.
+- Prefer explicit typing over type inference when it improves code clarity.
+
 ### Type vs Interface
 
 Prefer `type` over `interface` for type definitions.
