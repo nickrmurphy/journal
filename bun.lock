@@ -60,6 +60,9 @@
     },
     "packages/core": {
       "name": "@journal/core",
+      "dependencies": {
+        "@journal/utils": "workspace:*",
+      },
       "peerDependencies": {
         "react": "^19.0.0",
       },

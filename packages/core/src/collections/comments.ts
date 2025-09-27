@@ -1,6 +1,6 @@
+import { mergableCollectionOptions } from "@journal/utils/collection-options";
+import { createFileSystemAdapter } from "@journal/utils/storage-adapters";
 import { createCollection } from "@tanstack/react-db";
-import { createFileSystemAdapter } from "../filesystem-adapter";
-import { mergableCollectionOptions } from "../mergable-storage";
 import { CommentSchema } from "../schemas";
 
 export const commentsCollection = createCollection(

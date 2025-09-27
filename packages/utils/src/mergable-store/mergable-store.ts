@@ -6,7 +6,7 @@ import {
 	merge,
 } from "./operations";
 
-type DataStore<T extends MaterializedObject> = {
+type MergableStore<T extends MaterializedObject> = {
 	set: (data: T) => void;
 	remove: (id: string) => boolean;
 	getDematierialized: () => Map<string, DematerializedObject>;
@@ -14,7 +14,9 @@ type DataStore<T extends MaterializedObject> = {
 	mergeState: (data: DematerializedObject[]) => void;
 };
 
-export const DataStore = <T extends MaterializedObject>(): DataStore<T> => {
+export const MergableStore = <
+	T extends MaterializedObject,
+>(): MergableStore<T> => {
 	const state = new Map<string, DematerializedObject>();
 
 	const setOrMerge = (data: DematerializedObject) => {

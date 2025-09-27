@@ -1,5 +1,5 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
-import type { AsyncStorageApi } from "./async-local-storage";
+import type { AsyncStorageApi } from "./types";
 
 /**
  * Creates a filesystem storage adapter using @capacitor/filesystem

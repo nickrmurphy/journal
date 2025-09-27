@@ -1,7 +1,7 @@
+import { mergableCollectionOptions } from "@journal/utils/collection-options";
+import { createFileSystemAdapter } from "@journal/utils/storage-adapters";
 import { createCollection, Query } from "@tanstack/react-db";
 import { isSameDay } from "date-fns";
-import { createFileSystemAdapter } from "../filesystem-adapter";
-import { mergableCollectionOptions } from "../mergable-storage";
 import { EntrySchema } from "../schemas";
 
 export const entriesCollection = createCollection(
