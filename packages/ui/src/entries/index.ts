@@ -1,8 +1,8 @@
-export { EntryCommentPopover } from "./EntryCommentPopover";
-export { EntryCreateDialog } from "./EntryCreateDialog";
-export { EntryDateCard } from "./EntryDateCard";
-export { EntryDetailDialog } from "./EntryDetailDialog";
-export { EntryItem } from "./EntryItem";
-export { EntryList } from "./EntryList";
-export { EntryPreviewItem } from "./EntryPreviewItem";
-export { EntryPreviewList } from "./EntryPreviewList";
+export { EntryCommentPopover } from "./entry-comment-popover";
+export { EntryCreateDialog } from "./entry-create-dialog";
+export { EntryDateCard } from "./entry-date-card";
+export { EntryDetailDialog } from "./entry-detail-dialog";
+export { EntryItem } from "./entry-item";
+export { EntryList } from "./entry-list";
+export { EntryPreviewItem } from "./entry-preview-item";
+export { EntryPreviewList } from "./entry-preview-list";

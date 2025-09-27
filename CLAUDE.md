@@ -176,6 +176,33 @@ This pattern provides internal organization benefits while keeping a simple publ
 
 **Note**: Don't over-engineer compound components. Use vanilla HTML elements when they don't need styling, logic, or props forwarding. Only create compound components when they add meaningful value through styling, behavior, or semantic structure.
 
+## File Naming
+
+All files and directories should use lowercase and kebab-case naming:
+
+- **Files**: `user-profile.tsx`, `data-menu.tsx`, `entry-list.stories.tsx`
+- **Directories**: `entry-comment-item/`, `shared/`, `layouts/`
+- **Components**: Export names remain PascalCase (e.g., `UserProfile`, `DataMenu`) but files are kebab-case
+
+Examples:
+```
+✅ Good:
+- components/user-profile/user-profile.tsx
+- components/data-menu/data-menu.stories.tsx
+- layouts/aside-layout.tsx
+
+❌ Avoid:
+- components/UserProfile/UserProfile.tsx
+- components/DataMenu/DataMenu.stories.tsx
+- layouts/AsideLayout.tsx
+```
+
+This convention:
+- Ensures consistency across the codebase
+- Avoids case-sensitivity issues on different filesystems
+- Improves readability and maintainability
+- Follows modern web development best practices
+
 ## Code Style
 
 ### TypeScript

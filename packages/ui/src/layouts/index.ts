@@ -1,1 +1,1 @@
-export { AsideLayout } from "./AsideLayout";
+export { AsideLayout } from "./aside-layout";

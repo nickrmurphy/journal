@@ -1,1 +1,1 @@
-export { DataMenu } from "./DataMenu";
+export { DataMenu } from "./data-menu";

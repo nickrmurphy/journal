@@ -1,6 +1,6 @@
-export { Button } from "./Button";
-export { Dialog } from "./Dialog";
-export { Menu } from "./Menu";
-export { Popover } from "./Popover";
-export { Textarea } from "./Textarea";
-export { Tooltip } from "./Tooltip";
+export { Button } from "./button";
+export { Dialog } from "./dialog";
+export { Menu } from "./menu";
+export { Popover } from "./popover";
+export { Textarea } from "./textarea";
+export { Tooltip } from "./tooltip";
