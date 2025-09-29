@@ -1,11 +1,13 @@
 import { Carousel } from "@ark-ui/react/carousel";
+import { useCollections } from "@journal/core/collections";
+import { EntryCreateDialog } from "@journal/ui";
 import {
 	BookmarkSimpleIcon,
 	ClockCounterClockwiseIcon,
 	PenIcon,
 	SunHorizonIcon,
 } from "@phosphor-icons/react";
-import type { ComponentProps, ReactNode } from "react";
+import { type ComponentProps, type ReactNode, useState } from "react";
 import { PastEntries } from "./past-entries";
 import { TodayEntries } from "./today-entries";
 
@@ -39,6 +41,9 @@ const Page = (props: ComponentProps<typeof Carousel.Item>) => (
 );
 
 function App() {
+	const [showCreate, setShowCreate] = useState(false);
+	const { entriesCollection } = useCollections();
+
 	return (
 		<Carousel.Root defaultPage={1} slideCount={2}>
 			<Carousel.ItemGroup className="fixed inset-0">
@@ -64,11 +69,20 @@ function App() {
 					<button
 						type="button"
 						className="size-10 flex items-center bg-yellow/90 text-black rounded-full justify-center active:scale-110 transition-all"
+						onClick={() => setShowCreate(true)}
 					>
 						<PenIcon className="size-5" />
 					</button>
 				</ActionGroup>
 			</Navbar>
+			<EntryCreateDialog
+				open={showCreate}
+				onClose={() => setShowCreate(false)}
+				onSubmit={(content) => {
+					entriesCollection.insert({ content });
+					setShowCreate(false);
+				}}
+			/>
 		</Carousel.Root>
 	);
 }

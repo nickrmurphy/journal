@@ -51,11 +51,8 @@ export function EntryCreateDialog(props: EntryCreateDialogProps) {
 					props.onClose?.();
 				}
 			}}
-			onOpenChangeComplete={(open) => {
-				props.onOpenChangeComplete?.(open);
-				if (!open) {
-					setContent("");
-				}
+			onExitComplete={() => {
+				setContent("");
 			}}
 		>
 			<Dialog.Content>
