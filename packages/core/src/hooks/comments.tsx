@@ -1,11 +1,8 @@
-import { Query, useLiveQuery } from "@tanstack/react-db";
-import { commentsCollection } from "../collections/comments";
-
-export const commentsQuery = new Query().from({
-	comments: commentsCollection,
-});
+import { useLiveQuery } from "@tanstack/react-db";
+import { useCollections } from "../collections";
 
 export function useEntryComments(entryId: string) {
+	const { commentsCollection } = useCollections();
 	return useLiveQuery(
 		(q) =>
 			q

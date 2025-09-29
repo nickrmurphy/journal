@@ -1,4 +1,4 @@
-import type { JournalEntryComment } from "@journal/core/types";
+import type { Comment } from "@journal/core/schemas";
 import { formatDateTime, formatDistance } from "@journal/utils/dates";
 import { ArrowBendDownRightIcon } from "@phosphor-icons/react";
 import { cx } from "cva";
@@ -52,7 +52,7 @@ const DistanceTimestamp = (
 );
 
 export const EntryCommentItem = (props: {
-	comment: JournalEntryComment;
+	comment: Comment;
 	className?: string;
 	showTimestamp?: boolean | string;
 }) => {

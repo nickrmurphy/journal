@@ -1,9 +1,9 @@
-import type { JournalEntry } from "@journal/core/types";
+import type { Entry } from "@journal/core/schemas";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 import { EntryList } from "./entry-list";
 
-const mockEntries: JournalEntry[] = [
+const mockEntries: Entry[] = [
 	{
 		id: "550e8400-e29b-41d4-a716-446655440001",
 		content:

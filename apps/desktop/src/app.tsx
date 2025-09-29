@@ -1,7 +1,4 @@
-import {
-	commentsCollection,
-	entriesCollection,
-} from "@journal/core/collections";
+import { useCollections } from "@journal/core/collections";
 import { useEntries, useEntriesOnDate } from "@journal/core/hooks";
 import type { Entry } from "@journal/core/schemas";
 import {
@@ -14,7 +11,6 @@ import {
 } from "@journal/ui";
 import { useCurrentDate } from "@journal/utils/hooks";
 import { PenIcon } from "@phosphor-icons/react";
-
 import { isSameDay } from "date-fns";
 import { type ReactNode, useMemo, useState } from "react";
 import {
@@ -27,6 +23,7 @@ const Container = (props: { children: ReactNode }) => (
 );
 
 const Navbar = () => {
+	const { entriesCollection } = useCollections();
 	const add = ({ content }: { content: string }) => {
 		entriesCollection.insert({
 			content,
@@ -68,6 +65,7 @@ const Navbar = () => {
 };
 
 function App() {
+	const { commentsCollection } = useCollections();
 	const today = useCurrentDate();
 	const { data: entries } = useEntriesOnDate(today);
 	const { data: allEntries } = useEntries();

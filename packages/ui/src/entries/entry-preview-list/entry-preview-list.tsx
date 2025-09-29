@@ -1,4 +1,4 @@
-import type { JournalEntry } from "@journal/core/types";
+import type { Entry } from "@journal/core/schemas";
 import { cx } from "cva";
 import type { ComponentProps } from "react";
 import { EntryDateCard } from "../entry-date-card";
@@ -26,8 +26,8 @@ const Group = ({
 	onEntryClick,
 }: {
 	date: string;
-	entries: JournalEntry[];
-	onEntryClick?: (entry: JournalEntry, layoutId: string) => void;
+	entries: Entry[];
+	onEntryClick?: (entry: Entry, layoutId: string) => void;
 }) => (
 	<EntryDateCard key={date} date={date}>
 		{entries.map((entry) => (
@@ -41,8 +41,8 @@ const Group = ({
 );
 
 type EntryPreviewListProps = {
-	data: Array<{ date: string; entries: JournalEntry[] }>;
-	onEntryClick?: (entry: JournalEntry, layoutId: string) => void;
+	data: Array<{ date: string; entries: Entry[] }>;
+	onEntryClick?: (entry: Entry, layoutId: string) => void;
 };
 
 export const EntryPreviewList = (props: EntryPreviewListProps) => (

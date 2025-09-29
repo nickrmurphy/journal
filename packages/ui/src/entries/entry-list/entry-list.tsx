@@ -1,4 +1,4 @@
-import type { JournalEntry } from "@journal/core/types";
+import type { Entry } from "@journal/core/schemas";
 import { cx } from "cva";
 import type { ComponentProps } from "react";
 import { EntryItem } from "..";
@@ -23,8 +23,8 @@ export const EntryList = ({
 	entries,
 	onEntryClick,
 }: {
-	entries: JournalEntry[];
-	onEntryClick?: (entry: JournalEntry, layoutId: string) => void;
+	entries: Entry[];
+	onEntryClick?: (entry: Entry, layoutId: string) => void;
 }) => {
 	return (
 		<Root>

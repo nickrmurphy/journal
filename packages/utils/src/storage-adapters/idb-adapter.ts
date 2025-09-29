@@ -1,5 +1,5 @@
 import { clear, del, get, set } from "idb-keyval";
-import type { AsyncStorageApi } from "../../utils/src/collection-options/async-local-storage";
+import type { AsyncStorageApi } from "../storage-adapters";
 
 /**
  * Creates an IndexedDB storage adapter using idb-keyval

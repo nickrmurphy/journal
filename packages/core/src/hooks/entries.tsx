@@ -1,8 +1,11 @@
 import { eq, Query, useLiveQuery } from "@tanstack/react-db";
 import { isSameDay } from "date-fns";
 import { useMemo } from "react";
-import { entriesCollection } from "../collections";
-import { commentsCollection } from "../collections/comments";
+import {
+	type createCommentsCollection,
+	type createEntriesCollection,
+	useCollections,
+} from "../collections";
 import type { Comment, Entry } from "../schemas";
 
 type JoinedRow = {
@@ -40,18 +43,26 @@ function groupEntriesWithComments(data: JoinedRow[]): EntryWithComments[] {
 	return Array.from(entryMap.values());
 }
 
-const dataQuery = new Query()
-	.from({
-		entries: entriesCollection,
-	})
-	.join({ comments: commentsCollection }, ({ entries, comments }) =>
-		eq(entries.id, comments.entryId),
-	)
-	.orderBy(({ entries }) => entries.createdAt, "desc");
+const dataQuery = ({
+	entriesCollection,
+	commentsCollection,
+}: {
+	entriesCollection: ReturnType<typeof createEntriesCollection>;
+	commentsCollection: ReturnType<typeof createCommentsCollection>;
+}) =>
+	new Query()
+		.from({
+			entries: entriesCollection,
+		})
+		.join({ comments: commentsCollection }, ({ entries, comments }) =>
+			eq(entries.id, comments.entryId),
+		)
+		.orderBy(({ entries }) => entries.createdAt, "desc");
 
 export function useEntries() {
+	const collections = useCollections();
 	const { data, ...rest } = useLiveQuery({
-		query: dataQuery,
+		query: dataQuery(collections),
 	});
 
 	const groupedData = useMemo(() => {
@@ -62,8 +73,9 @@ export function useEntries() {
 }
 
 export function useEntriesOnDate(date: string) {
+	const collections = useCollections();
 	const { data, ...rest } = useLiveQuery({
-		query: dataQuery.fn.where(({ entries }) =>
+		query: dataQuery(collections).fn.where(({ entries }) =>
 			isSameDay(entries.createdAt, date),
 		),
 	});

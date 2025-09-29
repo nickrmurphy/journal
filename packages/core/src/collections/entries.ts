@@ -1,23 +1,14 @@
 import { mergableCollectionOptions } from "@journal/utils/collection-options";
-import { createFileSystemAdapter } from "@journal/utils/storage-adapters";
-import { createCollection, Query } from "@tanstack/react-db";
-import { isSameDay } from "date-fns";
+import type { AsyncStorageApi } from "@journal/utils/storage-adapters";
+import { createCollection } from "@tanstack/react-db";
 import { EntrySchema } from "../schemas";
 
-export const entriesCollection = createCollection(
-	mergableCollectionOptions({
-		storageKey: "entries",
-		storage: createFileSystemAdapter("collections"),
-		getKey: (entry) => entry.id,
-		schema: EntrySchema,
-	}),
-);
-
-export const entriesQuery = new Query().from({
-	entries: entriesCollection,
-});
-
-export const entriesOnDateQuery = (date: string) =>
-	entriesQuery.fn
-		.where((row) => isSameDay(row.entries.createdAt, date))
-		.orderBy(({ entries }) => entries.createdAt, "desc");
+export const createEntriesCollection = (storageAdapter: AsyncStorageApi) =>
+	createCollection(
+		mergableCollectionOptions({
+			storageKey: "entries",
+			storage: storageAdapter,
+			getKey: (entry) => entry.id,
+			schema: EntrySchema,
+		}),
+	);
