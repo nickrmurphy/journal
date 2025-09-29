@@ -1,10 +1,15 @@
 import { useEntries } from "@journal/core/hooks";
+import type { Entry } from "@journal/core/schemas";
 import { EntryPreviewList } from "@journal/ui";
 import { useCurrentDate } from "@journal/utils/hooks";
 import { isSameDay } from "date-fns";
 import { useMemo } from "react";
 
-export function PastEntries() {
+export function PastEntries({
+	onEntryClick,
+}: {
+	onEntryClick: (entry: Entry) => void;
+}) {
 	const today = useCurrentDate();
 	const { data: allEntries } = useEntries();
 
@@ -39,5 +44,5 @@ export function PastEntries() {
 		}));
 	}, [allEntries, today]);
 
-	return <EntryPreviewList data={pastEntries} onEntryClick={console.log} />;
+	return <EntryPreviewList data={pastEntries} onEntryClick={onEntryClick} />;
 }

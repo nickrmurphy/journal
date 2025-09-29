@@ -1,6 +1,7 @@
 import { Carousel } from "@ark-ui/react/carousel";
 import { useCollections } from "@journal/core/collections";
-import { EntryCreateDialog } from "@journal/ui";
+import type { Entry } from "@journal/core/schemas";
+import { EntryCreateDialog, EntryDetailDialog } from "@journal/ui";
 import {
 	BookmarkSimpleIcon,
 	ClockCounterClockwiseIcon,
@@ -42,16 +43,32 @@ const Page = (props: ComponentProps<typeof Carousel.Item>) => (
 
 function App() {
 	const [showCreate, setShowCreate] = useState(false);
-	const { entriesCollection } = useCollections();
+	const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null);
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const { entriesCollection, commentsCollection } = useCollections();
+
+	const handleEntryClick = (entry: Entry) => {
+		setSelectedEntry(entry);
+		setIsDialogOpen(true);
+	};
+
+	const handleComment = (content: string) => {
+		if (selectedEntry) {
+			commentsCollection.insert({
+				entryId: selectedEntry.id,
+				content,
+			});
+		}
+	};
 
 	return (
 		<Carousel.Root defaultPage={1} slideCount={2}>
 			<Carousel.ItemGroup className="fixed inset-0">
 				<Page index={0}>
-					<PastEntries />
+					<PastEntries onEntryClick={handleEntryClick} />
 				</Page>
 				<Page index={1}>
-					<TodayEntries />
+					<TodayEntries onEntryClick={handleEntryClick} />
 				</Page>
 				<Page index={2}>Eventually bookmarks and stuff</Page>
 			</Carousel.ItemGroup>
@@ -82,6 +99,13 @@ function App() {
 					entriesCollection.insert({ content });
 					setShowCreate(false);
 				}}
+			/>
+			<EntryDetailDialog
+				entry={selectedEntry || undefined}
+				isOpen={isDialogOpen}
+				onClose={() => setIsDialogOpen(false)}
+				onExitComplete={() => setSelectedEntry(null)}
+				onComment={handleComment}
 			/>
 		</Carousel.Root>
 	);

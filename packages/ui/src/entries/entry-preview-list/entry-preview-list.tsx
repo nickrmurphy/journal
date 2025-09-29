@@ -27,14 +27,14 @@ const Group = ({
 }: {
 	date: string;
 	entries: Entry[];
-	onEntryClick?: (entry: Entry, layoutId: string) => void;
+	onEntryClick?: (entry: Entry) => void;
 }) => (
 	<EntryDateCard key={date} date={date}>
 		{entries.map((entry) => (
 			<EntryPreviewItem
 				key={entry.id}
 				entry={entry}
-				onClick={onEntryClick ? () => onEntryClick(entry, entry.id) : undefined}
+				onClick={onEntryClick ? () => onEntryClick(entry) : undefined}
 			/>
 		))}
 	</EntryDateCard>
@@ -42,7 +42,7 @@ const Group = ({
 
 type EntryPreviewListProps = {
 	data: Array<{ date: string; entries: Entry[] }>;
-	onEntryClick?: (entry: Entry, layoutId: string) => void;
+	onEntryClick?: (entry: Entry) => void;
 };
 
 export const EntryPreviewList = (props: EntryPreviewListProps) => (

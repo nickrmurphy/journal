@@ -24,7 +24,7 @@ export const EntryList = ({
 	onEntryClick,
 }: {
 	entries: Entry[];
-	onEntryClick?: (entry: Entry, layoutId: string) => void;
+	onEntryClick?: (entry: Entry) => void;
 }) => {
 	return (
 		<Root>
@@ -32,9 +32,7 @@ export const EntryList = ({
 				<EntryItem
 					key={entry.id}
 					entry={entry}
-					onClick={
-						onEntryClick ? () => onEntryClick(entry, entry.id) : undefined
-					}
+					onClick={onEntryClick ? () => onEntryClick(entry) : undefined}
 				/>
 			))}
 

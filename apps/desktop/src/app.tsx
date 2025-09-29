@@ -9,14 +9,11 @@ import {
 	EntryList,
 	EntryPreviewList,
 } from "@journal/ui";
+import { formatDay, formatMonthDate } from "@journal/utils/dates";
 import { useCurrentDate } from "@journal/utils/hooks";
 import { PenIcon } from "@phosphor-icons/react";
 import { isSameDay } from "date-fns";
 import { type ReactNode, useMemo, useState } from "react";
-import {
-	formatDay,
-	formatMonthDate,
-} from "../../../packages/utils/src/dates/format";
 
 const Container = (props: { children: ReactNode }) => (
 	<div className="mx-auto flex w-full flex-col gap-3" {...props} />
@@ -101,20 +98,18 @@ function App() {
 		}));
 	}, [allEntries, today]);
 
-	const [selectedEntry, setSelectedEntry] = useState<{
-		entry: Entry;
-	} | null>(null);
+	const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-	const handleEntryClick = (entry: Entry, _layoutId: string) => {
-		setSelectedEntry({ entry });
+	const handleEntryClick = (entry: Entry) => {
+		setSelectedEntry(entry);
 		setIsDialogOpen(true);
 	};
 
 	const handleComment = (content: string) => {
 		if (selectedEntry) {
 			commentsCollection.insert({
-				entryId: selectedEntry.entry.id,
+				entryId: selectedEntry.id,
 				content,
 			});
 		}
@@ -132,7 +127,7 @@ function App() {
 				</Container>
 			</AsideLayout.Main>
 			<EntryDetailDialog
-				entry={selectedEntry?.entry}
+				entry={selectedEntry || undefined}
 				isOpen={isDialogOpen}
 				onClose={() => setIsDialogOpen(false)}
 				onExitComplete={() => setSelectedEntry(null)}
