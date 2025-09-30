@@ -1,3 +1,11 @@
 @import '../../../packages/ui/src/main.css';
 /* biome-ignore lint/suspicious/noUnknownAtRules: <tailwindcss syntax> */
 @source '../../../packages/ui/src/**/*.tsx';
+
+:root {
+    --safe-bottom: env(safe-area-inset-bottom);
+}
+
+* {
+    @apply select-none;
+}

@@ -8,14 +8,24 @@ import {
 	createEntriesCollection,
 } from "@journal/core/collections";
 import { createFileSystemAdapter } from "@journal/utils/storage-adapters";
+import { v4 } from "uuid";
 import App from "./app.tsx";
 
-const storage = createFileSystemAdapter("collection");
+const storage = createFileSystemAdapter("collections");
 
 const collectionCofig: CollectionConfig = {
 	entriesCollection: createEntriesCollection(storage),
 	commentsCollection: createCommentsCollection(storage),
 };
+
+// Override crypto.randomUUID if not available in Capacitor
+(() => {
+	if (!window.crypto.randomUUID) {
+		window.crypto.randomUUID = () => {
+			return v4() as `${string}-${string}-${string}-${string}-${string}`;
+		};
+	}
+})();
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>

@@ -19,28 +19,34 @@ export function createFileSystemAdapter(subdirectory: string): AsyncStorageApi {
 					encoding: Encoding.UTF8,
 				});
 				return result.data as string;
-			} catch {
-				// File doesn't exist, return null (consistent with localStorage behavior)
+			} catch (error) {
+				console.error(`[FilesystemAdapter] Failed to read ${key}:`, error);
 				return null;
 			}
 		},
 		setItem: async (key: string, value: string) => {
-			await Filesystem.writeFile({
-				path: getPath(key),
-				data: value,
-				directory: Directory.Data,
-				encoding: Encoding.UTF8,
-				recursive: true,
-			});
+			try {
+				await Filesystem.requestPermissions();
+				await Filesystem.writeFile({
+					path: getPath(key),
+					data: value,
+					directory: Directory.Documents,
+					encoding: Encoding.UTF8,
+					recursive: true,
+				});
+			} catch (error) {
+				console.error(`[FilesystemAdapter] Failed to write ${key}:`, error);
+				throw error;
+			}
 		},
 		removeItem: async (key: string) => {
 			try {
 				await Filesystem.deleteFile({
 					path: getPath(key),
-					directory: Directory.Data,
+					directory: Directory.Documents,
 				});
-			} catch {
-				// File doesn't exist, silently ignore (consistent with localStorage behavior)
+			} catch (error) {
+				console.error(`[FilesystemAdapter] Failed to delete ${key}:`, error);
 			}
 		},
 		clear: async () => {
@@ -48,7 +54,7 @@ export function createFileSystemAdapter(subdirectory: string): AsyncStorageApi {
 				// Read files in the specific subdirectory
 				const result = await Filesystem.readdir({
 					path: subdirectory,
-					directory: Directory.Data,
+					directory: Directory.Documents,
 				});
 
 				// Delete all .json files in this subdirectory only
@@ -57,15 +63,21 @@ export function createFileSystemAdapter(subdirectory: string): AsyncStorageApi {
 					.map((file) =>
 						Filesystem.deleteFile({
 							path: `${subdirectory}/${file.name}`,
-							directory: Directory.Data,
-						}).catch(() => {
-							// Ignore individual file deletion errors
+							directory: Directory.Documents,
+						}).catch((error) => {
+							console.error(
+								`[FilesystemAdapter] Failed to delete ${file.name}:`,
+								error,
+							);
 						}),
 					);
 
 				await Promise.all(deletePromises);
-			} catch {
-				// Directory doesn't exist or other error, silently ignore
+			} catch (error) {
+				console.error(
+					`[FilesystemAdapter] Failed to clear ${subdirectory}:`,
+					error,
+				);
 			}
 		},
 	};
