@@ -15,7 +15,7 @@ export function createFileSystemAdapter(subdirectory: string): AsyncStorageApi {
 			try {
 				const result = await Filesystem.readFile({
 					path: getPath(key),
-					directory: Directory.Data,
+					directory: Directory.Documents,
 					encoding: Encoding.UTF8,
 				});
 				return result.data as string;
