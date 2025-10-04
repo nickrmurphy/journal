@@ -7,6 +7,7 @@
     "./collection-options": "./src/collection-options/index.ts",
     "./mergable-store": "./src/mergable-store/index.ts",
     "./dates": "./src/dates/index.ts",
-    "./hooks": "./src/hooks/index.ts"
+    "./hooks": "./src/hooks/index.ts",
+    "./fn": "./src/fn/index.ts"
   }
 }

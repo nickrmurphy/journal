@@ -4,3 +4,4 @@ import * as schema from "./schema";
 
 const sqlite = new Database("app.db");
 export const db = drizzle(sqlite, { schema, casing: "snake_case" });
+export type DB = typeof db;
