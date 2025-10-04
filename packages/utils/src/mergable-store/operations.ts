@@ -76,3 +76,19 @@ export function merge(
 
 	return result;
 }
+
+export function mergeValues(values: DematerializedObject[]) {
+	const map: Map<string, DematerializedObject> = new Map();
+
+	for (const value of values) {
+		const current = map.get(value.__id);
+		if (current) {
+			const merged = merge(current, value);
+			map.set(merged.__id, merged);
+		} else {
+			map.set(value.__id, value);
+		}
+	}
+
+	return Array.from(map.values());
+}
