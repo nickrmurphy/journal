@@ -1,7 +1,7 @@
 import { t } from "elysia";
 import type { App } from "../index";
 
-export const register = (app: App) =>
+export const authRoutes = (app: App) =>
 	app.group(
 		"/auth",
 		{

@@ -2,7 +2,7 @@ import { jwt } from "@elysiajs/jwt";
 import { openapi } from "@elysiajs/openapi";
 import { Elysia } from "elysia";
 import { db } from "./db";
-import { register as registerAuthRoutes } from "./routes/auth";
+import { authRoutes } from "./routes/auth";
 import { AuthService } from "./services/auth-service";
 import { UserService } from "./services/user-service";
 
@@ -20,7 +20,7 @@ const app = new Elysia()
 	}))
 	.get("/status", "ok");
 
-registerAuthRoutes(app);
+authRoutes(app);
 
 app.listen(3000);
 
