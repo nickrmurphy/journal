@@ -143,9 +143,13 @@ test("mergeValues merges objects with same ID", () => {
 	const result = mergeValues(values);
 
 	expect(result).toHaveLength(1);
-	expect(result[0].__id).toBe("user1");
-	expect((result[0].name as DematerializedValue).__value).toBe("Alice Updated");
-	expect((result[0].email as DematerializedValue).__value).toBe("alice@example.com");
+	expect(result[0]?.__id).toBe("user1");
+	expect((result[0]?.name as DematerializedValue).__value).toBe(
+		"Alice Updated",
+	);
+	expect((result[0]?.email as DematerializedValue).__value).toBe(
+		"alice@example.com",
+	);
 });
 
 test("mergeValues keeps objects with different IDs separate", () => {
@@ -169,8 +173,8 @@ test("mergeValues keeps objects with different IDs separate", () => {
 	const result = mergeValues(values);
 
 	expect(result).toHaveLength(2);
-	expect(result.find(obj => obj.__id === "user1")).toBeDefined();
-	expect(result.find(obj => obj.__id === "user2")).toBeDefined();
+	expect(result.find((obj) => obj.__id === "user1")).toBeDefined();
+	expect(result.find((obj) => obj.__id === "user2")).toBeDefined();
 });
 
 test("mergeValues handles multiple merges for same ID", () => {
@@ -205,8 +209,8 @@ test("mergeValues handles multiple merges for same ID", () => {
 	const result = mergeValues(values);
 
 	expect(result).toHaveLength(1);
-	expect((result[0].title as DematerializedValue).__value).toBe("Version 3");
-	expect((result[0].status as DematerializedValue).__value).toBe("published");
+	expect((result[0]?.title as DematerializedValue).__value).toBe("Version 3");
+	expect((result[0]?.status as DematerializedValue).__value).toBe("published");
 });
 
 test("mergeValues returns empty array for empty input", () => {

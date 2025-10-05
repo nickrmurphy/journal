@@ -4,6 +4,7 @@ import { Elysia } from "elysia";
 import { db } from "./db";
 import { authRoutes } from "./routes/auth";
 import { AuthService } from "./services/auth-service";
+import { CollectionService } from "./services/collection-service";
 import { UserService } from "./services/user-service";
 
 const app = new Elysia()
@@ -15,6 +16,7 @@ const app = new Elysia()
 		}),
 	)
 	.decorate("userService", new UserService(db))
+	.decorate("collectionService", new CollectionService(db))
 	.derive(({ userService }) => ({
 		authService: new AuthService(userService),
 	}))

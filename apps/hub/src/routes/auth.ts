@@ -39,7 +39,7 @@ export const authRoutes = (app: App) =>
 
 					set.status = 200;
 					return jwt.sign({
-						userId,
+						sub: userId,
 					});
 				}),
 	);
