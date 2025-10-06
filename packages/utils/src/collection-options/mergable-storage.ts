@@ -8,9 +8,9 @@ import type {
 	UpdateMutationFnParams,
 } from "@tanstack/react-db";
 import {
+	createMergableStore,
 	type DematerializedObject,
 	type MaterializedObject,
-	MergableStore,
 } from "../mergable-store";
 import {
 	type BaseCollectionConfigWithoutHandlers,
@@ -41,7 +41,7 @@ export function mergableCollectionOptions<
 	schema: TSchema;
 } {
 	type ItemType = InferSchemaOutput<TSchema>;
-	const dataStore = MergableStore<MaterializedObject>();
+	const dataStore = createMergableStore<MaterializedObject>();
 
 	// Imperative Shell: Storage operations
 	const saveToStorage = async (
@@ -114,7 +114,7 @@ export function mergableCollectionOptions<
 
 function createMergableSync<T extends object, TKey extends string | number>(
 	loadFromStorage: () => Promise<DematerializedObject[]>,
-	dataStore: ReturnType<typeof MergableStore<MaterializedObject>>,
+	dataStore: ReturnType<typeof createMergableStore<MaterializedObject>>,
 ): SyncConfig<T, TKey> & SyncFunctions<T> {
 	// Capture sync functions to use in mutations
 	let syncWrite:

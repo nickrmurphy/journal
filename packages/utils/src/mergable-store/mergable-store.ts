@@ -14,7 +14,7 @@ type MergableStore<T extends MaterializedObject> = {
 	mergeState: (data: DematerializedObject[]) => void;
 };
 
-export const MergableStore = <
+export const createMergableStore = <
 	T extends MaterializedObject,
 >(): MergableStore<T> => {
 	const state = new Map<string, DematerializedObject>();
