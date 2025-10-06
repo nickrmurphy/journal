@@ -39,13 +39,13 @@ export class CollectionService {
 		values: DematerializedObject[],
 	) {
 		const current = await this.getValues(userId, key);
+
 		if (!current) {
 			this.setValues(userId, key, values);
 			return;
 		}
 
 		const merged = mergeStoreValues([...current, ...values]);
-
 		this.setValues(userId, key, merged);
 	}
 
@@ -65,7 +65,7 @@ export class CollectionService {
 					value: serialized,
 				})
 				.onConflictDoUpdate({
-					target: collections.value,
+					target: [collections.userId, collections.key],
 					set: { value: serialized },
 				});
 

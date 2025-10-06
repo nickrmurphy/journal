@@ -8,7 +8,7 @@ export const users = t.sqliteTable("users", {
 		.text()
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
-	username: t.text().notNull().unique(),
+	email: t.text().notNull().unique(),
 	password: t.text().notNull(),
 	createdAt: t.text().notNull().default(sql`CURRENT_TIMESTAMP`),
 });

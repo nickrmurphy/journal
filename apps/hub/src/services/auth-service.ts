@@ -12,20 +12,23 @@ export class AuthService {
 		this.userService = userService;
 	}
 
-	async register(username: string, password: string): Promise<string | null> {
+	async register(email: string, password: string): Promise<string | null> {
 		return safe(async () => {
-			const existing = await this.userService.getByUsername(username);
+			const existing = await this.userService.getByEmail(email);
 			if (existing) return null;
 
 			const hashedPassword = await Bun.password.hash(password);
-			const userId = await this.userService.create(username, hashedPassword);
+			const userId = await this.userService.create(email, hashedPassword);
 			return userId;
 		}, null);
 	}
 
-	async verify(username: string, password: string): Promise<string | null> {
+	async verifyPassword(
+		email: string,
+		password: string,
+	): Promise<string | null> {
 		return safe(async () => {
-			const existing = await this.userService.getByUsername(username);
+			const existing = await this.userService.getByEmail(email);
 			if (!existing) return null;
 
 			const verified = await Bun.password.verify(password, existing.password);

@@ -218,3 +218,34 @@ test("mergeValues returns empty array for empty input", () => {
 
 	expect(result).toHaveLength(0);
 });
+
+test("merge does not replace newer lefthand value with older righthand value", () => {
+	const obj1: DematerializedObject = {
+		__id: "test",
+		name: {
+			__value: "Newer Name",
+			__timestamp: "2025-01-05T12:00:00.000Z",
+		},
+		age: {
+			__value: 35,
+			__timestamp: "2025-01-04T12:00:00.000Z",
+		},
+	};
+
+	const obj2: DematerializedObject = {
+		__id: "test",
+		name: {
+			__value: "Older Name",
+			__timestamp: "2025-01-01T12:00:00.000Z",
+		},
+	};
+
+	const result = merge(obj1, obj2);
+
+	expect(result.__id).toBe("test");
+	expect((result.name as DematerializedValue).__value).toBe("Newer Name");
+	expect((result.name as DematerializedValue).__timestamp).toBe(
+		"2025-01-05T12:00:00.000Z",
+	);
+	expect((result.age as DematerializedValue).__value).toBe(35);
+});

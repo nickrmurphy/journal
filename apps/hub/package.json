@@ -6,12 +6,11 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "@elysiajs/jwt": "^1.4.0",
-    "@elysiajs/openapi": "^1.4.11",
+    "@hono/zod-validator": "^0.7.3",
     "@journal/utils": "workspace:*",
     "drizzle-orm": "^0.44.6",
     "drizzle-zod": "^0.8.3",
-    "elysia": "latest"
+    "hono": "^4.7.11"
   },
   "devDependencies": {
     "@libsql/client": "^0.15.15",

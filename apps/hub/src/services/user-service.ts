@@ -10,12 +10,12 @@ const safe = createSafe((error) => {
 export class UserService {
 	constructor(private db: DB) {}
 
-	async getByUsername(username: string): Promise<User | null> {
+	async getByEmail(email: string): Promise<User | null> {
 		return safe(async () => {
 			const rows = await this.db
 				.select()
 				.from(users)
-				.where(eq(users.username, username));
+				.where(eq(users.email, email));
 
 			if (rows.length === 0) return null;
 
@@ -24,13 +24,13 @@ export class UserService {
 		}, null);
 	}
 
-	async create(username: string, password: string): Promise<string | null> {
+	async create(email: string, password: string): Promise<string | null> {
 		return safe(async () => {
 			const id = crypto.randomUUID();
 
 			await this.db.insert(users).values({
 				id,
-				username,
+				email,
 				password,
 			});
 			return id;

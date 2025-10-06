@@ -1,33 +1,40 @@
-import { jwt } from "@elysiajs/jwt";
-import { openapi } from "@elysiajs/openapi";
-import { Elysia } from "elysia";
+import { Hono } from "hono";
+import { sign } from "hono/jwt";
 import { db } from "./db";
-import { authRoutes } from "./routes/auth";
+import auth from "./routes/auth";
+import collection from "./routes/collection";
 import { AuthService } from "./services/auth-service";
 import { CollectionService } from "./services/collection-service";
 import { UserService } from "./services/user-service";
 
-const app = new Elysia()
-	.use(openapi())
-	.use(
-		jwt({
-			name: "jwt",
-			secret: "Fischl von Luftschloss Narfidort",
-		}),
-	)
-	.decorate("userService", new UserService(db))
-	.decorate("collectionService", new CollectionService(db))
-	.derive(({ userService }) => ({
-		authService: new AuthService(userService),
-	}))
-	.get("/status", "ok");
+type Variables = {
+	jwtPayload?: {
+		sub: string;
+	};
+};
 
-authRoutes(app);
+const app = new Hono<{ Variables: Variables }>();
 
-app.listen(3000);
+const JWT_SECRET = "Fischl von Luftschloss Narfidort";
 
-console.log(
-	`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`,
-);
+// Initialize services once at app level
+const userService = new UserService(db);
+const collectionService = new CollectionService(db);
+const authService = new AuthService(userService);
+export const services = { userService, collectionService, authService };
 
+// Routes
+app.get("/status", (c) => c.text("ok"));
+app.route("/auth", auth);
+app.route("/collection", collection);
+
+export default {
+	port: 3000,
+	fetch: app.fetch,
+};
+
+console.log("🔥 Hono is running at http://localhost:3000");
+
+export type Services = typeof services;
 export type App = typeof app;
+export { JWT_SECRET, sign };
