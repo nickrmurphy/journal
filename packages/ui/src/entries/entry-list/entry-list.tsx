@@ -4,7 +4,7 @@ import type { ComponentProps } from "react";
 import { EntryItem } from "..";
 
 const Root = (props: ComponentProps<"div">) => (
-	<div {...props} className={cx("rounded bg-black p-1.5", props.className)} />
+	<div {...props} className={cx("rounded-xl bg-black p-1.5", props.className)} />
 );
 
 const EmptyState = (props: ComponentProps<"div">) => (

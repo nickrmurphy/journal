@@ -13,19 +13,14 @@ const Description = ArkDialog.Description;
 
 const Content = (props: { children: React.ReactNode }) => (
 	<Portal>
-		<Backdrop
-			className={cx(
-				"fixed inset-0 bg-black/40",
-				"opacity-0 data-[state=open]:opacity-100",
-				"transition-opacity duration-150 ease-out data-[state=closed]:ease-in",
-			)}
-		/>
-		<Positioner>
+		<Backdrop className={cx("fixed inset-0 bg-black/40")} />
+		<Positioner className="fixed inset-0 flex items-end justify-center">
 			<ArkDialog.Content
 				className={cx(
-					"flex flex-col fixed top-1/8 left-1/2 -translate-x-1/2 -translate-y-1/8 w-full max-w-xl md:top-1/2 md:-translate-y-1/2 md:-mt-8 md:min-w-96 md:w-2/3 rounded-2xl bg-black p-6 border shadow max-h-[80vh]",
-					"data-[state=open]:animate-[slideUp_150ms_ease-out]",
-					"data-[state=closed]:animate-[slideOut_100ms_ease-in]",
+					"flex flex-col w-full h-[calc(99vh-env(safe-area-inset-top))] rounded-t-2xl bg-black p-6 border border-b-0 shadow",
+					"data-[state=open]:animate-[slideUpFromBottom_150ms_ease-out] data-[state=open]:translate-y-0",
+					"data-[state=closed]:animate-[slideDownToBottom_150ms_ease-in]",
+					"translate-y-full",
 				)}
 			>
 				{props.children}
@@ -38,13 +33,13 @@ const Body = (props: { children: React.ReactNode }) => (
 	<div className="flex-1 overflow-y-auto min-h-0">{props.children}</div>
 );
 
-const Footer = (props: { children: React.ReactNode }) => (
-	<div className="flex-shrink-0 pt-4 -mx-2 -mb-2 mt-2 border-t border-dashed">
+const Toolbar = (props: { children: React.ReactNode }) => (
+	<div className="flex-shrink-0 pb-4 -mx-2 -mt-2 mb-2 border-b border-dashed">
 		{props.children}
 	</div>
 );
 
-export const Dialog = {
+export const Drawer = {
 	Root,
 	Portal,
 	Backdrop,
@@ -55,5 +50,5 @@ export const Dialog = {
 	Description,
 	Content,
 	Body,
-	Footer,
+	Toolbar,
 };

@@ -12,7 +12,7 @@ const EmptyState = (props: ComponentProps<"div">) => (
 	<div
 		{...props}
 		className={cx(
-			"p-4 text-center text-sm text-lightgray/70 m-auto my-auto self-center bg-black rounded",
+			"p-4 text-center text-sm text-lightgray/70 m-auto my-auto self-center bg-black rounded-xl",
 			props.className,
 		)}
 	>

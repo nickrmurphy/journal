@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
 	render: () => (
 		<Menu.Root>
-			<Menu.Trigger className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+			<Menu.Trigger className="rounded-xl bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
 				Open Menu
 			</Menu.Trigger>
 			<Menu.Content>

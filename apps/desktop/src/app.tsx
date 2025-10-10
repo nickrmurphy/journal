@@ -123,7 +123,10 @@ function App() {
 			<AsideLayout.Main>
 				<Container>
 					<Navbar />
-					<EntryList entries={entries} onEntryClick={handleEntryClick} />
+					{entries.length > 0 && (
+						<EntryList entries={entries} onEntryClick={handleEntryClick} />
+					)}
+					{entries.length === 0 && <p>No entries yet today</p>}
 				</Container>
 			</AsideLayout.Main>
 			<EntryDetailDialog

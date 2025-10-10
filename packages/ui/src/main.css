@@ -49,6 +49,26 @@
 	}
 }
 
+@keyframes slideUpFromBottom {
+	from {
+		transform: translateY(100%);
+	}
+
+	to {
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideDownToBottom {
+	from {
+		transform: translateY(0);
+	}
+
+	to {
+		transform: translateY(100%);
+	}
+}
+
 body {
 	color: var(--color-lightgray);
 	background-color: var(--color-darkgray);

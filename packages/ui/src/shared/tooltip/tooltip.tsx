@@ -8,7 +8,7 @@ const Positioner = ArkTooltip.Positioner;
 
 const tooltipPopup = (className?: string) =>
 	cx(
-		"rounded shadow bg-darkgray/90 backdrop-blur p-1 text-xs border",
+		"rounded-xl shadow bg-darkgray/90 backdrop-blur p-1 text-xs border",
 		"data-[state=open]:animate-[fadeIn_150ms_ease-out]",
 		"data-[state=closed]:animate-[fadeOut_100ms_ease-in]",
 		className,

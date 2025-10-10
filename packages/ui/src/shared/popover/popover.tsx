@@ -15,7 +15,7 @@ const Positioner = ArkPopover.Positioner;
 
 const popoverPopup = (className?: string) =>
 	cx(
-		"origin-[var(--transform-origin)] rounded-md shadow bg-black border p-2 data-[state=open]:animate-[fadeIn_150ms_ease-out] data-[state=closed]:animate-[fadeOut_100ms_ease-in]",
+		"origin-[var(--transform-origin)] rounded-2xl shadow bg-black border p-2 data-[state=open]:animate-[fadeIn_150ms_ease-out] data-[state=closed]:animate-[fadeOut_100ms_ease-in]",
 		className,
 	);
 

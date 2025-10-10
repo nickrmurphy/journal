@@ -9,7 +9,7 @@ const button = cva({
 			"solid-lightgray": "bg-lightgray text-black hover:bg-lightgray/90",
 			"outline-black": "border border-black text-black hover:bg-black/5",
 			"outline-lightgray":
-				"border border-lightgray text-lightgray hover:bg-lightgray/10",
+				"border backdrop-blur border-lightgray text-lightgray hover:bg-lightgray/10",
 			"solid-yellow": "bg-yellow text-black hover:bg-yellow/90",
 			"outline-yellow": "border border-yellow text-yellow hover:bg-yellow/10",
 		},

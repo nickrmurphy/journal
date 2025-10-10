@@ -15,7 +15,7 @@ const Root = (
 		<article
 			{...domProps}
 			className={cx(
-				"rounded p-3 text-lightgray/70 transition-colors duration-300 hover:bg-darkgray/30 hover:text-lightgray",
+				"rounded-xl p-3 text-lightgray/70 transition-colors duration-300 hover:bg-darkgray/30 hover:text-lightgray",
 				isClickable ? "cursor-pointer" : "cursor-default",
 				props.className,
 			)}

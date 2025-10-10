@@ -1,3 +1,4 @@
+export { EntryCommentItem } from "./entry-comment-item";
 export { EntryCommentPopover } from "./entry-comment-popover";
 export { EntryCreateDialog } from "./entry-create-dialog";
 export { EntryDateCard } from "./entry-date-card";

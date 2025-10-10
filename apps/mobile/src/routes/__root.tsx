@@ -7,6 +7,7 @@ import {
 import { createFileSystemAdapter } from "@journal/utils/storage-adapters";
 import { BookIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { KeyboardHeightListener } from "@/components/keyboard-height";
 // import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { NavBar, NavItem } from "@/components/nav-bar";
 
@@ -34,6 +35,7 @@ const RootLayout = () => (
 	<CollectionContextProvider config={collectionCofig}>
 		<Outlet />
 		<Navigation />
+		<KeyboardHeightListener />
 		{/* <TanStackRouterDevtools /> */}
 	</CollectionContextProvider>
 );

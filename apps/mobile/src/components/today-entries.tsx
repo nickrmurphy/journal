@@ -11,5 +11,11 @@ export function TodayEntries({
 	const today = useCurrentDate();
 	const { data: entries } = useEntriesOnDate(today);
 
-	return <EntryList entries={entries} onEntryClick={onEntryClick} />;
+	return entries.length > 0 ? (
+		<EntryList entries={entries} onEntryClick={onEntryClick} />
+	) : (
+		<p className="text-center p-10 text-lg text-lightgray/70">
+			No entries yet today
+		</p>
+	);
 }

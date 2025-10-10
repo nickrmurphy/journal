@@ -9,7 +9,7 @@ const Root = (props: ComponentProps<"article">) => (
 	<article
 		{...props}
 		className={cx(
-			"cursor-default bg-black transition-colors rounded p-4 hover:bg-darkgray/30",
+			"cursor-default bg-black transition-colors rounded-xl p-4 hover:bg-darkgray/30",
 			props.className,
 		)}
 	/>
