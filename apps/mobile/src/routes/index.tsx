@@ -62,7 +62,7 @@ function RouteComponent() {
 	}, []);
 
 	return (
-		<Carousel.Root defaultPage={1} slideCount={3}>
+		<Carousel.Root defaultPage={1} slideCount={2}>
 			<Carousel.ItemGroup className="fixed inset-0">
 				<SafeAreaBlur />
 				<Page as={Carousel.Item} index={0}>
@@ -71,9 +71,6 @@ function RouteComponent() {
 				<Page as={Carousel.Item} index={1}>
 					<TodayHeader />
 					<TodayEntries onEntryClick={handleEntryClick} />
-				</Page>
-				<Page as={Carousel.Item} index={2}>
-					Eventually bookmarks and stuff
 				</Page>
 			</Carousel.ItemGroup>
 			<div className="flex items-center bottom-[var(--safe-bottom)] fixed right-4">
