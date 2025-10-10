@@ -1,9 +1,8 @@
-import { Carousel } from "@ark-ui/react/carousel";
 import { useCollections } from "@journal/core/collections";
 import type { Entry } from "@journal/core/schemas";
 import { PenIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Page } from "@/components/page";
 import { PastEntries } from "@/components/past-entries";
 import { SafeAreaBlur } from "@/components/safe-area-blur";
@@ -25,6 +24,7 @@ export const Route = createFileRoute("/")({
 function RouteComponent() {
 	const [dialogMode, setDialogMode] = useState<DialogMode>({ type: "none" });
 	const { entriesCollection, commentsCollection } = useCollections();
+	const scrollContainerRef = useRef<HTMLDivElement>(null);
 
 	const handleEntryClick = useCallback((entry: Entry) => {
 		setDialogMode({ type: "view-entry", entry });
@@ -61,18 +61,39 @@ function RouteComponent() {
 		setDialogMode({ type: "none" });
 	}, []);
 
+	// Scroll to Today page (second section) on mount
+	useEffect(() => {
+		if (scrollContainerRef.current) {
+			const viewportWidth = window.innerWidth;
+			scrollContainerRef.current.scrollTo({
+				left: viewportWidth,
+				behavior: "instant",
+			});
+		}
+	}, []);
+
 	return (
-		<Carousel.Root defaultPage={1} slideCount={2}>
-			<Carousel.ItemGroup className="fixed inset-0">
-				<SafeAreaBlur />
-				<Page as={Carousel.Item} index={0}>
-					<PastEntries onEntryClick={handleEntryClick} />
-				</Page>
-				<Page as={Carousel.Item} index={1}>
-					<TodayHeader />
-					<TodayEntries onEntryClick={handleEntryClick} />
-				</Page>
-			</Carousel.ItemGroup>
+		<>
+			<div
+				ref={scrollContainerRef}
+				className="fixed inset-0 overflow-x-scroll overflow-y-hidden snap-x snap-mandatory"
+				style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+			>
+				<div className="flex h-full">
+					<SafeAreaBlur />
+					<section className="w-screen h-screen flex-shrink-0 snap-start overflow-y-auto pb-14">
+						<Page>
+							<PastEntries onEntryClick={handleEntryClick} />
+						</Page>
+					</section>
+					<section className="w-screen h-screen flex-shrink-0 snap-start overflow-y-auto pb-14">
+						<Page>
+							<TodayHeader />
+							<TodayEntries onEntryClick={handleEntryClick} />
+						</Page>
+					</section>
+				</div>
+			</div>
 			<div className="flex items-center bottom-[var(--safe-bottom)] fixed right-4">
 				<button
 					type="button"
@@ -117,6 +138,6 @@ function RouteComponent() {
 				onExitComplete={handleCloseDialog}
 				onComment={handleCommentButtonClick}
 			/>
-		</Carousel.Root>
+		</>
 	);
 }
