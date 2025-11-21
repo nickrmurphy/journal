@@ -11,6 +11,7 @@
     "types": ["bun-types"],
     "baseUrl": ".",
     "paths": {
+      "@/components": ["./src/components/index.ts"],
       "@/components/*": ["./src/components/*"],
       "@/lib/*": ["./src/lib/*"],
       "@/server/*": ["./src/server/*"]
