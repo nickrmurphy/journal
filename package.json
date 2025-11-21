@@ -21,7 +21,8 @@
     "lint": "biome lint .",
     "format": "biome format . --write",
     "check": "biome check . --write",
-    "dev:workshop": "bun run --cwd ./apps/workshop dev"
+    "dev": "bun run --cwd ./apps/web dev",
+    "storybook": "bun run --cwd ./packages/ui storybook"
   },
   "dependencies": {
     "@ark-ui/react": "^5.25.0",
