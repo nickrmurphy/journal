@@ -37,4 +37,3 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 *storybook.log
 storybook-static
-apps/hub/local.db
