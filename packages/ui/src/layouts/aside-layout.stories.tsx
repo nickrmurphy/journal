@@ -29,7 +29,7 @@ export const Default: Story = {
 					<h1 className="text-3xl font-bold">Main Content Area</h1>
 					<div className="prose max-w-none">
 						<p>
-							This is the main content area of the desktop layout. It spans 4
+							This is the main content area of the aside layout. It spans 4
 							columns of the 6-column grid and has a max width constraint for
 							optimal reading.
 						</p>
