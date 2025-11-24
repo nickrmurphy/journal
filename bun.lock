@@ -5,6 +5,7 @@
       "name": "journal",
       "dependencies": {
         "@ark-ui/react": "^5.25.0",
+        "@byearlybird/starling-db": "0.3.0",
         "@hono/zod-validator": "^0.7.3",
         "@phosphor-icons/react": "^2.1.10",
         "@tanstack/react-db": "^0.1.23",
@@ -50,6 +51,10 @@
     "@biomejs/cli-win32-arm64": ["@biomejs/cli-win32-arm64@2.3.7", "", { "os": "win32", "cpu": "arm64" }, "sha512-aJAE8eCNyRpcfx2JJAtsPtISnELJ0H4xVVSwnxm13bzI8RwbXMyVtxy2r5DV1xT3WiSP+7LxORcApWw0LM8HiA=="],
 
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.3.7", "", { "os": "win32", "cpu": "x64" }, "sha512-pulzUshqv9Ed//MiE8MOUeeEkbkSHVDVY5Cz5wVAnH1DUqliCQG3j6s1POaITTFqFfo7AVIx2sWdKpx/GS+Nqw=="],
+
+    "@byearlybird/starling": ["@byearlybird/starling@0.9.3", "", { "peerDependencies": { "unstorage": "^1.17.1" }, "optionalPeers": ["unstorage"] }, "sha512-Sy2FQNVndEMTqoI8mUXVmoG5xaHiM5sNUrb37MBSJDrSfpT5/rmmNUoVqC0iXM0gdjveE3sK5pEhImxE1ZPVJw=="],
+
+    "@byearlybird/starling-db": ["@byearlybird/starling-db@0.3.0", "", { "dependencies": { "@byearlybird/starling": "0.9.3" } }, "sha512-PhxEaDkLH4M8uUPu4VKu1N/3FzeAF4cIOP3Mkk+l4XY8IB2bbDDAydo0DEfMbFKd2t8bsNOLZOUlU7IvIN7rLw=="],
 
     "@drizzle-team/brocli": ["@drizzle-team/brocli@0.10.2", "", {}, "sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w=="],
 
