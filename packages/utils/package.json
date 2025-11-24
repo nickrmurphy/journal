@@ -4,6 +4,7 @@
   "type": "module",
   "exports": {
     "./storage-adapters": "./src/storage-adapters/index.ts",
+    "./storage-adapters/idb-adapter": "./src/storage-adapters/idb-adapter.ts",
     "./collection-options": "./src/collection-options/index.ts",
     "./mergable-store": "./src/mergable-store/index.ts",
     "./dates": "./src/dates/index.ts",

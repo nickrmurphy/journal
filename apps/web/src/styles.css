@@ -1,15 +1,12 @@
-@import "tailwindcss";
+@import '../../../packages/ui/src/main.css';
+/* biome-ignore lint/suspicious/noUnknownAtRules: <tailwindcss syntax> */
+@source '../../../packages/ui/src/**/*.tsx';
 
-body {
-  @apply m-0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+    --safe-bottom: env(safe-area-inset-bottom);
+    --safe-top: env(safe-area-inset-top);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+* {
+    @apply select-none;
 }
