@@ -9,6 +9,7 @@ import { BookIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 // import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { NavBar, NavItem } from "@/components/nav-bar";
+import { useKeyboardHeight } from "@/hooks/use-keyboard-height";
 
 const storage = createIdbStorage();
 
@@ -30,12 +31,16 @@ const Navigation = () => {
 	);
 };
 
-const RootLayout = () => (
-	<CollectionContextProvider config={collectionCofig}>
-		<Outlet />
-		<Navigation />
-		{/* <TanStackRouterDevtools /> */}
-	</CollectionContextProvider>
-);
+const RootLayout = () => {
+	useKeyboardHeight();
+
+	return (
+		<CollectionContextProvider config={collectionCofig}>
+			<Outlet />
+			<Navigation />
+			{/* <TanStackRouterDevtools /> */}
+		</CollectionContextProvider>
+	);
+};
 
 export const Route = createRootRoute({ component: RootLayout });
