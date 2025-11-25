@@ -42,6 +42,15 @@ Instead of editing entries, you can reflect on them later by adding comments, cr
 
 Your journal data lives **only in your browser**. No servers store your personal thoughts. When P2P sync launches, data will be encrypted end-to-end and transmitted directly between your devices—never touching our servers.
 
+## Development
+
+The project now lives in a single Vite + TypeScript workspace under `src/`, with path aliases for `@core`, `@ui`, and `@utils` so shared code stays easy to import.
+
+```bash
+bun install
+bun run dev
+```
+
 ## Availability
 
 Born out of a personal need for simple and private journaling, Journal by Early Bird will be enhanced and available for public use by the new year.
