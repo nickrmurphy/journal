@@ -3,6 +3,27 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "vite build && tsc",
+    "serve": "vite preview",
+    "lint": "biome lint .",
+    "format": "biome format . --write",
+    "check": "biome check . --write"
+  },
+  "dependencies": {
+    "@ark-ui/react": "^5.25.0",
+    "@byearlybird/starling": "^0.11.0",
+    "@phosphor-icons/react": "^2.1.10",
+    "@tanstack/react-router": "^1.132.31",
+    "@tanstack/react-router-devtools": "^1.132.31",
+    "cva": "^1.0.0-beta.4",
+    "date-fns": "^4.1.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.8"
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.2.4",
     "@tailwindcss/vite": "^4.1.13",
@@ -15,28 +36,5 @@
     "tailwindcss": "^4.1.13",
     "typescript": "^5.7.2",
     "vite": "^7.1.5"
-  },
-  "scripts": {
-    "lint": "biome lint .",
-    "format": "biome format . --write",
-    "check": "biome check . --write",
-    "dev:web": "bun run --cwd ./apps/web dev",
-    "dev:workshop": "bun run --cwd ./apps/workshop dev"
-  },
-  "dependencies": {
-    "@ark-ui/react": "^5.25.0",
-    "@byearlybird/starling": "^0.11.0",
-    "@phosphor-icons/react": "^2.1.10",
-    "@tanstack/react-router": "^1.132.31",
-    "@tanstack/react-router-devtools": "^1.132.31",
-    "cva": "^1.0.0-beta.4",
-    "date-fns": "^4.1.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "zod": "^4.1.8"
-  },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  }
 }
