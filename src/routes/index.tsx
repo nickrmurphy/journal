@@ -1,5 +1,5 @@
-import { db } from "@/core/database";
-import type { Entry } from "@/core/schemas";
+import { db } from "@/database";
+import type { Entry } from "@/schemas";
 import { PenIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";

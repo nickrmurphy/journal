@@ -1,5 +1,5 @@
-import { useEntryComments } from "@/core/hooks";
-import type { Entry } from "@/core/schemas";
+import { useEntryComments } from "@/hooks";
+import type { Entry } from "@/schemas";
 import { formatTime } from "@/utils/dates";
 import { cx } from "cva";
 import type { ComponentProps } from "react";

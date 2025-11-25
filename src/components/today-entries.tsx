@@ -1,5 +1,5 @@
-import { useEntriesOnDate } from "@/core/hooks";
-import type { Entry } from "@/core/schemas";
+import { useEntriesOnDate } from "@/hooks";
+import type { Entry } from "@/schemas";
 import { EntryList } from "@/ui";
 import { useCurrentDate } from "@/utils/hooks";
 

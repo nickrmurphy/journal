@@ -1,4 +1,4 @@
-import { initDatabase } from "@/core/database";
+import { initDatabase } from "@/database";
 import { BookIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { useEffect, useState } from "react";

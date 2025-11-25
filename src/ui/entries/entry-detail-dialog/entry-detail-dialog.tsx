@@ -1,5 +1,5 @@
-import { useEntryComments } from "@/core/hooks";
-import type { Comment, Entry } from "@/core/schemas";
+import { useEntryComments } from "@/hooks";
+import type { Comment, Entry } from "@/schemas";
 import { formatDateTime } from "@/utils/dates";
 import { ChatTeardropIcon, XIcon } from "@phosphor-icons/react";
 import { useState } from "react";

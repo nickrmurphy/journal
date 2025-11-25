@@ -1,5 +1,5 @@
-import { useEntries } from "@/core/hooks";
-import type { Entry } from "@/core/schemas";
+import { useEntries } from "@/hooks";
+import type { Entry } from "@/schemas";
 import { EntryPreviewList } from "@/ui";
 import { useCurrentDate } from "@/utils/hooks";
 import { isSameDay } from "date-fns";
