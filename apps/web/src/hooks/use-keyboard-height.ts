@@ -1,18 +1,23 @@
 import { useEffect } from "react";
 
 /**
- * Hook that sets up keyboard height detection using the Visual Viewport API.
+ * Hook that sets up floating input height detection using the Visual Viewport API.
  *
- * Uses window.innerHeight - window.visualViewport.height to detect keyboard height.
+ * Uses window.innerHeight - window.visualViewport.height to detect keyboard height
+ * and positions the floating input accordingly.
  * Listens to resize and scroll events on window.visualViewport.
  *
- * Sets the --keyboard-height CSS variable on document.documentElement.
+ * Sets the --floating-input-height CSS variable on document.documentElement.
+ * Defaults to 66vh for desktop/non-keyboard scenarios.
  */
 export const useKeyboardHeight = () => {
 	useEffect(() => {
 		if (!window.visualViewport) {
-			// Fallback: if Visual Viewport API is not supported, set to 0
-			document.documentElement.style.setProperty("--keyboard-height", "0px");
+			// Fallback: if Visual Viewport API is not supported, use default height
+			document.documentElement.style.setProperty(
+				"--floating-input-height",
+				"66vh",
+			);
 			return;
 		}
 
@@ -25,7 +30,7 @@ export const useKeyboardHeight = () => {
 			);
 
 			document.documentElement.style.setProperty(
-				"--keyboard-height",
+				"--floating-input-height",
 				`${keyboardHeight}px`,
 			);
 		};
