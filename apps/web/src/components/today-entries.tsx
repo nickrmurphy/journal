@@ -9,7 +9,7 @@ export function TodayEntries({
 	onEntryClick: (entry: Entry) => void;
 }) {
 	const today = useCurrentDate();
-	const { data: entries } = useEntriesOnDate(today);
+	const entries = useEntriesOnDate(today);
 
 	return entries.length > 0 ? (
 		<EntryList entries={entries} onEntryClick={onEntryClick} />

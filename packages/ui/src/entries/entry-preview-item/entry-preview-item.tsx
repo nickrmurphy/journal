@@ -41,7 +41,7 @@ export const EntryPreviewItem = (props: {
 	entry: Entry;
 	onClick?: () => void;
 }) => {
-	const { data: comments } = useEntryComments(props.entry.id);
+	const comments = useEntryComments(props.entry.id);
 
 	return (
 		<Root onClick={props.onClick} isClickable={!!props.onClick}>

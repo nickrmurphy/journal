@@ -64,7 +64,7 @@ export const EntryDetailDialog = ({
 	onExitComplete?: () => void;
 	onComment: () => void;
 }) => {
-	const { data: comments } = useEntryComments(entry?.id ?? "");
+	const comments = useEntryComments(entry?.id ?? "");
 
 	return (
 		<Drawer.Root

@@ -1,4 +1,4 @@
-import { useCollections } from "@journal/core/collections";
+import { db } from "@journal/core/database";
 import type { Entry } from "@journal/core/schemas";
 import { PenIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -23,32 +23,28 @@ export const Route = createFileRoute("/")({
 
 function RouteComponent() {
 	const [dialogMode, setDialogMode] = useState<DialogMode>({ type: "none" });
-	const { entriesCollection, commentsCollection } = useCollections();
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 
 	const handleEntryClick = useCallback((entry: Entry) => {
 		setDialogMode({ type: "view-entry", entry });
 	}, []);
 
-	const handleCreateEntry = useCallback(
-		(content: string) => {
-			entriesCollection.insert({ content });
-			setDialogMode({ type: "none" });
-		},
-		[entriesCollection],
-	);
+	const handleCreateEntry = useCallback((content: string) => {
+		db.entries.add({ content });
+		setDialogMode({ type: "none" });
+	}, []);
 
 	const handleAddComment = useCallback(
 		(content: string) => {
 			if (dialogMode.type !== "add-comment") return;
 
-			commentsCollection.insert({
+			db.comments.add({
 				entryId: dialogMode.entry.id,
 				content,
 			});
 			setDialogMode({ type: "view-entry", entry: dialogMode.entry });
 		},
-		[dialogMode, commentsCollection],
+		[dialogMode],
 	);
 
 	const handleCommentButtonClick = useCallback(() => {

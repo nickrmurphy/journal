@@ -1,22 +1,10 @@
-import {
-	type CollectionConfig,
-	CollectionContextProvider,
-	createCommentsCollection,
-	createEntriesCollection,
-} from "@journal/core/collections";
-import { createIdbStorage } from "@journal/utils/storage-adapters/idb-adapter";
+import { initDatabase } from "@journal/core/database";
 import { BookIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 // import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { NavBar, NavItem } from "@/components/nav-bar";
 import { useKeyboardHeight } from "@/hooks/use-keyboard-height";
-
-const storage = createIdbStorage();
-
-const collectionCofig: CollectionConfig = {
-	entriesCollection: createEntriesCollection(storage),
-	commentsCollection: createCommentsCollection(storage),
-};
 
 const Navigation = () => {
 	return (
@@ -33,13 +21,22 @@ const Navigation = () => {
 
 const RootLayout = () => {
 	useKeyboardHeight();
+	const [dbReady, setDbReady] = useState(false);
+
+	useEffect(() => {
+		initDatabase().then(() => setDbReady(true));
+	}, []);
+
+	if (!dbReady) {
+		return <div>Loading database...</div>;
+	}
 
 	return (
-		<CollectionContextProvider config={collectionCofig}>
+		<>
 			<Outlet />
 			<Navigation />
 			{/* <TanStackRouterDevtools /> */}
-		</CollectionContextProvider>
+		</>
 	);
 };
 

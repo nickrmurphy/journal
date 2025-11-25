@@ -33,7 +33,7 @@ const Content = (props: ComponentProps<"p">) => (
 );
 
 export const EntryItem = (props: { entry: Entry; onClick?: () => void }) => {
-	const { data: comments } = useEntryComments(props.entry.id);
+	const comments = useEntryComments(props.entry.id);
 
 	return (
 		<Root onClick={props.onClick}>

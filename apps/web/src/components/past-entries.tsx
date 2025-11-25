@@ -11,7 +11,7 @@ export function PastEntries({
 	onEntryClick: (entry: Entry) => void;
 }) {
 	const today = useCurrentDate();
-	const { data: allEntries } = useEntries();
+	const allEntries = useEntries();
 
 	const pastEntries = useMemo(() => {
 		if (!allEntries) return [];

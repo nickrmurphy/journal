@@ -3,7 +3,7 @@
   "module": "src/index.ts",
   "type": "module",
   "exports": {
-    "./collections": "./src/collections/index.ts",
+    "./database": "./src/database/index.ts",
     "./hooks": "./src/hooks/index.ts",
     "./schemas": "./src/schemas/index.ts"
   },
