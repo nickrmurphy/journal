@@ -1,6 +1,6 @@
-import { useEntryComments } from "@core/hooks";
-import type { Entry } from "@core/schemas";
-import { formatTime } from "@utils/dates";
+import { useEntryComments } from "@/core/hooks";
+import type { Entry } from "@/core/schemas";
+import { formatTime } from "@/utils/dates";
 import { ChatTeardropIcon } from "@phosphor-icons/react";
 import { cx } from "cva";
 import type { ComponentProps } from "react";

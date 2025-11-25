@@ -44,7 +44,7 @@ Your journal data lives **only in your browser**. No servers store your personal
 
 ## Development
 
-The project now lives in a single Vite + TypeScript workspace under `src/`, with path aliases for `@core`, `@ui`, and `@utils` so shared code stays easy to import.
+The project now lives in a single Vite + TypeScript workspace under `src/`, with a single `@/` alias (for example `@/core`, `@/ui`, and `@/utils`) so shared code stays easy to import.
 
 ```bash
 bun install

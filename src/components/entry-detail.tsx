@@ -1,7 +1,7 @@
-import { useEntryComments } from "@core/hooks";
-import type { Comment, Entry } from "@core/schemas";
-import { Button, Drawer, EntryCommentItem } from "@ui";
-import { formatDateTime } from "@utils/dates";
+import { useEntryComments } from "@/core/hooks";
+import type { Comment, Entry } from "@/core/schemas";
+import { Button, Drawer, EntryCommentItem } from "@/ui";
+import { formatDateTime } from "@/utils/dates";
 import { ChatTeardropIcon, XIcon } from "@phosphor-icons/react";
 
 const Timestamp = ({ createdAt }: { createdAt: string }) => (

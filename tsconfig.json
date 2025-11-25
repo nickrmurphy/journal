@@ -20,10 +20,7 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@core/*": ["./src/core/*"],
-      "@ui/*": ["./src/ui/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@/*": ["./src/*"]
     },
     "types": ["vite/client"]
   },

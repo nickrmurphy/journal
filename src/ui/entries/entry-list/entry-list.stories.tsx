@@ -1,4 +1,4 @@
-import type { Entry } from "@core/schemas";
+import type { Entry } from "@/core/schemas";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { EntryList } from "./entry-list";
 

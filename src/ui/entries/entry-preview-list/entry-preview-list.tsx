@@ -1,4 +1,4 @@
-import type { Entry } from "@core/schemas";
+import type { Entry } from "@/core/schemas";
 import { cx } from "cva";
 import type { ComponentProps } from "react";
 import { EntryDateCard } from "../entry-date-card";

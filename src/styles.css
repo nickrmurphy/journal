@@ -1,10 +1,8 @@
 @import "@/ui/main.css";
-/* biome-ignore lint/suspicious/noUnknownAtRules: <tailwindcss syntax> */
-@source "./**/*.tsx";
 
 :root {
-	--safe-bottom: env(safe-area-inset-bottom);
-	--safe-top: env(safe-area-inset-top);
+        --safe-bottom: env(safe-area-inset-bottom);
+        --safe-top: env(safe-area-inset-top);
 }
 
 * {

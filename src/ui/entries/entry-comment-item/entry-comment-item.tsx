@@ -1,5 +1,5 @@
-import type { Comment } from "@core/schemas";
-import { formatDateTime, formatDistance } from "@utils/dates";
+import type { Comment } from "@/core/schemas";
+import { formatDateTime, formatDistance } from "@/utils/dates";
 import { ArrowBendDownRightIcon } from "@phosphor-icons/react";
 import { cx } from "cva";
 import type { ComponentProps } from "react";
