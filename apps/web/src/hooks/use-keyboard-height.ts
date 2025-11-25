@@ -12,7 +12,7 @@ import { useEffect } from "react";
  */
 export const useKeyboardHeight = () => {
 	useEffect(() => {
-		if (!window.visualViewport) {
+		if (!window.visualViewport || !window.ontouchstart) {
 			// Fallback: if Visual Viewport API is not supported, use default height
 			document.documentElement.style.setProperty(
 				"--floating-input-height",
