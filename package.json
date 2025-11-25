@@ -1,27 +1,14 @@
 {
   "name": "journal",
-  "module": "index.ts",
   "type": "module",
   "private": true,
-  "devDependencies": {
-    "@biomejs/biome": "^2.2.4",
-    "@tailwindcss/vite": "^4.1.13",
-    "@tanstack/router-plugin": "^1.132.31",
-    "@types/bun": "latest",
-    "@types/node": "^22.10.2",
-    "@types/react": "^19.1.13",
-    "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react": "^5.0.2",
-    "tailwindcss": "^4.1.13",
-    "typescript": "^5.7.2",
-    "vite": "^7.1.5"
-  },
   "scripts": {
+    "dev": "vite --port 3000",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
     "lint": "biome lint .",
     "format": "biome format . --write",
-    "check": "biome check . --write",
-    "dev:web": "bun run --cwd ./apps/web dev",
-    "dev:workshop": "bun run --cwd ./apps/workshop dev"
+    "check": "biome check . --write"
   },
   "dependencies": {
     "@ark-ui/react": "^5.25.0",
@@ -35,8 +22,17 @@
     "react-dom": "^19.2.0",
     "zod": "^4.1.8"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.4",
+    "@tailwindcss/vite": "^4.1.13",
+    "@tanstack/router-plugin": "^1.132.31",
+    "@types/bun": "latest",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.7.2",
+    "vite": "^7.1.5"
+  }
 }
