@@ -1,7 +1,7 @@
 import { useEntriesOnDate } from "@/hooks";
 import type { Entry } from "@/schemas";
 import { EntryList } from "@/components/shared";
-import { useCurrentDate } from "@/utils/hooks";
+import { useCurrentDate } from "@/hooks";
 
 export function TodayEntries({
 	onEntryClick,
