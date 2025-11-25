@@ -1,0 +1,12 @@
+@import "./ui/main.css";
+/* biome-ignore lint/suspicious/noUnknownAtRules: <tailwindcss syntax> */
+@source './ui/**/*.tsx';
+
+:root {
+	--safe-bottom: env(safe-area-inset-bottom);
+	--safe-top: env(safe-area-inset-top);
+}
+
+* {
+	@apply select-none;
+}
