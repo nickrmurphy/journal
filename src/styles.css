@@ -1,6 +1,6 @@
-@import "./ui/main.css";
+@import "./components/shared/main.css";
 /* biome-ignore lint/suspicious/noUnknownAtRules: <tailwindcss syntax> */
-@source './ui/**/*.tsx';
+@source './components/shared/**/*.tsx';
 
 :root {
 	--safe-bottom: env(safe-area-inset-bottom);

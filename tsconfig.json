@@ -34,7 +34,6 @@
       "@/components/*": ["./src/components/*"],
       "@/routes/*": ["./src/routes/*"],
       "@/hooks/*": ["./src/hooks/*"],
-      "@/ui/*": ["./src/ui/*"],
       "@/database/*": ["./src/database/*"],
       "@/schemas/*": ["./src/schemas/*"],
       "@/utils/*": ["./src/utils/*"]

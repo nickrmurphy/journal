@@ -1,6 +1,6 @@
 import { useEntryComments } from "@/hooks";
 import type { Comment, Entry } from "@/schemas";
-import { Button, Drawer, EntryCommentItem } from "@/ui";
+import { Button, Drawer, EntryCommentItem } from "@/components/shared";
 import { formatDateTime } from "@/utils/dates";
 import { ChatTeardropIcon, XIcon } from "@phosphor-icons/react";
 

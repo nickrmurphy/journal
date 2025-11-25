@@ -1,5 +1,5 @@
 import type { Preview } from "@storybook/react-vite";
-import "../src/ui/main.css";
+import "../src/components/shared/main.css";
 
 const preview: Preview = {
 	tags: ["autodocs"],

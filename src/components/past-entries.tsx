@@ -1,6 +1,6 @@
 import { useEntries } from "@/hooks";
 import type { Entry } from "@/schemas";
-import { EntryPreviewList } from "@/ui";
+import { EntryPreviewList } from "@/components/shared";
 import { useCurrentDate } from "@/utils/hooks";
 import { isSameDay } from "date-fns";
 import { useMemo } from "react";

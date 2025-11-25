@@ -1,11 +1,11 @@
 import { Dialog } from "@ark-ui/react/dialog";
 import { Portal } from "@ark-ui/react/portal";
-import { Button, Textarea } from "@/ui";
+import { Button, Textarea } from "@/components/shared";
 import { PaperPlaneIcon, XIcon } from "@phosphor-icons/react";
 
 import { type ComponentProps, useState } from "react";
 
-// TODO: move to @/ui
+// TODO: move to @/components/shared
 export const TextareaDialog = (
 	props: ComponentProps<typeof Dialog.Root> & {
 		onSubmit: (content: string) => void;
