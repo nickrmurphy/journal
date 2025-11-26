@@ -11,15 +11,16 @@ All data is stored client-side in IndexedDB with no server-side persistence, ens
 ## Development Commands
 
 ```bash
-bun dev          # Start development server with HMR at localhost:3000
-bun run build    # Build for production (outputs to /dist)
-bun start        # Run production server
+bun dev          # Start Vite development server at localhost:5173
+bun run build    # Build for production with Vite (outputs to /dist)
+bun start        # Run Vite preview server for production build
 bun check        # Lint and format code with Biome
 ```
 
 ## Architecture
 
-- **Runtime & Build**: Bun (replaces Node.js, Vite)
+- **Package Manager**: Bun (for package management and script execution)
+- **Dev Server & Build**: Vite (Rolldown variant) with React plugin
 - **Frontend**: React 19 + TypeScript
 - **Routing**: Wouter (lightweight client-side router)
 - **Database**: Starling ORM with IndexedDB plugin
@@ -28,113 +29,38 @@ bun check        # Lint and format code with Biome
 - **Validation**: Zod schemas
 - **Code Quality**: Biome (linting & formatting)
 
-## Bun Usage
+## Build System
 
-Default to using Bun instead of Node.js.
+The project uses **Vite** (Rolldown variant) for development and production builds:
 
-- Use `bun <file>` instead of `node <file>` or `ts-node <file>`
-- Use `bun test` instead of `jest` or `vitest`
-- Use `bun build <file.html|file.ts|file.css>` instead of `webpack` or `esbuild`
-- Use `bun install` instead of `npm install` or `yarn install` or `pnpm install`
-- Use `bun run <script>` instead of `npm run <script>` or `yarn run <script>` or `pnpm run <script>`
-- Bun automatically loads .env, so don't use dotenv.
+- **Development**: Vite dev server with Hot Module Replacement (HMR) and React Fast Refresh
+- **Production**: Optimized builds with code splitting and minification
+- **Entry Point**: `index.html` at project root imports `/src/frontend.tsx`
+- **Static Assets**: Served from `public/` directory
 
-## APIs
+### Vite Configuration
 
-- `Bun.serve()` supports WebSockets, HTTPS, and routes. Don't use `express`.
-- `bun:sqlite` for SQLite. Don't use `better-sqlite3`.
-- `Bun.redis` for Redis. Don't use `ioredis`.
-- `Bun.sql` for Postgres. Don't use `pg` or `postgres.js`.
-- `WebSocket` is built-in. Don't use `ws`.
-- Prefer `Bun.file` over `node:fs`'s readFile/writeFile
-- Bun.$`ls` instead of execa.
+Configuration in `vite.config.ts`:
+- **React Plugin**: `@vitejs/plugin-react` for Fast Refresh
+- **Path Alias**: `@/*` maps to `./src/*` for cleaner imports
+- **Tailwind CSS 4**: Automatically processed via PostCSS
 
-## Testing
+### Tailwind CSS 4
 
-Use `bun test` to run tests.
+The project uses Tailwind CSS 4 with custom theme variables defined in `src/styles.css`:
 
-```ts#index.test.ts
-import { test, expect } from "bun:test";
+```css
+@import "tailwindcss";
 
-test("hello world", () => {
-  expect(1).toBe(1);
-});
-```
-
-## Frontend
-
-Use HTML imports with `Bun.serve()`. Don't use `vite`. HTML imports fully support React, CSS, Tailwind.
-
-Server:
-
-```ts#index.ts
-import index from "./index.html"
-
-Bun.serve({
-  routes: {
-    "/": index,
-    "/api/users/:id": {
-      GET: (req) => {
-        return new Response(JSON.stringify({ id: req.params.id }));
-      },
-    },
-  },
-  // optional websocket support
-  websocket: {
-    open: (ws) => {
-      ws.send("Hello, world!");
-    },
-    message: (ws, message) => {
-      ws.send(message);
-    },
-    close: (ws) => {
-      // handle close
-    }
-  },
-  development: {
-    hmr: true,
-    console: true,
-  }
-})
-```
-
-HTML files can import .tsx, .jsx or .js files directly and Bun's bundler will transpile & bundle automatically. `<link>` tags can point to stylesheets and Bun's CSS bundler will bundle.
-
-```html#index.html
-<html>
-  <body>
-    <h1>Hello, world!</h1>
-    <script type="module" src="./frontend.tsx"></script>
-  </body>
-</html>
-```
-
-With the following `frontend.tsx`:
-
-```tsx#frontend.tsx
-import React from "react";
-
-// import .css files directly and it works
-import './index.css';
-
-import { createRoot } from "react-dom/client";
-
-const root = createRoot(document.body);
-
-export default function Frontend() {
-  return <h1>Hello, world!</h1>;
+@theme {
+  --color-*: initial;
+  --color-black: #171717;
+  --color-yellow: #ffca67;
+  /* ... */
 }
-
-root.render(<Frontend />);
 ```
 
-Then, run index.ts
-
-```sh
-bun --hot ./index.ts
-```
-
-For more information, read the Bun API docs in `node_modules/bun-types/docs/**.md`.
+Vite natively supports Tailwind CSS 4 imports - no additional configuration needed.
 
 ## Database & Data Layer
 

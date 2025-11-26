@@ -4,9 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --hot src/index.ts",
-    "start": "NODE_ENV=production bun src/index.ts",
-    "build": "bun run build.ts",
+    "dev": "vite",
+    "start": "vite preview",
+    "build": "vite build",
     "lint": "biome lint .",
     "format": "biome format . --write",
     "check": "biome check . --write"
@@ -15,21 +15,25 @@
     "@ark-ui/react": "^5.25.0",
     "@byearlybird/starling": "^0.11.0",
     "@phosphor-icons/react": "^2.1.10",
-    "bun-plugin-tailwind": "^0.1.2",
-    "wouter": "^3.3.0",
+    "@tailwindcss/vite": "^4.1.17",
     "cva": "^1.0.0-beta.4",
     "date-fns": "^4.1.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "wouter": "^3.3.0",
     "zod": "^4.1.8"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.7",
-    "@types/bun": "latest",
     "@types/node": "^22.10.2",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.1.1",
     "tailwindcss": "^4.1.13",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vite": "npm:rolldown-vite@7.2.5"
+  },
+  "overrides": {
+    "vite": "npm:rolldown-vite@7.2.5"
   }
 }
