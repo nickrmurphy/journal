@@ -11,7 +11,6 @@
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "allowJs": true,
-    "types": ["vite/client"],
     // Bundler mode
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,

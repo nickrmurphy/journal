@@ -16,10 +16,10 @@ export const db = createDatabase({
 			getId: (comment) => comment.id,
 		},
 	},
-});
+}).use(idbPlugin({ version: 1, useBroadcastChannel: true }));
 
 // Initialize with IndexedDB plugin
 export const initDatabase = async () => {
-	await db.use(idbPlugin({ version: 1, useBroadcastChannel: true })).init();
+	await db.init();
 	return db;
 };

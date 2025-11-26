@@ -1,7 +1,6 @@
 import { BookIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import type { PropsWithChildren } from "react";
 import { useEffect, useState } from "react";
-// import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { NavBar, NavItem } from "@/components/nav-bar";
 import { initDatabase } from "@/database";
 import { useKeyboardHeight } from "@/hooks/use-keyboard-height";
@@ -9,17 +8,17 @@ import { useKeyboardHeight } from "@/hooks/use-keyboard-height";
 const Navigation = () => {
 	return (
 		<NavBar>
-			<NavItem to="/" label="Journal" viewTransition>
+			<NavItem to="/" label="Journal">
 				<BookIcon />
 			</NavItem>
-			<NavItem to="/settings" label="Settings" viewTransition>
+			<NavItem to="/settings" label="Settings">
 				<SlidersHorizontalIcon />
 			</NavItem>
 		</NavBar>
 	);
 };
 
-const RootLayout = () => {
+export const RootLayout = ({ children }: PropsWithChildren) => {
 	useKeyboardHeight();
 	const [dbReady, setDbReady] = useState(false);
 
@@ -33,11 +32,8 @@ const RootLayout = () => {
 
 	return (
 		<>
-			<Outlet />
+			{children}
 			<Navigation />
-			{/* <TanStackRouterDevtools /> */}
 		</>
 	);
 };
-
-export const Route = createRootRoute({ component: RootLayout });

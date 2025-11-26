@@ -1,5 +1,4 @@
 import { PenIcon } from "@phosphor-icons/react";
-import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Page } from "@/components/page";
 import { PastEntries } from "@/components/past-entries";
@@ -17,11 +16,7 @@ type DialogMode =
 	| { type: "view-entry"; entry: Entry }
 	| { type: "add-comment"; entry: Entry };
 
-export const Route = createFileRoute("/")({
-	component: RouteComponent,
-});
-
-function RouteComponent() {
+export const JournalRoute = () => {
 	const [dialogMode, setDialogMode] = useState<DialogMode>({ type: "none" });
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -136,4 +131,4 @@ function RouteComponent() {
 			/>
 		</>
 	);
-}
+};

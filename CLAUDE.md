@@ -1,109 +1,118 @@
+# CLAUDE.md
 
-Default to using Bun instead of Node.js.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-- Use `bun <file>` instead of `node <file>` or `ts-node <file>`
-- Use `bun test` instead of `jest` or `vitest`
-- Use `bun build <file.html|file.ts|file.css>` instead of `webpack` or `esbuild`
-- Use `bun install` instead of `npm install` or `yarn install` or `pnpm install`
-- Use `bun run <script>` instead of `npm run <script>` or `yarn run <script>` or `pnpm run <script>`
-- Bun automatically loads .env, so don't use dotenv.
+## Project Overview
 
-## APIs
+**Journal by Early Bird** is a local-first, privacy-focused journaling web application. The core philosophy: each entry is an immutable snapshot in time to encourage authentic self-expression without self-censorship. Instead of editing entries, users can reflect on them later by adding comments.
 
-- `Bun.serve()` supports WebSockets, HTTPS, and routes. Don't use `express`.
-- `bun:sqlite` for SQLite. Don't use `better-sqlite3`.
-- `Bun.redis` for Redis. Don't use `ioredis`.
-- `Bun.sql` for Postgres. Don't use `pg` or `postgres.js`.
-- `WebSocket` is built-in. Don't use `ws`.
-- Prefer `Bun.file` over `node:fs`'s readFile/writeFile
-- Bun.$`ls` instead of execa.
+All data is stored client-side in IndexedDB with no server-side persistence, ensuring complete privacy.
 
-## Testing
+## Development Commands
 
-Use `bun test` to run tests.
-
-```ts#index.test.ts
-import { test, expect } from "bun:test";
-
-test("hello world", () => {
-  expect(1).toBe(1);
-});
+```bash
+bun dev          # Start Vite development server at localhost:5173
+bun run build    # Build for production with Vite (outputs to /dist)
+bun start        # Run Vite preview server for production build
+bun check        # Lint and format code with Biome
 ```
 
-## Frontend
+## Architecture
 
-Use HTML imports with `Bun.serve()`. Don't use `vite`. HTML imports fully support React, CSS, Tailwind.
+- **Package Manager**: Bun (for package management and script execution)
+- **Dev Server & Build**: Vite (Rolldown variant) with React plugin
+- **Frontend**: React 19 + TypeScript
+- **Routing**: Wouter (lightweight client-side router)
+- **Database**: Starling ORM with IndexedDB plugin
+- **UI Components**: Ark UI (accessible primitives)
+- **Styling**: Tailwind CSS 4 with custom theme
+- **Validation**: Zod schemas
+- **Code Quality**: Biome (linting & formatting)
 
-Server:
+## Build System
 
-```ts#index.ts
-import index from "./index.html"
+The project uses **Vite** (Rolldown variant) for development and production builds:
 
-Bun.serve({
-  routes: {
-    "/": index,
-    "/api/users/:id": {
-      GET: (req) => {
-        return new Response(JSON.stringify({ id: req.params.id }));
-      },
-    },
-  },
-  // optional websocket support
-  websocket: {
-    open: (ws) => {
-      ws.send("Hello, world!");
-    },
-    message: (ws, message) => {
-      ws.send(message);
-    },
-    close: (ws) => {
-      // handle close
-    }
-  },
-  development: {
-    hmr: true,
-    console: true,
-  }
-})
-```
+- **Development**: Vite dev server with Hot Module Replacement (HMR) and React Fast Refresh
+- **Production**: Optimized builds with code splitting and minification
+- **Entry Point**: `index.html` at project root imports `/src/frontend.tsx`
+- **Static Assets**: Served from `public/` directory
 
-HTML files can import .tsx, .jsx or .js files directly and Bun's bundler will transpile & bundle automatically. `<link>` tags can point to stylesheets and Bun's CSS bundler will bundle.
+### Vite Configuration
 
-```html#index.html
-<html>
-  <body>
-    <h1>Hello, world!</h1>
-    <script type="module" src="./frontend.tsx"></script>
-  </body>
-</html>
-```
+Configuration in `vite.config.ts`:
+- **React Plugin**: `@vitejs/plugin-react` for Fast Refresh
+- **Path Alias**: `@/*` maps to `./src/*` for cleaner imports
+- **Tailwind CSS 4**: Automatically processed via PostCSS
 
-With the following `frontend.tsx`:
+### Tailwind CSS 4
 
-```tsx#frontend.tsx
-import React from "react";
+The project uses Tailwind CSS 4 with custom theme variables defined in `src/styles.css`:
 
-// import .css files directly and it works
-import './index.css';
+```css
+@import "tailwindcss";
 
-import { createRoot } from "react-dom/client";
-
-const root = createRoot(document.body);
-
-export default function Frontend() {
-  return <h1>Hello, world!</h1>;
+@theme {
+  --color-*: initial;
+  --color-black: #171717;
+  --color-yellow: #ffca67;
+  /* ... */
 }
-
-root.render(<Frontend />);
 ```
 
-Then, run index.ts
+Vite natively supports Tailwind CSS 4 imports - no additional configuration needed.
 
-```sh
-bun --hot ./index.ts
+## Database & Data Layer
+
+The application uses **Starling** ORM with the IndexedDB plugin for client-side data persistence.
+
+### Schema
+
+Two core entities defined with Zod in `src/schemas/`:
+
+**Entry** (`src/schemas/entry.ts`):
+- `id`: UUID (auto-generated)
+- `content`: String
+- `createdAt`: ISO 8601 timestamp (auto-set)
+
+**Comment** (`src/schemas/comment.ts`):
+- `id`: UUID (auto-generated)
+- `entryId`: UUID (references Entry)
+- `content`: String
+- `createdAt`: ISO 8601 timestamp (auto-set)
+
+### Database Setup
+
+Database initialization in `src/database/db.ts`:
+```ts
+export const db = createDatabase({
+  name: "journal",
+  schema: {
+    entries: { schema: EntrySchema, getId: (entry) => entry.id },
+    comments: { schema: CommentSchema, getId: (comment) => comment.id },
+  },
+}).use(idbPlugin({ version: 1, useBroadcastChannel: true }));
 ```
 
-For more information, read the Bun API docs in `node_modules/bun-types/docs/**.md`.
+**Cross-tab sync**: Enabled via `useBroadcastChannel: true` - changes in one browser tab automatically sync to other tabs.
+
+### Custom Hooks
+
+- **`useEntries()`** - Fetches all entries with their associated comments, maintains reactive state
+- **`useComments(entryId)`** - Manages comments for a specific entry
+- **`useCurrentDate()`** - Tracks current date, updates at midnight
+- **`useKeyboardHeight()`** - Detects mobile virtual keyboard height, sets CSS variables for safe areas
+
+## Component Organization
+
+Components follow a hierarchical structure:
+
+- **`/src/components/shared/entries/`** - Entry-specific components (list, item, dialogs, comments)
+- **`/src/components/shared/shared/`** - Generic UI components (button, dialog, popover, menu, tooltip)
+- **`/src/components/shared/layouts/`** - Layout components
+- **`/src/components/`** (root) - Page-level composition components (nav-bar, today-entries, past-entries)
+
+All components use the compound component pattern (see Design Patterns section).
 
 ## Design Patterns
 
