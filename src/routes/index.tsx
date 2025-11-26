@@ -1,5 +1,5 @@
 import { Pen } from "solid-phosphor";
-import { createSignal, onMount } from "solid-js";
+import { createMemo, createSignal, onMount } from "solid-js";
 import { Page, SafeAreaBlur } from "@/components/layout";
 import {
 	EntryDetailDialog,
@@ -20,6 +20,14 @@ type DialogMode =
 export const JournalRoute = () => {
 	const [dialogMode, setDialogMode] = createSignal<DialogMode>({ type: "none" });
 	let scrollContainerRef: HTMLDivElement | undefined;
+
+	// Memoized computed values for dialog state
+	const entryDialogData = createMemo(() => {
+		const mode = dialogMode();
+		return mode.type === "view-entry" || mode.type === "add-comment"
+			? { entry: mode.entry, isOpen: true }
+			: { entry: undefined, isOpen: false };
+	});
 
 	const handleEntryClick = (entry: Entry) => {
 		setDialogMode({ type: "view-entry", entry });
@@ -119,20 +127,8 @@ export const JournalRoute = () => {
 				}}
 			/>
 			<EntryDetailDialog
-				entry={
-					(() => {
-						const mode = dialogMode();
-						return mode.type === "view-entry" || mode.type === "add-comment"
-							? mode.entry
-							: undefined;
-					})()
-				}
-				isOpen={
-					(() => {
-						const mode = dialogMode();
-						return mode.type === "view-entry" || mode.type === "add-comment";
-					})()
-				}
+				entry={entryDialogData().entry}
+				isOpen={entryDialogData().isOpen}
 				onClose={handleCloseDialog}
 				onExitComplete={handleCloseDialog}
 				onComment={handleCommentButtonClick}
