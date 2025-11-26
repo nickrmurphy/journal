@@ -14,7 +14,6 @@ Instead of editing entries, you can reflect on them later by adding comments, cr
 - **Immutable Entries**: Entries can't be edited once created to prevent self-censorship
 - **Reflective Comments**: Add comments to entries for later thoughts and insights
 - **Local-First**: All data stored in your browser—no servers, no accounts, complete privacy
-- **Data Export**: Export your journal data as JSON
 - **P2P Sync** *(Coming Soon)*: End-to-end encrypted sync between your devices via WebRTC
 
 ## Screenshots

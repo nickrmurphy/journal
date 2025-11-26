@@ -7,4 +7,3 @@ export const EntrySchema = z.object({
 });
 
 export type Entry = z.infer<typeof EntrySchema>;
-export type NewEntry = z.input<typeof EntrySchema>;

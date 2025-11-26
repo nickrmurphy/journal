@@ -1,6 +1,6 @@
 import { Route, Switch } from "wouter";
-import { RootLayout } from "./routes/__root";
 import { JournalRoute } from "./routes/index";
+import { RootLayout } from "./routes/root";
 import { SettingsRoute } from "./routes/settings";
 
 export const AppRouter = () => {
