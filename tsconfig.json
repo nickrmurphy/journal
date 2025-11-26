@@ -29,13 +29,7 @@
     // Path aliases
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/routes/*": ["./src/routes/*"],
-      "@/hooks/*": ["./src/hooks/*"],
-      "@/database/*": ["./src/database/*"],
-      "@/schemas/*": ["./src/schemas/*"],
-      "@/utils/*": ["./src/utils/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],

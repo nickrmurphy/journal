@@ -1,14 +1,15 @@
 import { PenIcon } from "@phosphor-icons/react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Page } from "@/components/page";
-import { PastEntries } from "@/components/past-entries";
-import { SafeAreaBlur } from "@/components/safe-area-blur";
-import { TextareaDialog } from "@/components/textarea-dialog";
-import { TodayEntries } from "@/components/today-entries";
-import { TodayHeader } from "@/components/today-header";
+import { Page, SafeAreaBlur } from "@/components/layout";
+import {
+	EntryDetailDialog,
+	PastEntries,
+	TextareaDialog,
+	TodayEntries,
+	TodayHeader,
+} from "@/components/pages";
 import { db } from "@/database";
 import type { Entry } from "@/schemas";
-import { EntryDetailDialog } from "../components/entry-detail";
 
 type DialogMode =
 	| { type: "none" }
