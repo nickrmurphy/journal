@@ -1,5 +1,5 @@
 import { isSameDay } from "date-fns";
-import { useEffect, useState } from "react";
+import { createEffect, createSignal, onCleanup } from "solid-js";
 import { db } from "../database/db";
 import type { Comment } from "../schemas/comment";
 import type { Entry } from "../schemas/entry";
@@ -9,22 +9,19 @@ type EntryWithComments = Entry & { comments: Comment[] };
 /**
  * Base hook for fetching entries with their comments
  * @param filter Optional filter function to apply to entries
- * @param deps Dependency array for the useEffect hook
  */
-const useEntriesBase = (
-	filter?: (entry: Entry) => boolean,
-	deps: React.DependencyList = [],
-) => {
-	const [entries, setEntries] = useState<EntryWithComments[]>([]);
+const useEntriesBase = (filter?: () => (entry: Entry) => boolean) => {
+	const [entries, setEntries] = createSignal<EntryWithComments[]>([]);
 
-	useEffect(() => {
+	createEffect(() => {
 		const loadEntries = () => {
 			let allEntries = db.entries.getAll();
 			const allComments = db.comments.getAll();
 
 			// Apply filter if provided
-			if (filter) {
-				allEntries = allEntries.filter(filter);
+			const filterFn = filter?.();
+			if (filterFn) {
+				allEntries = allEntries.filter(filterFn);
 			}
 
 			// Group comments by entryId
@@ -63,9 +60,8 @@ const useEntriesBase = (
 			}
 		});
 
-		return () => unsubscribe();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, deps);
+		onCleanup(() => unsubscribe());
+	});
 
 	return entries;
 };
@@ -81,10 +77,9 @@ export const useEntries = () => {
  * Hook to fetch entries for a specific date with their comments
  * @param date ISO date string to filter entries by
  */
-export const useEntriesOnDate = (date: string) => {
-	const targetDate = new Date(date);
-	return useEntriesBase(
-		(entry) => isSameDay(new Date(entry.createdAt), targetDate),
-		[date],
-	);
+export const useEntriesOnDate = (date: () => string) => {
+	return useEntriesBase(() => {
+		const targetDate = new Date(date());
+		return (entry) => isSameDay(new Date(entry.createdAt), targetDate);
+	});
 };

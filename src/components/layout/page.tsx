@@ -1,21 +1,19 @@
 import { cx } from "cva";
-import type { ComponentProps, ElementType } from "react";
+import { type ComponentProps, type JSX, type ValidComponent, Dynamic } from "solid-js";
 
-type PageProps<T extends ElementType = "div"> = {
-	as?: T;
-} & ComponentProps<T>;
+type PageProps = {
+	as?: ValidComponent;
+} & ComponentProps<"div">;
 
-export const Page = <T extends ElementType = "div">({
-	as,
-	...props
-}: PageProps<T>) => {
-	const Component = as || "div";
+export const Page = (props: PageProps) => {
+	const Component = () => props.as || "div";
 	return (
-		<Component
+		<Dynamic
+			component={Component()}
 			{...props}
-			className={cx(
+			class={cx(
 				"pl-[calc(env(safe-area-inset-left)+0.5rem)] pr-[calc(env(safe-area-inset-right)+0.5rem)] pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]",
-				props.className,
+				props.class,
 			)}
 		/>
 	);

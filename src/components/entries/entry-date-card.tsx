@@ -1,53 +1,54 @@
 import { cx } from "cva";
 import { format } from "date-fns";
-import type { ComponentProps, PropsWithChildren } from "react";
+import { type ComponentProps, type JSX } from "solid-js";
 
 const Root = (props: ComponentProps<"div">) => (
 	<div
 		{...props}
-		className={cx("w-full rounded-xl bg-black p-1", props.className)}
+		class={cx("w-full rounded-xl bg-black p-1", props.class)}
 	/>
 );
 
 const Header = (props: ComponentProps<"h2">) => (
 	<h2
 		{...props}
-		className={cx(
+		class={cx(
 			"flex items-baseline gap-1.5 px-1.5 pt-2 pb-1",
-			props.className,
+			props.class,
 		)}
 	/>
 );
 
 const DateDay = (props: ComponentProps<"span">) => (
-	<span {...props} className={cx("text-sm", props.className)} />
+	<span {...props} class={cx("text-sm", props.class)} />
 );
 
 const DateMonth = (props: ComponentProps<"span">) => (
 	<span
 		{...props}
-		className={cx("text-lightgray/70 text-xs", props.className)}
+		class={cx("text-lightgray/70 text-xs", props.class)}
 	/>
 );
 
 const Content = (props: ComponentProps<"div">) => (
-	<div {...props} className={cx("", props.className)} />
+	<div {...props} class={cx("", props.class)} />
 );
 
-type EntryDateCardProps = PropsWithChildren<{
+type EntryDateCardProps = {
 	date: string;
-}>;
+	children: JSX.Element;
+};
 
-export function EntryDateCard({ date, children }: EntryDateCardProps) {
-	const d = new Date(date);
+export function EntryDateCard(props: EntryDateCardProps) {
+	const d = () => new Date(props.date);
 
 	return (
 		<Root>
 			<Header>
-				<DateDay>{format(d, "EEE d")}</DateDay>
-				<DateMonth>{format(d, "MMM")}</DateMonth>
+				<DateDay>{format(d(), "EEE d")}</DateDay>
+				<DateMonth>{format(d(), "MMM")}</DateMonth>
 			</Header>
-			<Content>{children}</Content>
+			<Content>{props.children}</Content>
 		</Root>
 	);
 }

@@ -1,6 +1,6 @@
-import { BookIcon, SlidersHorizontalIcon } from "@phosphor-icons/react";
-import type { PropsWithChildren } from "react";
-import { useEffect, useState } from "react";
+import { Book, SlidersHorizontal } from "solid-phosphor";
+import type { ParentProps } from "solid-js";
+import { createSignal, onMount, Show } from "solid-js";
 import { NavBar, NavItem } from "@/components/layout";
 import { initDatabase } from "@/database";
 import { useKeyboardHeight } from "@/hooks/use-keyboard-height";
@@ -9,31 +9,27 @@ const Navigation = () => {
 	return (
 		<NavBar>
 			<NavItem to="/" label="Journal">
-				<BookIcon />
+				<Book />
 			</NavItem>
 			<NavItem to="/settings" label="Settings">
-				<SlidersHorizontalIcon />
+				<SlidersHorizontal />
 			</NavItem>
 		</NavBar>
 	);
 };
 
-export const RootLayout = ({ children }: PropsWithChildren) => {
+export const RootLayout = (props: ParentProps) => {
 	useKeyboardHeight();
-	const [dbReady, setDbReady] = useState(false);
+	const [dbReady, setDbReady] = createSignal(false);
 
-	useEffect(() => {
+	onMount(() => {
 		initDatabase().then(() => setDbReady(true));
-	}, []);
-
-	if (!dbReady) {
-		return <div>Loading database...</div>;
-	}
+	});
 
 	return (
-		<>
-			{children}
+		<Show when={dbReady()} fallback={<div>Loading database...</div>}>
+			{props.children}
 			<Navigation />
-		</>
+		</Show>
 	);
 };

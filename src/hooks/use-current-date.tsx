@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createSignal, onMount, onCleanup } from "solid-js";
 
 const getCurrentDate = () => {
 	const date = new Date();
@@ -7,18 +7,18 @@ const getCurrentDate = () => {
 };
 
 export function useCurrentDate() {
-	const [currentDate, setCurrentDate] = useState(() => getCurrentDate());
+	const [currentDate, setCurrentDate] = createSignal(getCurrentDate());
 
-	useEffect(() => {
+	onMount(() => {
 		const interval = setInterval(() => {
 			const newDate = getCurrentDate();
-			if (currentDate !== newDate) {
+			if (currentDate() !== newDate) {
 				setCurrentDate(newDate);
 			}
 		}, 60000); // Check every minute
 
-		return () => clearInterval(interval);
-	}, [currentDate]);
+		onCleanup(() => clearInterval(interval));
+	});
 
 	return currentDate;
 }

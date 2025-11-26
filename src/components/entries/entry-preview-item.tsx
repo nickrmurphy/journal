@@ -1,6 +1,6 @@
-import { ChatTeardropIcon } from "@phosphor-icons/react";
+import { ChatTeardrop } from "solid-phosphor";
 import { cx } from "cva";
-import type { ComponentProps } from "react";
+import { Show, type ComponentProps } from "solid-js";
 import { useEntryComments } from "@/hooks";
 import type { Entry } from "@/schemas";
 import { formatTime } from "@/utils/dates";
@@ -14,10 +14,10 @@ const Root = (
 	return (
 		<article
 			{...domProps}
-			className={cx(
+			class={cx(
 				"rounded-xl p-3 text-lightgray/70 transition-colors duration-300 hover:bg-darkgray/30 hover:text-lightgray",
 				isClickable ? "cursor-pointer" : "cursor-default",
-				props.className,
+				props.class,
 			)}
 		/>
 	);
@@ -26,14 +26,14 @@ const Root = (
 const Metadata = (props: ComponentProps<"div">) => (
 	<div
 		{...props}
-		className={cx("flex items-center gap-1.5 text-xs", props.className)}
+		class={cx("flex items-center gap-1.5 text-xs", props.class)}
 	/>
 );
 
 const Content = (props: ComponentProps<"p">) => (
 	<p
 		{...props}
-		className={cx("mt-2 line-clamp-3 text-ellipsis text-sm", props.className)}
+		class={cx("mt-2 line-clamp-3 text-ellipsis text-sm", props.class)}
 	/>
 );
 
@@ -41,13 +41,15 @@ export const EntryPreviewItem = (props: {
 	entry: Entry;
 	onClick?: () => void;
 }) => {
-	const comments = useEntryComments(props.entry.id);
+	const comments = useEntryComments(() => props.entry.id);
 
 	return (
 		<Root onClick={props.onClick} isClickable={!!props.onClick}>
 			<Metadata>
 				<time>{formatTime(props.entry.createdAt)}</time>
-				<span>{comments.length > 0 ? <ChatTeardropIcon /> : null}</span>
+				<Show when={comments().length > 0}>
+					<span><ChatTeardrop /></span>
+				</Show>
 			</Metadata>
 			<Content>{props.entry.content}</Content>
 		</Root>

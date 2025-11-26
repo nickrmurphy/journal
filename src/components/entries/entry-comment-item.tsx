@@ -1,6 +1,6 @@
-import { ArrowBendDownRightIcon } from "@phosphor-icons/react";
+import { ArrowBendDownRight } from "solid-phosphor";
 import { cx } from "cva";
-import type { ComponentProps } from "react";
+import { Show, type ComponentProps } from "solid-js";
 import type { Comment } from "@/schemas";
 import { formatDateTime, formatDistance } from "@/utils/dates";
 import { Tooltip } from "../ui";
@@ -10,12 +10,12 @@ const Root = (props: ComponentProps<"div"> & { hasTimestamp?: boolean }) => {
 	return (
 		<div
 			{...domProps}
-			className={cx(
+			class={cx(
 				hasTimestamp ? "flex gap-2 p-2" : "flex items-center gap-2 p-2",
-				props.className,
+				props.class,
 			)}
 		>
-			<ArrowBendDownRightIcon className="size-4 flex-shrink-0" />
+			<ArrowBendDownRight class="size-4 flex-shrink-0" />
 			{props.children}
 		</div>
 	);
@@ -24,14 +24,14 @@ const Root = (props: ComponentProps<"div"> & { hasTimestamp?: boolean }) => {
 const Text = (props: ComponentProps<"p">) => (
 	<p
 		{...props}
-		className={cx("max-w-[55ch] text-lightgray/70 text-sm", props.className)}
+		class={cx("max-w-[55ch] text-lightgray/70 text-sm", props.class)}
 	/>
 );
 
 const Timestamp = (props: ComponentProps<"time">) => (
 	<time
 		{...props}
-		className={cx("text-lightgray/70 text-xs", props.className)}
+		class={cx("text-lightgray/70 text-xs", props.class)}
 	/>
 );
 
@@ -41,10 +41,10 @@ const DistanceTimestamp = (
 	},
 ) => (
 	<Tooltip.Root>
-		<Tooltip.Trigger asChild>
+		<Tooltip.Trigger>
 			<time
 				{...props}
-				className={cx("text-lightgray/70 text-xs", props.className)}
+				class={cx("text-lightgray/70 text-xs", props.class)}
 			/>
 		</Tooltip.Trigger>
 		<Tooltip.Content>{formatDateTime(props.timestamp)}</Tooltip.Content>
@@ -53,26 +53,26 @@ const DistanceTimestamp = (
 
 export const EntryCommentItem = (props: {
 	comment: Comment;
-	className?: string;
+	class?: string;
 	showTimestamp?: boolean | string;
 }) => {
-	const { showTimestamp = false } = props;
+	const showTimestamp = () => props.showTimestamp || false;
 
 	return (
-		<Root className={props.className} hasTimestamp={!!showTimestamp}>
-			<div className="flex flex-col gap-2 pl-1">
+		<Root class={props.class} hasTimestamp={!!showTimestamp()}>
+			<div class="flex flex-col gap-2 pl-1">
 				<Text>{props.comment.content}</Text>
-				{showTimestamp ? (
+				<Show when={showTimestamp()}>
 					<Timestamp>
-						{typeof showTimestamp === "boolean" ? (
+						{typeof showTimestamp() === "boolean" ? (
 							formatDateTime(props.comment.createdAt)
 						) : (
 							<DistanceTimestamp timestamp={props.comment.createdAt}>
-								{formatDistance(props.comment.createdAt, showTimestamp)} later
+								{formatDistance(props.comment.createdAt, showTimestamp() as string)} later
 							</DistanceTimestamp>
 						)}
 					</Timestamp>
-				) : null}
+				</Show>
 			</div>
 		</Root>
 	);

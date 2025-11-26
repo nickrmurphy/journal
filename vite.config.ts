@@ -1,10 +1,10 @@
 import { resolve } from "node:path";
 import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import solid from "vite-plugin-solid";
 
 export default defineConfig({
-	plugins: [react(), tailwindcss()],
+	plugins: [solid(), tailwindcss()],
 	resolve: {
 		alias: {
 			"@": resolve(__dirname, "./src"),

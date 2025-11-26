@@ -1,18 +1,14 @@
-import { Route, Switch } from "wouter";
+import { Route, Router } from "@solidjs/router";
 import { JournalRoute } from "./routes/index";
 import { RootLayout } from "./routes/root";
 import { SettingsRoute } from "./routes/settings";
 
 export const AppRouter = () => {
 	return (
-		<RootLayout>
-			<Switch>
-				<Route path="/" component={JournalRoute} />
-				<Route path="/settings" component={SettingsRoute} />
-				<Route>
-					<JournalRoute />
-				</Route>
-			</Switch>
-		</RootLayout>
+		<Router root={RootLayout}>
+			<Route path="/" component={JournalRoute} />
+			<Route path="/settings" component={SettingsRoute} />
+			<Route path="*" component={JournalRoute} />
+		</Router>
 	);
 };

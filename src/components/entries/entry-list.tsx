@@ -1,45 +1,45 @@
 import { cx } from "cva";
-import type { ComponentProps } from "react";
+import { For, Show, type ComponentProps } from "solid-js";
 import type { Entry } from "@/schemas";
 import { EntryItem } from "./entry-item";
 
 const Root = (props: ComponentProps<"div">) => (
 	<div
 		{...props}
-		className={cx("rounded-xl bg-black p-1.5", props.className)}
+		class={cx("rounded-xl bg-black p-1.5", props.class)}
 	/>
 );
 
 const EmptyState = (props: ComponentProps<"div">) => (
 	<div
 		{...props}
-		className={cx(
+		class={cx(
 			"p-4 text-center text-sm text-lightgray/70 m-auto my-auto self-center",
-			props.className,
+			props.class,
 		)}
 	>
 		No entries yet
 	</div>
 );
 
-export const EntryList = ({
-	entries,
-	onEntryClick,
-}: {
+export const EntryList = (props: {
 	entries: Entry[];
 	onEntryClick?: (entry: Entry) => void;
 }) => {
 	return (
 		<Root>
-			{entries.map((entry) => (
-				<EntryItem
-					key={entry.id}
-					entry={entry}
-					onClick={onEntryClick ? () => onEntryClick(entry) : undefined}
-				/>
-			))}
+			<For each={props.entries}>
+				{(entry) => (
+					<EntryItem
+						entry={entry}
+						onClick={props.onEntryClick ? () => props.onEntryClick?.(entry) : undefined}
+					/>
+				)}
+			</For>
 
-			{entries.length === 0 && <EmptyState />}
+			<Show when={props.entries.length === 0}>
+				<EmptyState />
+			</Show>
 		</Root>
 	);
 };

@@ -1,5 +1,5 @@
 import { cx } from "cva";
-import type { ComponentProps } from "react";
+import { For, Show, type ComponentProps } from "solid-js";
 import { useEntryComments } from "@/hooks";
 import type { Entry } from "@/schemas";
 import { formatTime } from "@/utils/dates";
@@ -8,9 +8,9 @@ import { EntryCommentItem } from "./entry-comment-item";
 const Root = (props: ComponentProps<"article">) => (
 	<article
 		{...props}
-		className={cx(
+		class={cx(
 			"cursor-default bg-black transition-colors rounded-xl p-4 hover:bg-darkgray/30",
-			props.className,
+			props.class,
 		)}
 	/>
 );
@@ -18,34 +18,36 @@ const Root = (props: ComponentProps<"article">) => (
 const Time = (props: ComponentProps<"time">) => (
 	<time
 		{...props}
-		className={cx("text-lightgray/70 text-sm", props.className)}
+		class={cx("text-lightgray/70 text-sm", props.class)}
 	/>
 );
 
 const Content = (props: ComponentProps<"p">) => (
 	<p
 		{...props}
-		className={cx(
+		class={cx(
 			"mt-0.5 max-w-[65ch] text-base text-lightgray leading-relaxed",
-			props.className,
+			props.class,
 		)}
 	/>
 );
 
 export const EntryItem = (props: { entry: Entry; onClick?: () => void }) => {
-	const comments = useEntryComments(props.entry.id);
+	const comments = useEntryComments(() => props.entry.id);
 
 	return (
 		<Root onClick={props.onClick}>
 			<Time>{formatTime(props.entry.createdAt)}</Time>
 			<Content>{props.entry.content}</Content>
-			{comments.length > 0 && (
-				<div className="mt-1">
-					{comments.map((comment) => (
-						<EntryCommentItem key={comment.id} comment={comment} />
-					))}
+			<Show when={comments().length > 0}>
+				<div class="mt-1">
+					<For each={comments()}>
+						{(comment) => (
+							<EntryCommentItem comment={comment} />
+						)}
+					</For>
 				</div>
-			)}
+			</Show>
 		</Root>
 	);
 };
