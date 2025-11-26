@@ -7,7 +7,7 @@ export const NavBar = (props: ComponentProps<"nav">) => {
 		<nav
 			{...props}
 			className={cx(
-				"flex items-center bottom-[var(--safe-bottom)] fixed inset-x-4",
+				"flex items-center bottom-[var(--safe-bottom)] fixed left-[var(--safe-left)] right-[var(--safe-right)]",
 				"backdrop-blur flex items-center justify-between bg-lightgray/30 rounded-full p-0.5 transition-all w-fit",
 				props.className,
 			)}

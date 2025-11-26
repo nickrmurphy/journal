@@ -103,8 +103,10 @@ body {
 }
 
 :root {
-	--safe-bottom: env(safe-area-inset-bottom);
-	--safe-top: env(safe-area-inset-top);
+	--safe-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+	--safe-top: max(env(safe-area-inset-top), 0.5rem);
+	--safe-left: max(env(safe-area-inset-left), 0.5rem);
+	--safe-right: max(env(safe-area-inset-right), 0.5rem);
 }
 
 * {

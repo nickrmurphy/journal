@@ -14,7 +14,7 @@ export const Page = <T extends ElementType = "div">({
 		<Component
 			{...props}
 			className={cx(
-				"pl-[calc(env(safe-area-inset-left)+0.5rem)] pr-[calc(env(safe-area-inset-right)+0.5rem)] pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]",
+				"pl-[calc(var(--safe-left)+0.5rem)] pr-[calc(var(--safe-right)+0.5rem)] pt-[var(--safe-top)] pb-[var(--safe-bottom)]",
 				props.className,
 			)}
 		/>
