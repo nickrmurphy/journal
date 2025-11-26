@@ -1,13 +1,9 @@
 import { PenIcon } from "@phosphor-icons/react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { EntryDetailDialog } from "@/components/entries";
 import { Page, SafeAreaBlur } from "@/components/layout";
-import {
-	EntryDetailDialog,
-	PastEntries,
-	TextareaDialog,
-	TodayEntries,
-	TodayHeader,
-} from "@/components/pages";
+import { PastEntries, TodayEntries, TodayHeader } from "@/components/pages";
+import { TextareaDialog } from "@/components/ui";
 import { db } from "@/database";
 import type { Entry } from "@/schemas";
 

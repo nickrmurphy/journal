@@ -1,26 +1,5 @@
-import { cx } from "cva";
-import type { ComponentProps } from "react";
 import type { Entry } from "@/schemas";
 import { EntryItem } from "./entry-item";
-
-const Root = (props: ComponentProps<"div">) => (
-	<div
-		{...props}
-		className={cx("rounded-xl bg-black p-1.5", props.className)}
-	/>
-);
-
-const EmptyState = (props: ComponentProps<"div">) => (
-	<div
-		{...props}
-		className={cx(
-			"p-4 text-center text-sm text-lightgray/70 m-auto my-auto self-center",
-			props.className,
-		)}
-	>
-		No entries yet
-	</div>
-);
 
 export const EntryList = ({
 	entries,
@@ -30,7 +9,7 @@ export const EntryList = ({
 	onEntryClick?: (entry: Entry) => void;
 }) => {
 	return (
-		<Root>
+		<div className="rounded-xl bg-black p-1.5">
 			{entries.map((entry) => (
 				<EntryItem
 					key={entry.id}
@@ -39,7 +18,11 @@ export const EntryList = ({
 				/>
 			))}
 
-			{entries.length === 0 && <EmptyState />}
-		</Root>
+			{entries.length === 0 && (
+				<div className="p-4 text-center text-sm text-lightgray/70 m-auto my-auto self-center">
+					No entries yet
+				</div>
+			)}
+		</div>
 	);
 };

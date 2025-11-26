@@ -4,7 +4,6 @@ import { PaperPlaneIcon, XIcon } from "@phosphor-icons/react";
 import { type ComponentProps, useState } from "react";
 import { Button, Textarea } from "@/components/ui";
 
-// TODO: move to @/components/shared
 export const TextareaDialog = (
 	props: ComponentProps<typeof Dialog.Root> & {
 		onSubmit: (content: string) => void;
