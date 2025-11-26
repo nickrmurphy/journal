@@ -1,8 +1,8 @@
+import { ChatTeardropIcon, XIcon } from "@phosphor-icons/react";
+import { useState } from "react";
 import { useEntryComments } from "@/hooks";
 import type { Comment, Entry } from "@/schemas";
 import { formatDateTime } from "@/utils/dates";
-import { ChatTeardropIcon, XIcon } from "@phosphor-icons/react";
-import { useState } from "react";
 import { Button } from "../../shared";
 import { Dialog } from "../../shared/dialog/dialog";
 import { Popover } from "../../shared/popover/popover";

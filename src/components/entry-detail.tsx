@@ -1,8 +1,8 @@
+import { ChatTeardropIcon, XIcon } from "@phosphor-icons/react";
+import { Button, Drawer, EntryCommentItem } from "@/components/shared";
 import { useEntryComments } from "@/hooks";
 import type { Comment, Entry } from "@/schemas";
-import { Button, Drawer, EntryCommentItem } from "@/components/shared";
 import { formatDateTime } from "@/utils/dates";
-import { ChatTeardropIcon, XIcon } from "@phosphor-icons/react";
 
 const Timestamp = ({ createdAt }: { createdAt: string }) => (
 	<time className="text-lightgray/70 text-sm mb-2">

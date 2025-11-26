@@ -1,5 +1,3 @@
-import { db } from "@/database";
-import type { Entry } from "@/schemas";
 import { PenIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -9,6 +7,8 @@ import { SafeAreaBlur } from "@/components/safe-area-blur";
 import { TextareaDialog } from "@/components/textarea-dialog";
 import { TodayEntries } from "@/components/today-entries";
 import { TodayHeader } from "@/components/today-header";
+import { db } from "@/database";
+import type { Entry } from "@/schemas";
 import { EntryDetailDialog } from "../components/entry-detail";
 
 type DialogMode =

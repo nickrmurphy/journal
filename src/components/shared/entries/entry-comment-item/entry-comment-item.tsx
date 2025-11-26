@@ -1,8 +1,8 @@
-import type { Comment } from "@/schemas";
-import { formatDateTime, formatDistance } from "@/utils/dates";
 import { ArrowBendDownRightIcon } from "@phosphor-icons/react";
 import { cx } from "cva";
 import type { ComponentProps } from "react";
+import type { Comment } from "@/schemas";
+import { formatDateTime, formatDistance } from "@/utils/dates";
 import { Tooltip } from "../../shared";
 
 const Root = (props: ComponentProps<"div"> & { hasTimestamp?: boolean }) => {

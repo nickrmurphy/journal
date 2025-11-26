@@ -1,5 +1,5 @@
-import { formatDay, formatMonthDate } from "@/utils/dates";
 import { useCurrentDate } from "@/hooks";
+import { formatDay, formatMonthDate } from "@/utils/dates";
 
 export const TodayHeader = () => {
 	const today = useCurrentDate();

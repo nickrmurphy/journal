@@ -1,9 +1,8 @@
 import { Dialog } from "@ark-ui/react/dialog";
 import { Portal } from "@ark-ui/react/portal";
-import { Button, Textarea } from "@/components/shared";
 import { PaperPlaneIcon, XIcon } from "@phosphor-icons/react";
-
 import { type ComponentProps, useState } from "react";
+import { Button, Textarea } from "@/components/shared";
 
 // TODO: move to @/components/shared
 export const TextareaDialog = (

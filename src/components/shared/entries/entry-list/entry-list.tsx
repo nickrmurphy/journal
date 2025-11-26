@@ -1,6 +1,6 @@
-import type { Entry } from "@/schemas";
 import { cx } from "cva";
 import type { ComponentProps } from "react";
+import type { Entry } from "@/schemas";
 import { EntryItem } from "..";
 
 const Root = (props: ComponentProps<"div">) => (

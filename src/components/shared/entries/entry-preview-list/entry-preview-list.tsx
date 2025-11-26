@@ -1,6 +1,6 @@
-import type { Entry } from "@/schemas";
 import { cx } from "cva";
 import type { ComponentProps } from "react";
+import type { Entry } from "@/schemas";
 import { EntryDateCard } from "../entry-date-card";
 import { EntryPreviewItem } from "../entry-preview-item";
 
@@ -16,7 +16,7 @@ const EmptyState = (props: ComponentProps<"div">) => (
 			props.className,
 		)}
 	>
-		Previous entries will appear here
+		Past entries will appear here
 	</div>
 );
 

@@ -1,9 +1,8 @@
-import { useEntries } from "@/hooks";
-import type { Entry } from "@/schemas";
-import { EntryPreviewList } from "@/components/shared";
-import { useCurrentDate } from "@/hooks";
 import { isSameDay } from "date-fns";
 import { useMemo } from "react";
+import { EntryPreviewList } from "@/components/shared";
+import { useCurrentDate, useEntries } from "@/hooks";
+import type { Entry } from "@/schemas";
 
 export function PastEntries({
 	onEntryClick,

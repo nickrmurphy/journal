@@ -1,8 +1,8 @@
+import { cx } from "cva";
+import type { ComponentProps } from "react";
 import { useEntryComments } from "@/hooks";
 import type { Entry } from "@/schemas";
 import { formatTime } from "@/utils/dates";
-import { cx } from "cva";
-import type { ComponentProps } from "react";
 import { EntryCommentItem } from "../entry-comment-item/entry-comment-item";
 
 const Root = (props: ComponentProps<"article">) => (
