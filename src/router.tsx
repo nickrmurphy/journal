@@ -9,9 +9,6 @@ export const AppRouter = () => {
 			<Switch>
 				<Route path="/" component={JournalRoute} />
 				<Route path="/settings" component={SettingsRoute} />
-				<Route>
-					<JournalRoute />
-				</Route>
 			</Switch>
 		</RootLayout>
 	);
