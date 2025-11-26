@@ -1,6 +1,6 @@
-import type { LinkProps } from "@tanstack/react-router";
 import { cx } from "cva";
 import type { ComponentProps, ReactNode } from "react";
+import { Link, useRoute } from "wouter";
 
 export const NavBar = (props: ComponentProps<"nav">) => {
 	return (
@@ -15,24 +15,27 @@ export const NavBar = (props: ComponentProps<"nav">) => {
 	);
 };
 
-export const BaseNavItem = (
-	props: LinkProps & { label: string; children: ReactNode },
-) => (
-	<button
-		{...props}
-		className="transition-all transition-discrete data-[status=active]:shadow data-[status=active]:outline-1 outline-lightgray/20 data-[status=active]:text-yellow data-[status=active]:bg-black/20 flex items-center gap-1.5 rounded-full [&>svg]:size-4 [&:not([data-status=active])>[data-part=label]]:hidden py-2.5 px-3.5 min-w-11 min-h-11 active:scale-110"
-	>
-		{props.children}
-		<span data-part="label" className="transition-discrete">
-			{props.label}
-		</span>
-	</button>
-);
+type NavItemProps = {
+	to: string;
+	label: string;
+	children: ReactNode;
+};
 
-import { createLink, type LinkComponent } from "@tanstack/react-router";
+export const NavItem = ({ to, label, children }: NavItemProps) => {
+	const [isActive] = useRoute(to);
 
-const LinkedNavItem = createLink(BaseNavItem);
-
-export const NavItem: LinkComponent<typeof BaseNavItem> = (props) => {
-	return <LinkedNavItem {...props} />;
+	return (
+		<Link
+			href={to}
+			className={cx(
+				"transition-all transition-discrete data-[status=active]:shadow data-[status=active]:outline-1 outline-lightgray/20 data-[status=active]:text-yellow data-[status=active]:bg-black/20 flex items-center gap-1.5 rounded-full [&>svg]:size-4 [&:not([data-status=active])>[data-part=label]]:hidden py-2.5 px-3.5 min-w-11 min-h-11 active:scale-110",
+			)}
+			data-status={isActive ? "active" : "inactive"}
+		>
+			{children}
+			<span data-part="label" className="transition-discrete">
+				{label}
+			</span>
+		</Link>
+	);
 };
