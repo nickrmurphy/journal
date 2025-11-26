@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { sortByCreatedAtDesc } from "@/utils/entries";
 import { db } from "../database/db";
 import type { Comment } from "../schemas/comment";
 
@@ -6,26 +7,19 @@ export const useEntryComments = (entryId: string) => {
 	const [comments, setComments] = useState<Comment[]>([]);
 
 	useEffect(() => {
-		const loadComments = () => {
-			const filtered = db.comments.find(
-				(comment) => comment.entryId === entryId,
-			);
-			filtered.sort(
-				(a, b) =>
-					new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-			);
-			setComments(filtered);
-		};
+		const query = db.query((tx) =>
+			tx.comments.find((comment) => comment.entryId === entryId, {
+				sort: sortByCreatedAtDesc,
+			}),
+		);
 
-		loadComments();
+		setComments(query.result);
 
-		const unsubscribe = db.on("mutation", (mutation) => {
-			if (mutation.collection === "comments") {
-				loadComments();
-			}
+		query.subscribe((results) => {
+			setComments(results);
 		});
 
-		return () => unsubscribe();
+		return () => query.dispose();
 	}, [entryId]);
 
 	return comments;
