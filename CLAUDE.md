@@ -1,3 +1,34 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+**Journal by Early Bird** is a local-first, privacy-focused journaling web application. The core philosophy: each entry is an immutable snapshot in time to encourage authentic self-expression without self-censorship. Instead of editing entries, users can reflect on them later by adding comments.
+
+All data is stored client-side in IndexedDB with no server-side persistence, ensuring complete privacy.
+
+## Development Commands
+
+```bash
+bun dev          # Start development server with HMR at localhost:3000
+bun run build    # Build for production (outputs to /dist)
+bun start        # Run production server
+bun check        # Lint and format code with Biome
+```
+
+## Architecture
+
+- **Runtime & Build**: Bun (replaces Node.js, Vite)
+- **Frontend**: React 19 + TypeScript
+- **Routing**: Wouter (lightweight client-side router)
+- **Database**: Starling ORM with IndexedDB plugin
+- **UI Components**: Ark UI (accessible primitives)
+- **Styling**: Tailwind CSS 4 with custom theme
+- **Validation**: Zod schemas
+- **Code Quality**: Biome (linting & formatting)
+
+## Bun Usage
 
 Default to using Bun instead of Node.js.
 
@@ -104,6 +135,58 @@ bun --hot ./index.ts
 ```
 
 For more information, read the Bun API docs in `node_modules/bun-types/docs/**.md`.
+
+## Database & Data Layer
+
+The application uses **Starling** ORM with the IndexedDB plugin for client-side data persistence.
+
+### Schema
+
+Two core entities defined with Zod in `src/schemas/`:
+
+**Entry** (`src/schemas/entry.ts`):
+- `id`: UUID (auto-generated)
+- `content`: String
+- `createdAt`: ISO 8601 timestamp (auto-set)
+
+**Comment** (`src/schemas/comment.ts`):
+- `id`: UUID (auto-generated)
+- `entryId`: UUID (references Entry)
+- `content`: String
+- `createdAt`: ISO 8601 timestamp (auto-set)
+
+### Database Setup
+
+Database initialization in `src/database/db.ts`:
+```ts
+export const db = createDatabase({
+  name: "journal",
+  schema: {
+    entries: { schema: EntrySchema, getId: (entry) => entry.id },
+    comments: { schema: CommentSchema, getId: (comment) => comment.id },
+  },
+}).use(idbPlugin({ version: 1, useBroadcastChannel: true }));
+```
+
+**Cross-tab sync**: Enabled via `useBroadcastChannel: true` - changes in one browser tab automatically sync to other tabs.
+
+### Custom Hooks
+
+- **`useEntries()`** - Fetches all entries with their associated comments, maintains reactive state
+- **`useComments(entryId)`** - Manages comments for a specific entry
+- **`useCurrentDate()`** - Tracks current date, updates at midnight
+- **`useKeyboardHeight()`** - Detects mobile virtual keyboard height, sets CSS variables for safe areas
+
+## Component Organization
+
+Components follow a hierarchical structure:
+
+- **`/src/components/shared/entries/`** - Entry-specific components (list, item, dialogs, comments)
+- **`/src/components/shared/shared/`** - Generic UI components (button, dialog, popover, menu, tooltip)
+- **`/src/components/shared/layouts/`** - Layout components
+- **`/src/components/`** (root) - Page-level composition components (nav-bar, today-entries, past-entries)
+
+All components use the compound component pattern (see Design Patterns section).
 
 ## Design Patterns
 
