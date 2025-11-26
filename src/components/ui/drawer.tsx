@@ -13,11 +13,11 @@ const Description = ArkDialog.Description;
 
 const Content = (props: { children: React.ReactNode }) => (
 	<Portal>
-		<Backdrop className={cx("fixed inset-0 bg-black/40")} />
+		<Backdrop className={cx("fixed inset-0 bg-black/70")} />
 		<Positioner className="fixed inset-0 flex items-end justify-center">
 			<ArkDialog.Content
 				className={cx(
-					"flex flex-col w-full h-[calc(99vh-env(safe-area-inset-top))] rounded-t-2xl bg-black p-6 border border-b-0 shadow",
+					"flex flex-col w-full h-[calc(90vh-env(safe-area-inset-top))] rounded-t-2xl bg-black p-6 border border-b-0 shadow",
 					"data-[state=open]:animate-[slideUpFromBottom_150ms_ease-out] data-[state=open]:translate-y-0",
 					"data-[state=closed]:animate-[slideDownToBottom_150ms_ease-in]",
 					"translate-y-full",
