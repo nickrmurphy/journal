@@ -1,48 +1,62 @@
 # Journal by Early Bird
 
-A local-first, simple journaling app for daily notes that encourages authentic self-expression.
+A simple, always‑ready, always‑private journal that lives in your browser and gets out of your way.
 
-## Why Journal?
+No feeds. No streaks. No “build your second brain.” Just a quiet place to write what’s on your mind and feel a little more relieved at the end of the day.
 
-Traditional digital journals make it too easy to self-censor: deleting, editing, and overthinking what you've written. Journal takes inspiration from pen and paper: **each entry, is a snapshot in time**. This encourages honest, unfiltered thoughts without the temptation to perfect or sanitize your authentic voice.
+## Who it’s for
 
-Instead of editing entries, you can reflect on them later by adding comments, creating a natural progression of thoughts over time.
+- Regular people who want a simple place to jot things down  
+- Folks who don’t want to think about “systems” or “workflows”  
+- Anyone who cares that their journal stays *theirs* — and private
 
-## Features
+## How it fits into your day
 
-- **Daily Notes**: Simple, focused journaling for daily reflection
-- **Immutable Entries**: Entries can't be edited once created to prevent self-censorship
-- **Reflective Comments**: Add comments to entries for later thoughts and insights
-- **Local-First**: All data stored in your browser—no servers, no accounts, complete privacy
-- **P2P Sync** *(Coming Soon)*: End-to-end encrypted sync between your devices via WebRTC
+- **Morning** – Take a minute to set intentions, dump worries, or sketch the day ahead.  
+- **During the day** – Capture thoughts as they pop up: ideas, frustrations, little wins.  
+- **Evening** – Reflect on what happened, how you felt, and what you want to remember for tomorrow.
 
-## Screenshots
+You don’t organize anything. Entries simply flow through time. Yesterday stays yesterday; today is what you’re looking at now.
 
-<div align="center">
+## What makes it different
 
-### Daily Journal View
-![Daily Journal Entries](images/daily-journal-entries-view.png)
+- **Always ready**  
+  Opens quickly in your browser. No setup, no “onboarding flow,” no deciding where things go. Just type.
 
-### New Entry Compose
-![New Entry Compose](images/new-entry-compose-view.png)
+- **Always private**  
+  Your entries are stored locally in your browser. There’s no central server that can read them, because we never have them.
 
-### Chronological Entries List
-![Chronological Entries](images/chronological-entries-list.png)
+- **Simple method, not a maze**  
+  The app gives you a straightforward pattern: write today, come back later and reflect, then move on. No tags, boards, or complex views to maintain.
 
-### Entry with Comment
-![Entry with Comment](images/entry-with-comment-detail.png)
+- **Flows through time**  
+  Your journal is one continuous stream of days and entries. You see past days, today, and your thoughts as they naturally stack up.
 
-### Add Comment Modal
-![Add Comment Modal](images/add-comment-modal.png)
+The goal isn’t to build the most powerful journaling tool. It’s to build one that you’ll actually use.
 
-</div>
+## Privacy, in plain language
 
-## Privacy & Data
+Here’s the line in the sand: We will never be able to read your journal entries.
+Your data is stored locally in your browser using an on‑device database. It’s your journal. Full stop.
 
-Your journal data lives **only in your browser**. No servers store your personal thoughts. When P2P sync launches, data will be encrypted end-to-end and transmitted directly between your devices—never touching our servers.
+## Tech, briefly (for the curious)
 
-## Availability
+Journal is built as a small web app using:
 
-Born out of a personal need for simple and private journaling, Journal by Early Bird will be enhanced and available for public use by the new year.
+- **React + TypeScript + Vite** for the interface  
+- **Starling DB** for storage — a local‑first, open‑source database library built in‑house at Early Bird, which keeps your data on your device
 
-🌐 Find the proof-of-concept here: [http://journal.rsvzgk29j8.workers.dev](http://journal.rsvzgk29j8.workers.dev)
+Everything runs in the browser and stores data in your local IndexedDB.
+
+To run it locally:
+
+```bash
+npm install   # or bun install
+npm run dev
+```
+
+## Try it
+
+Journal is an early‑stage product, actively being shaped by real use. It’s stable enough for everyday journaling, and simple enough that you won’t get lost in it.
+
+If you try it, don’t overthink it. Write one short entry today, close the tab, and see how it feels to come back tomorrow knowing no one — including us — can read what you wrote.
