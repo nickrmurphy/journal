@@ -2,7 +2,7 @@ import { Router } from "@solidjs/router";
 import { AppRoutes } from "./routes";
 import "./styles.css";
 import { ErrorBoundary } from "solid-js";
-import { useKeyboardHeight } from "@/lib/hooks";
+import { useKeyboardHeight } from "@/lib/primitives";
 import { DbProvider } from "./providers/db-provider";
 
 export const App = () => {

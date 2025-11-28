@@ -1,13 +1,13 @@
 import { isSameDay } from "date-fns";
 import { createMemo } from "solid-js";
 import type { Entry } from "@/lib/db";
-import { useCurrentDate } from "@/lib/hooks";
-import { useEntries } from "../hooks";
+import { createDateNow } from "@/lib/primitives";
+import { createEntriesQuery } from "../resources";
 import { EntryPreviewList } from "./entry-preview-list";
 
 export function PastEntries(props: { onEntryClick: (entry: Entry) => void }) {
-	const today = useCurrentDate();
-	const allEntries = useEntries();
+	const today = createDateNow();
+	const allEntries = createEntriesQuery();
 
 	const pastEntries = createMemo(() => {
 		const entries = allEntries();

@@ -3,7 +3,7 @@ import { For, Show } from "solid-js";
 import { Button, Drawer } from "@/components/ui";
 import type { Comment, Entry } from "@/lib/db";
 import { formatDateTime } from "@/lib/utils/dates";
-import { useEntryComments } from "../hooks";
+import { createCommentQuery } from "../resources";
 import { EntryCommentItem } from "./entry-comment-item";
 
 const Timestamp = (props: { createdAt: string }) => (
@@ -51,7 +51,7 @@ export const EntryDetailDialog = (props: {
 	onExitComplete?: () => void;
 	onComment: () => void;
 }) => {
-	const comments = useEntryComments(props.entry?.id ?? "");
+	const comments = createCommentQuery(() => props.entry?.id ?? "");
 
 	return (
 		<Drawer.Root

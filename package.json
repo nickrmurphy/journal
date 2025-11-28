@@ -14,6 +14,7 @@
   "dependencies": {
     "@ark-ui/solid": "^5.25.0",
     "@byearlybird/starling": "^0.11.0",
+    "@solid-primitives/date": "^2.1.4",
     "@solidjs/router": "^0.15.4",
     "@tailwindcss/vite": "^4.1.17",
     "cva": "^1.0.0-beta.4",
