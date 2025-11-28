@@ -1,6 +1,6 @@
 import { Tooltip as ArkTooltip } from "@ark-ui/solid/tooltip";
 import { cx } from "cva";
-import type { JSX, ComponentProps } from "solid-js";
+import type { ComponentProps, JSX } from "solid-js";
 
 const Root = ArkTooltip.Root;
 const Trigger = ArkTooltip.Trigger;
@@ -14,10 +14,12 @@ const tooltipPopup = (className?: string) =>
 		className,
 	);
 
-const Content = (props: {
-	children: JSX.Element;
-	class?: string;
-} & ComponentProps<typeof ArkTooltip.Content>) => {
+const Content = (
+	props: {
+		children: JSX.Element;
+		class?: string;
+	} & ComponentProps<typeof ArkTooltip.Content>,
+) => {
 	return (
 		<Positioner>
 			<ArkTooltip.Content {...props} class={tooltipPopup(props.class)}>

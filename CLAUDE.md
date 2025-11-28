@@ -35,7 +35,7 @@ The project uses **Vite** (Rolldown variant) for development and production buil
 
 - **Development**: Vite dev server with Hot Module Replacement (HMR) and React Fast Refresh
 - **Production**: Optimized builds with code splitting and minification
-- **Entry Point**: `index.html` at project root imports `/src/frontend.tsx`
+- **Entry Point**: `index.html` at project root imports `/src/main.tsx`
 - **Static Assets**: Served from `public/` directory
 
 ### Vite Configuration
