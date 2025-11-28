@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+        // General
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+
     // Environment setup & latest features
     "lib": [
       "DOM",
@@ -9,7 +13,6 @@
     "target": "ESNext",
     "module": "Preserve",
     "moduleDetection": "force",
-    "jsx": "react-jsx",
     "allowJs": true,
     // Bundler mode
     "moduleResolution": "bundler",

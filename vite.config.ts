@@ -1,12 +1,12 @@
 import { resolve } from "node:path";
 import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import solid from "vite-plugin-solid";
 
 export default defineConfig({
 	plugins: [
-		react(),
+		solid(),
 		tailwindcss(),
 		VitePWA({
 			registerType: "autoUpdate",

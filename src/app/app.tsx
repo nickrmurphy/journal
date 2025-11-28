@@ -1,0 +1,20 @@
+import { Router } from "@solidjs/router";
+import { AppRoutes } from "./routes";
+import "./styles.css";
+import { ErrorBoundary } from "solid-js";
+import { useKeyboardHeight } from "@/lib/primitives";
+import { DbProvider } from "./providers/db-provider";
+
+export const App = () => {
+	useKeyboardHeight();
+
+	return (
+		<ErrorBoundary fallback={<h1>Oops!</h1>}>
+			<DbProvider>
+				<Router>
+					<AppRoutes />
+				</Router>
+			</DbProvider>
+		</ErrorBoundary>
+	);
+};
