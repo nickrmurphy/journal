@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { db } from "@/database";
 import {
 	extractComments,
@@ -31,7 +30,7 @@ export type ImportResult =
  * };
  */
 export function useImportData(): () => Promise<ImportResult | null> {
-	return useCallback(() => {
+	return () => {
 		return new Promise<ImportResult | null>((resolve) => {
 			const input = document.createElement("input");
 			input.type = "file";
@@ -90,5 +89,5 @@ export function useImportData(): () => Promise<ImportResult | null> {
 
 			input.click();
 		});
-	}, []);
+	};
 }

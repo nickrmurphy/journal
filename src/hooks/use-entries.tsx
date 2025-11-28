@@ -1,5 +1,5 @@
 import { isSameDay } from "date-fns";
-import { useEffect, useState } from "react";
+import { createEffect, createSignal, onCleanup } from "solid-js";
 import type { Comment } from "@/schemas";
 import {
 	combineEntriesWithComments,
@@ -17,9 +17,9 @@ type EntryWithComments = Entry & {
  * Uses reactive query pattern - automatically updates when entries or comments change.
  */
 export const useEntries = () => {
-	const [entries, setEntries] = useState<EntryWithComments[]>([]);
+	const [entries, setEntries] = createSignal<EntryWithComments[]>([]);
 
-	useEffect(() => {
+	createEffect(() => {
 		const query = db.query((tx) => {
 			const entries = tx.entries.getAll().sort(sortByCreatedAtDesc);
 			const allComments = tx.comments.getAll().sort(sortByCreatedAtDesc);
@@ -32,11 +32,11 @@ export const useEntries = () => {
 			setEntries(results);
 		});
 
-		return () => {
+		onCleanup(() => {
 			unsubscribe();
 			query.dispose();
-		};
-	}, []);
+		});
+	});
 
 	return entries;
 };
@@ -47,9 +47,9 @@ export const useEntries = () => {
  * @param date ISO date string to filter entries by
  */
 export const useEntriesOnDate = (date: string) => {
-	const [entries, setEntries] = useState<EntryWithComments[]>([]);
+	const [entries, setEntries] = createSignal<EntryWithComments[]>([]);
 
-	useEffect(() => {
+	createEffect(() => {
 		const targetDate = new Date(date);
 
 		const query = db.query((tx) => {
@@ -67,11 +67,11 @@ export const useEntriesOnDate = (date: string) => {
 			setEntries(results);
 		});
 
-		return () => {
+		onCleanup(() => {
 			unsubscribe();
 			query.dispose();
-		};
-	}, [date]);
+		});
+	});
 
 	return entries;
 };

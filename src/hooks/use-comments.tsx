@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { createEffect, createSignal, onCleanup } from "solid-js";
 import { sortByCreatedAtDesc } from "@/utils/entries";
 import { db } from "../database/db";
 import type { Comment } from "../schemas/comment";
 
 export const useEntryComments = (entryId: string) => {
-	const [comments, setComments] = useState<Comment[]>([]);
+	const [comments, setComments] = createSignal<Comment[]>([]);
 
-	useEffect(() => {
+	createEffect(() => {
 		const query = db.query((tx) =>
 			tx.comments.find((comment) => comment.entryId === entryId, {
 				sort: sortByCreatedAtDesc,
@@ -19,8 +19,8 @@ export const useEntryComments = (entryId: string) => {
 			setComments(results);
 		});
 
-		return () => query.dispose();
-	}, [entryId]);
+		onCleanup(() => query.dispose());
+	});
 
 	return comments;
 };

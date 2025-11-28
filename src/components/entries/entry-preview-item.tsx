@@ -1,5 +1,6 @@
-import { ChatTeardropIcon } from "@phosphor-icons/react";
 import { cx } from "cva";
+import { MessageCircle } from "lucide-solid";
+import { createMemo, Show } from "solid-js";
 import { useEntryComments } from "@/hooks";
 import type { Entry } from "@/schemas";
 import { formatTime } from "@/utils/dates";
@@ -9,7 +10,7 @@ export const EntryPreviewItem = (props: {
 	onClick?: () => void;
 }) => {
 	const comments = useEntryComments(props.entry.id);
-	const isClickable = !!props.onClick;
+	const isClickable = createMemo(() => !!props.onClick);
 
 	return (
 		<article
@@ -19,16 +20,20 @@ export const EntryPreviewItem = (props: {
 					props.onClick?.();
 				}
 			}}
-			className={cx(
+			class={cx(
 				"rounded-xl p-3 text-lightgray/70 transition-colors duration-300 hover:bg-darkgray/30 hover:text-lightgray",
-				isClickable ? "cursor-pointer" : "cursor-default",
+				isClickable() ? "cursor-pointer" : "cursor-default",
 			)}
 		>
-			<div className="flex items-center gap-1.5 text-xs">
+			<div class="flex items-center gap-1.5 text-xs">
 				<time>{formatTime(props.entry.createdAt)}</time>
-				<span>{comments.length > 0 ? <ChatTeardropIcon /> : null}</span>
+				<Show when={comments().length > 0}>
+					<span>
+						<MessageCircle />
+					</span>
+				</Show>
 			</div>
-			<p className="mt-2 line-clamp-3 text-ellipsis text-sm">
+			<p class="mt-2 line-clamp-3 text-ellipsis text-sm">
 				{props.entry.content}
 			</p>
 		</article>

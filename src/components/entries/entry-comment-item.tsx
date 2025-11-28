@@ -1,38 +1,43 @@
-import { ArrowBendDownRightIcon } from "@phosphor-icons/react";
+import { CornerDownRight } from "lucide-solid";
 import { cx } from "cva";
+import { Show, createMemo } from "solid-js";
 import type { Comment } from "@/schemas";
 import { formatDateTime, formatDistance } from "@/utils/dates";
 import { Tooltip } from "../ui";
 
 export const EntryCommentItem = (props: {
 	comment: Comment;
-	className?: string;
+	class?: string;
 	showTimestamp?: boolean | string;
 }) => {
-	const { showTimestamp = false } = props;
-	const hasTimestamp = !!showTimestamp;
+	const showTimestamp = () => props.showTimestamp ?? false;
+	const hasTimestamp = createMemo(() => !!showTimestamp());
 
 	return (
 		<div
-			className={cx(
-				hasTimestamp ? "flex gap-2 p-2" : "flex items-center gap-2 p-2",
-				props.className,
+			class={cx(
+				hasTimestamp() ? "flex gap-2 p-2" : "flex items-center gap-2 p-2",
+				props.class,
 			)}
 		>
-			<ArrowBendDownRightIcon className="size-4 flex-shrink-0" />
-			<div className="flex flex-col gap-2 pl-1">
-				<p className="max-w-[55ch] text-lightgray/70 text-sm">
+			<CornerDownRight class="size-4 flex-shrink-0" />
+			<div class="flex flex-col gap-2 pl-1">
+				<p class="max-w-[55ch] text-lightgray/70 text-sm">
 					{props.comment.content}
 				</p>
-				{showTimestamp ? (
-					<time className="text-lightgray/70 text-xs">
-						{typeof showTimestamp === "boolean" ? (
-							formatDateTime(props.comment.createdAt)
-						) : (
+				<Show when={showTimestamp()}>
+					<time class="text-lightgray/70 text-xs">
+						<Show
+							when={typeof showTimestamp() === "string"}
+							fallback={formatDateTime(props.comment.createdAt)}
+						>
 							<Tooltip.Root>
-								<Tooltip.Trigger asChild>
-									<time className="text-lightgray/70 text-xs">
-										{formatDistance(props.comment.createdAt, showTimestamp)}{" "}
+								<Tooltip.Trigger>
+									<time class="text-lightgray/70 text-xs">
+										{formatDistance(
+											props.comment.createdAt,
+											showTimestamp() as string,
+										)}{" "}
 										later
 									</time>
 								</Tooltip.Trigger>
@@ -40,9 +45,9 @@ export const EntryCommentItem = (props: {
 									{formatDateTime(props.comment.createdAt)}
 								</Tooltip.Content>
 							</Tooltip.Root>
-						)}
+						</Show>
 					</time>
-				) : null}
+				</Show>
 			</div>
 		</div>
 	);

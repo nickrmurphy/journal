@@ -1,4 +1,4 @@
-import { DownloadSimpleIcon, UploadSimpleIcon } from "@phosphor-icons/react";
+import { Download, Upload } from "lucide-solid";
 import { Page } from "@/components/layout";
 import { useExportData, useImportData } from "@/hooks";
 
@@ -31,21 +31,21 @@ export const SettingsRoute = () => {
 
 	return (
 		<Page>
-			<div className="pt-[var(--safe-top)] rounded-xl bg-black p-2 flex flex-col divide-y">
+			<div class="pt-[var(--safe-top)] rounded-xl bg-black p-2 flex flex-col divide-y">
 				<button
 					type="button"
-					className="p-2 flex items-center gap-3"
+					class="p-2 flex items-center gap-3"
 					onClick={handleExport}
 				>
-					<DownloadSimpleIcon />
+					<Download />
 					Export data
 				</button>
 				<button
 					type="button"
-					className="p-2 flex items-center gap-3"
+					class="p-2 flex items-center gap-3"
 					onClick={handleImport}
 				>
-					<UploadSimpleIcon />
+					<Upload />
 					Import data
 				</button>
 			</div>

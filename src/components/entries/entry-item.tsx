@@ -1,3 +1,4 @@
+import { For, Show } from "solid-js";
 import { useEntryComments } from "@/hooks";
 import type { Entry } from "@/schemas";
 import { formatTime } from "@/utils/dates";
@@ -9,21 +10,21 @@ export const EntryItem = (props: { entry: Entry; onClick?: () => void }) => {
 	return (
 		<article
 			onClick={props.onClick}
-			className="cursor-default bg-black transition-colors rounded-xl p-4 hover:bg-darkgray/30"
+			class="cursor-default bg-black transition-colors rounded-xl p-4 hover:bg-darkgray/30"
 		>
-			<time className="text-lightgray/70 text-sm">
+			<time class="text-lightgray/70 text-sm">
 				{formatTime(props.entry.createdAt)}
 			</time>
-			<p className="mt-0.5 max-w-[65ch] text-base text-lightgray leading-relaxed">
+			<p class="mt-0.5 max-w-[65ch] text-base text-lightgray leading-relaxed">
 				{props.entry.content}
 			</p>
-			{comments.length > 0 && (
-				<div className="mt-1">
-					{comments.map((comment) => (
-						<EntryCommentItem key={comment.id} comment={comment} />
-					))}
+			<Show when={comments().length > 0}>
+				<div class="mt-1">
+					<For each={comments()}>
+						{(comment) => <EntryCommentItem comment={comment} />}
+					</For>
 				</div>
-			)}
+			</Show>
 		</article>
 	);
 };

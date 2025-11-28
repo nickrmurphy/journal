@@ -1,7 +1,7 @@
-import { Dialog as ArkDialog } from "@ark-ui/react/dialog";
-import { Portal } from "@ark-ui/react/portal";
+import { Dialog as ArkDialog } from "@ark-ui/solid/dialog";
 import { cx } from "cva";
-import type * as React from "react";
+import type { JSX } from "solid-js";
+import { Portal } from "solid-js/web";
 
 const Backdrop = ArkDialog.Backdrop;
 const Positioner = ArkDialog.Positioner;
@@ -11,12 +11,12 @@ const Close = ArkDialog.CloseTrigger;
 const Title = ArkDialog.Title;
 const Description = ArkDialog.Description;
 
-const Content = (props: { children: React.ReactNode }) => (
+const Content = (props: { children: JSX.Element }) => (
 	<Portal>
-		<Backdrop className={cx("fixed inset-0 bg-black/70")} />
-		<Positioner className="fixed inset-0 flex items-end justify-center">
+		<Backdrop class={cx("fixed inset-0 bg-black/70")} />
+		<Positioner class="fixed inset-0 flex items-end justify-center">
 			<ArkDialog.Content
-				className={cx(
+				class={cx(
 					"flex flex-col w-full h-[calc(90vh-var(--safe-top))] rounded-t-2xl bg-black p-6 border border-b-0 shadow",
 					"data-[state=open]:animate-[slideUpFromBottom_150ms_ease-out] data-[state=open]:translate-y-0",
 					"data-[state=closed]:animate-[slideDownToBottom_150ms_ease-in]",
@@ -29,12 +29,12 @@ const Content = (props: { children: React.ReactNode }) => (
 	</Portal>
 );
 
-const Body = (props: { children: React.ReactNode }) => (
-	<div className="flex-1 overflow-y-auto min-h-0">{props.children}</div>
+const Body = (props: { children: JSX.Element }) => (
+	<div class="flex-1 overflow-y-auto min-h-0">{props.children}</div>
 );
 
-const Toolbar = (props: { children: React.ReactNode }) => (
-	<div className="flex-shrink-0 pb-4 -mx-2 -mt-2 mb-2 border-b border-dashed">
+const Toolbar = (props: { children: JSX.Element }) => (
+	<div class="flex-shrink-0 pb-4 -mx-2 -mt-2 mb-2 border-b border-dashed">
 		{props.children}
 	</div>
 );

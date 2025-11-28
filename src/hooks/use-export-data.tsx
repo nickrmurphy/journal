@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { db } from "@/database";
 
 /**
@@ -14,7 +13,7 @@ import { db } from "@/database";
  * <button onClick={handleExport}>Export data</button>
  */
 export function useExportData(): () => void {
-	return useCallback(() => {
+	return () => {
 		const docs = db.toDocuments();
 		const dataStr =
 			"data:text/json;charset=utf-8," +
@@ -25,5 +24,5 @@ export function useExportData(): () => void {
 		document.body.appendChild(downloadAnchorNode); // required for firefox
 		downloadAnchorNode.click();
 		downloadAnchorNode.remove();
-	}, []);
+	};
 }
