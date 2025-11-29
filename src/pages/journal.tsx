@@ -1,6 +1,6 @@
 import { Pen } from "lucide-solid";
 import { createSignal, onMount } from "solid-js";
-import { Page, SafeAreaBlur } from "@/components/layout";
+import { Page } from "@/components/layout";
 import { TextareaDialog } from "@/components/ui";
 import {
 	EntryDetailDialog,
@@ -73,7 +73,6 @@ export const JournalPage = () => {
 				style={{ "scrollbar-width": "none", "-ms-overflow-style": "none" }}
 			>
 				<div class="flex h-full">
-					<SafeAreaBlur />
 					<section class="w-screen h-screen flex-shrink-0 snap-start overflow-y-auto pb-14">
 						<Page>
 							<PastEntries onEntryClick={handleEntryClick} />
