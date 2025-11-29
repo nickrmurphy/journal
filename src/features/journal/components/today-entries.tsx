@@ -12,7 +12,7 @@ export function TodayEntries(props: { onEntryClick: (entry: Entry) => void }) {
 		<Show
 			when={entries().length > 0}
 			fallback={
-				<p class="text-center p-10 text-lg text-lightgray/70">
+				<p class="text-center p-10 text-lg text-white/70">
 					No entries yet today
 				</p>
 			}

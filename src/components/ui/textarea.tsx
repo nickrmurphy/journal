@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "cva";
 import type { ComponentProps } from "solid-js";
 
 const textarea = cva({
-	base: "resize-none outline-none placeholder:text-lightgray/70",
+	base: "resize-none outline-none",
 });
 
 type TextareaProps = ComponentProps<"textarea"> & VariantProps<typeof textarea>;

@@ -90,7 +90,7 @@ export const JournalPage = () => {
 			<div class="flex items-center bottom-[var(--safe-bottom)] fixed right-4">
 				<button
 					type="button"
-					class="size-11 flex items-center bg-yellow/90 text-black rounded-full justify-center active:scale-110 transition-all ms-auto"
+					class="size-11 flex items-center bg-amber-400 text-black rounded-full justify-center active:scale-110 transition-all ms-auto"
 					onClick={() => setDialogMode({ type: "create-entry" })}
 				>
 					<Pen class="size-5" />

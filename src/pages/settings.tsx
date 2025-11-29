@@ -31,13 +31,13 @@ export const SettingsPage = () => {
 
 	return (
 		<Page>
-			<div class="pt-[var(--safe-top)] rounded-xl bg-black p-2 flex flex-col divide-y">
+			<div class="pt-[var(--safe-top)] rounded-xl bg-white/10 p-2 flex flex-col divide-y">
 				<button
 					type="button"
 					class="p-2 flex items-center gap-3"
 					onClick={handleExport}
 				>
-					<Download />
+					<Download class="size-4" />
 					Export data
 				</button>
 				<button
@@ -45,7 +45,7 @@ export const SettingsPage = () => {
 					class="p-2 flex items-center gap-3"
 					onClick={handleImport}
 				>
-					<Upload />
+					<Upload class="size-4" />
 					Import data
 				</button>
 			</div>

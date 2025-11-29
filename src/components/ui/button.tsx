@@ -2,16 +2,13 @@ import { cva, type VariantProps } from "cva";
 import type { ComponentProps } from "solid-js";
 
 const button = cva({
-	base: "rounded-full shrink-0 text-sm active:scale-105 disabled:active:scale-100 transition-all disabled:opacity-50",
+	base: "rounded-full shrink-0 shadow text-sm active:scale-105 disabled:active:scale-100 transition-all disabled:opacity-50",
 	variants: {
 		variant: {
-			"solid-black": "bg-black text-lightgray hover:bg-black/90 ",
-			"solid-lightgray": "bg-lightgray text-black hover:bg-lightgray/90",
-			"outline-black": "border border-black text-black hover:bg-black/5",
-			"outline-lightgray":
-				"border backdrop-blur border-lightgray text-lightgray hover:bg-lightgray/10",
-			"solid-yellow": "bg-yellow text-black hover:bg-yellow/90",
-			"outline-yellow": "border border-yellow text-yellow hover:bg-yellow/10",
+			"outline-lightgray": "border backdrop-blur bg-white/10",
+			"solid-yellow": "bg-amber-400 text-black",
+			"outline-yellow":
+				"border border-amber-400 text-amber-400 bg-amber-400/10 transition-colors",
 		},
 		size: {
 			md: "px-3.5 py-2 [&>svg]:size-4",
@@ -19,7 +16,7 @@ const button = cva({
 		},
 	},
 	defaultVariants: {
-		variant: "solid-black",
+		variant: "outline-lightgray",
 		size: "md",
 	},
 });

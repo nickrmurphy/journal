@@ -17,12 +17,12 @@ const EntryItem = (props: { entry: Entry; onClick: () => void }) => {
 				}
 			}}
 			tabindex={0}
-			class="cursor-default bg-black transition-colors rounded-xl p-4 hover:bg-darkgray/30"
+			class="hover:bg-white/5 transition-colors rounded-xl p-4"
 		>
-			<time class="text-lightgray/70 text-sm">
+			<time class="text-white/70 text-sm">
 				{formatTime(props.entry.createdAt)}
 			</time>
-			<p class="mt-0.5 max-w-[65ch] text-base text-lightgray leading-relaxed">
+			<p class="mt-0.5 max-w-[65ch] text-base leading-relaxed">
 				{props.entry.content}
 			</p>
 			<Show when={comments().length > 0}>
@@ -41,7 +41,7 @@ export const EntryList = (props: {
 	onEntryClick: (entry: Entry) => void;
 }) => {
 	return (
-		<div class="rounded-xl bg-black p-1.5">
+		<div class="rounded-xl bg-white/10 p-1.5">
 			<For each={props.entries} fallback={<NoEntries />}>
 				{(entry) => (
 					<EntryItem entry={entry} onClick={() => props.onEntryClick(entry)} />
@@ -52,7 +52,7 @@ export const EntryList = (props: {
 };
 
 const NoEntries = () => (
-	<div class="p-4 text-center text-sm text-lightgray/70 m-auto my-auto self-center">
+	<div class="p-4 text-center text-sm text-white/70 m-auto my-auto self-center">
 		No entries yet
 	</div>
 );

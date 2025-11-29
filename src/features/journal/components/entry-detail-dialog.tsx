@@ -7,7 +7,7 @@ import { createCommentQuery } from "../resources";
 import { EntryCommentItem } from "./entry-comment-item";
 
 const Timestamp = (props: { createdAt: string }) => (
-	<time class="text-lightgray/70 text-sm mb-2">
+	<time class="text-white/70 text-sm mb-2">
 		{formatDateTime(props.createdAt)}
 	</time>
 );
@@ -19,7 +19,7 @@ const Comments = (props: { comments: Comment[]; entryCreatedAt: string }) => (
 				{(comment) => (
 					<EntryCommentItem
 						comment={comment}
-						showTimestamp={props.entryCreatedAt}
+						timestamp={props.entryCreatedAt}
 					/>
 				)}
 			</For>

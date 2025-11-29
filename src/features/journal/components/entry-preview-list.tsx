@@ -16,7 +16,7 @@ const EntryPreviewItem = (props: { entry: Entry; onClick: () => void }) => {
 					props.onClick();
 				}
 			}}
-			class="rounded-xl p-3 text-lightgray/70 transition-colors duration-300 hover:bg-darkgray/30 hover:text-lightgray cursor-pointer"
+			class="rounded-xl p-3 hover:bg-white/5 transition-colors"
 		>
 			<div class="flex items-center gap-1.5 text-xs">
 				<time>{formatTime(props.entry.createdAt)}</time>
@@ -58,7 +58,7 @@ export const EntryPreviewList = (props: EntryPreviewListProps) => (
 );
 
 const NoEntries = () => (
-	<div class="p-4 text-center text-sm text-lightgray/70 m-auto my-auto self-center bg-black rounded-xl">
+	<div class="p-4 text-center text-sm text-white/70 m-auto my-auto self-center bg-white/10 rounded-xl">
 		Past entries will appear here
 	</div>
 );
