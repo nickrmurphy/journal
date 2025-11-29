@@ -22,7 +22,7 @@ const EntryPreviewItem = (props: { entry: Entry; onClick: () => void }) => {
 				<time>{formatTime(props.entry.createdAt)}</time>
 				<Show when={comments().length > 0}>
 					<span>
-						<MessageCircle />
+						<MessageCircle class="size-4" />
 					</span>
 				</Show>
 			</div>
